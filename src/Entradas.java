@@ -224,6 +224,7 @@ public class Entradas
             Conexion.close(preparedStatement);
             Conexion.close(conn);
         }
+
         return rows;
     }
 

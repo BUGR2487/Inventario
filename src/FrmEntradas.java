@@ -1,5 +1,8 @@
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.text.DateFormat;
@@ -11,15 +14,64 @@ import java.util.GregorianCalendar;
 
 public class FrmEntradas extends JFrame implements ActionListener, KeyListener, FocusListener, ItemListener, Runnable
 {
-    JLabel LblCodigoBarras, LblDiseno, LblCodigoInterno, LblCliente, LblProducto, LblCantidadPallet, LblCantidadPorPallet, LblTotalUnidades, LblNumOrden,
-           LblNumPedido, LblCondicion, LblObservaciones, LblCantidad, LblFolio, LblFechaEntrada, LblHoraEntrada, LblChofer, LblEmpresa, LblPlacas, LblTractoCamion;
-    JTextField TxtDiseno, TxtCodigoInterno, TxtCliente, TxtProducto, TxtCantidadPallet, TxtCantidadPorPallet, TxtTotalUnidades, TxtNumOrden, TxtNumPedido, TxtObservaciones,
-               TxtCantidad, TxtFolio, TxtFechaEntrada, TxtHoraEntrada, TxtEmpresa, TxtPlacas, TxtTractoCamion;
-    JButton BtnRegistrarEntrada, BtnAgregarTabla, BtnEliminarFilas, BtnEliminarFila;
-    JComboBox CmbCodigoBarras, CmbCondicion, CmbChofer;
+    // Jlabel usados en la vista del form:
+    JLabel  LblCodigoBarras,
+            LblDiseno,
+            LblCodigoInterno,
+            LblCliente,
+            LblProducto,
+            LblCantidadPallet,
+            LblCantidadPorPallet,
+            LblTotalUnidades,
+            LblNumOrden,
+            LblNumPedido,
+            LblCondicion,
+            LblObservaciones,
+            LblCantidad,
+            LblFolio,
+            LblFechaEntrada,
+            LblHoraEntrada,
+            LblChofer,
+            LblEmpresa,
+            LblPlacas,
+            LblTractoCamion;
+
+    // Jtext field usados en la vista del form Entradas:
+    JTextField  TxtDiseno,
+                TxtCodigoInterno,
+                TxtCliente,
+                TxtProducto,
+                TxtCantidadPallet,
+                TxtCantidadPorPallet,
+                TxtTotalUnidades,
+                TxtNumOrden,
+                TxtNumPedido,
+                TxtObservaciones,
+                TxtCantidad,
+                TxtFolio,
+                TxtFechaEntrada,
+                TxtHoraEntrada,
+                TxtEmpresa,
+                TxtPlacas,
+                TxtTractoCamion;
+
+    //JButtons usados en la interfaz grafica:
+    JButton BtnRegistrarEntrada,
+            BtnAgregarTabla,
+            BtnEliminarFilas,
+            BtnEliminarFila;
+
+    //JComboBox usados en la interfaz para seleccionar diferentes valores:
+    JComboBox   CmbCodigoBarras,
+                CmbCondicion,
+                CmbChofer;
+
     TableColumnModel columnModel;
+
     JTable TblEntradas;
+
     JScrollPane ScrTabla;
+
     JProgressBar PrgBarRegistrarEntrada;
 
     DefaultTableModel defaultTableModel;
@@ -31,11 +83,31 @@ public class FrmEntradas extends JFrame implements ActionListener, KeyListener, 
 
     Font font;
 
-    int cantidadPallet = 0, cantidadPorPallet = 0, totalUnidades = 0, numFila = 0, seleccion = 0;
-    String hora = "", minutos = "", amPm = "";
+    int     cantidadPallet = 0,
+            cantidadPorPallet = 0,
+            totalUnidades = 0,
+            numFila = 0,
+            seleccion = 0;
+
+    String  hora = "",
+            minutos = "",
+            amPm = "";
+
     Thread hiloHoras;
 
     Entradas entradas = new Entradas();
+
+    Color[] rowColors = {
+            Color.decode("#FF9292"), // rojo
+            Color.decode("#FFFA5E"), // amarillo
+            Color.decode("#96FF5E"), // verde coqueton
+            Color.decode("#FD872A"), // azul cyan
+            Color.decode("#5EB3FF"), // azul bajito
+            Color.decode("#A27545"), // cafe
+            Color.decode("#C05EFF"), // rosa
+            Color.decode("#5EFFB1") // verde agua
+    };
+
 
     public FrmEntradas()
     {
@@ -474,7 +546,20 @@ public class FrmEntradas extends JFrame implements ActionListener, KeyListener, 
         BtnAgregarTabla.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
         this.add(BtnAgregarTabla);
 
-        TblEntradas = new JTable();
+        TblEntradas = new JTable(){
+
+            public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+                Component comp = super.prepareRenderer(renderer, row, column);
+
+                if(!comp.getBackground().equals(getSelectionBackground())) {
+                    int indexColor = Integer.valueOf((String) this.getModel().getValueAt(row, 6));
+                    comp.setBackground(rowColors[indexColor]);
+                }
+
+                return comp;
+            }
+        };
+
         TableCellRenderer tableCellRenderer = new RenderTable();
         TblEntradas.setDefaultRenderer(Object.class, tableCellRenderer);
         defaultTableModel = new DefaultTableModel();
@@ -486,7 +571,7 @@ public class FrmEntradas extends JFrame implements ActionListener, KeyListener, 
         TblEntradas.setPreferredScrollableViewportSize(Toolkit.getDefaultToolkit().getScreenSize());
         TblEntradas.setFillsViewportHeight(true);
         TblEntradas.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        defaultTableModel.setColumnIdentifiers(new String[] {"#", "Folio", "Código de barras", "Diseño", "Producto", "Cantidad/Unidad"});
+        defaultTableModel.setColumnIdentifiers(new String[] {"#", "Folio", "Código de barras", "Diseño", "Producto", "Cantidad/Unidad","color"});
         ScrTabla = new JScrollPane(TblEntradas, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         ScrTabla.setBounds(50, 570, 1160, 300);
         getContentPane().add(ScrTabla);
@@ -499,6 +584,7 @@ public class FrmEntradas extends JFrame implements ActionListener, KeyListener, 
         TblEntradas.getColumnModel().getColumn(3).setCellRenderer(defaultTableCellRenderer);
         TblEntradas.getColumnModel().getColumn(4).setCellRenderer(defaultTableCellRenderer);
         TblEntradas.getColumnModel().getColumn(5).setCellRenderer(defaultTableCellRenderer);
+        TblEntradas.getColumnModel().getColumn(6).setCellRenderer(defaultTableCellRenderer);
 
         columnModel = TblEntradas.getColumnModel();
         columnModel.getColumn(0).setPreferredWidth(52);
@@ -507,6 +593,10 @@ public class FrmEntradas extends JFrame implements ActionListener, KeyListener, 
         columnModel.getColumn(3).setPreferredWidth(221);
         columnModel.getColumn(4).setPreferredWidth(221);
         columnModel.getColumn(5).setPreferredWidth(221);
+
+        columnModel.getColumn(6).setMaxWidth(0);
+        columnModel.getColumn(6).setMinWidth(0);
+        columnModel.getColumn(6).setPreferredWidth(0);
 
         BtnRegistrarEntrada = new JButton();
         BtnRegistrarEntrada.setName("BtnRegistrarEntrada");
@@ -630,23 +720,44 @@ public class FrmEntradas extends JFrame implements ActionListener, KeyListener, 
             {
                 JOptionPane.showMessageDialog(this, "La cantidad tiene que ser el doble a la cantidad de pallet a agregar a la tabla.", "Error", JOptionPane.ERROR_MESSAGE);
             }
-            else
+            else if(Integer.parseInt(TxtCantidad.getText()) <= 60 && Integer.parseInt(TxtCantidad.getText()) > 0)
             {
+                int veces = 0;
+                int valor = 0;
+
+
                 for(int i = 1; i <= Integer.parseInt(TxtCantidad.getText()); i++)
                 {
-                    String [] fila = new String[6];
+                    String [] fila = new String[7];
                     fila[0] = String.valueOf(i + numFila);
                     fila[1] = TxtFolio.getText();
                     fila[2] = CmbCodigoBarras.getSelectedItem().toString();
                     fila[3] = TxtDiseno.getText();
                     fila[4] = TxtProducto.getText();
                     fila[5] = String.valueOf(Integer.parseInt(TxtCantidadPorPallet.getText()) / 2);
+                    fila[6] = String.valueOf(valor);
 
                     defaultTableModel.addRow(fila);
+
+                    if(veces == 1) {
+                        veces = 0;
+                        valor = (valor == (rowColors.length - 1))? 0 : (valor + 1);
+                        continue;
+                    }
+                    veces++;
                 }
+
+
                 numFila += Integer.parseInt(TxtCantidad.getText());
                 BtnEliminarFila.setEnabled(true);
                 BtnRegistrarEntrada.setEnabled(true);
+            }
+            else if(Integer.parseInt(TxtCantidad.getText()) > 60)
+            {
+                JOptionPane.showMessageDialog(this, "Solo se pueden agregar hasta 60 elementos, por favor verifique si la cantidad es correcta.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            else if(Integer.parseInt(TxtCantidad.getText()) == 0){
+                JOptionPane.showMessageDialog(this, "No es posible agregar 0 elementos, verifique que la cantidad sea la correcta e intente de nuevo.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
 
@@ -867,4 +978,15 @@ public class FrmEntradas extends JFrame implements ActionListener, KeyListener, 
         }
         catch (Exception e) {}
     }
+
+    /*
+    DESCOMENTA ESTE MAIN SI QUIERES PROBAR DIRECTAMENTE EL FORM EN ESTA CLASE SIN LLAMAR AL MAIN,
+    SI YA LO CALASTE LO BORRARE EN UN COMMIT MAS ADELANTE UNA VEZ ME DIGAS QUE YA ESTA BIEN.
+    public static void main(String[] args)
+    {
+        FrmEntradas frmEntradas = new FrmEntradas();
+        frmEntradas.show();
+    }
+    */
+
 }

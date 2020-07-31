@@ -21,7 +21,7 @@
 
 DROP TABLE IF EXISTS `entradas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!50503 SET character_set_client = utf8 */;
 CREATE TABLE `entradas` (
   `IdEntradas` int NOT NULL AUTO_INCREMENT,
   `NoOrden` varchar(45) DEFAULT NULL,
@@ -44,7 +44,7 @@ CREATE TABLE `entradas` (
   `Placas` varchar(45) DEFAULT NULL,
   `TractoCamion` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`IdEntradas`)
-) ENGINE=InnoDB AUTO_INCREMENT=250 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=250 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -63,7 +63,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `inventario`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!50503 SET character_set_client = utf8 */;
 CREATE TABLE `inventario` (
   `IdInventario` int NOT NULL AUTO_INCREMENT,
   `CodigoBarras` varchar(45) DEFAULT NULL,
@@ -73,7 +73,7 @@ CREATE TABLE `inventario` (
   `CantidadPorPallet` varchar(45) DEFAULT NULL,
   `Producto` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`IdInventario`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -92,7 +92,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `salidas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!50503 SET character_set_client = utf8 */;
 CREATE TABLE `salidas` (
   `IdSalidas` int NOT NULL AUTO_INCREMENT,
   `NoPedido` varchar(45) DEFAULT NULL,
@@ -106,7 +106,7 @@ CREATE TABLE `salidas` (
   `Placas` varchar(45) DEFAULT NULL,
   `TractoCamion` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`IdSalidas`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -125,7 +125,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `transporte`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!50503 SET character_set_client = utf8 */;
 CREATE TABLE `transporte` (
   `IdTransporte` int NOT NULL AUTO_INCREMENT,
   `Chofer` varchar(45) DEFAULT NULL,
@@ -133,7 +133,7 @@ CREATE TABLE `transporte` (
   `Placas` varchar(45) DEFAULT NULL,
   `TractoCamion` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`IdTransporte`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -152,7 +152,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `usuario`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!50503 SET character_set_client = utf8 */;
 CREATE TABLE `usuario` (
   `IdUsuario` int NOT NULL AUTO_INCREMENT,
   `Nombre` varchar(45) DEFAULT NULL,
@@ -162,7 +162,7 @@ CREATE TABLE `usuario` (
   `CorreoElectronico` varchar(45) DEFAULT NULL,
   `Contrasena` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`IdUsuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
