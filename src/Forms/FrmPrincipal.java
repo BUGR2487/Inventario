@@ -33,7 +33,7 @@ public class FrmPrincipal extends JFrame implements ActionListener, KeyListener
         this.setLocationRelativeTo(null);
         this.setTitle("Control de inventario - TPRLogistics - Bienvenido: " + Usuario);
         this.getContentPane().setBackground(Color.WHITE);
-        setIconImage(new ImageIcon(getClass().getResource("Imagenes/IconoTprlogistics.png")).getImage());
+        setIconImage(new ImageIcon(getClass().getResource("Forms/Imagenes/IconoTprlogistics.png")).getImage());
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -48,7 +48,7 @@ public class FrmPrincipal extends JFrame implements ActionListener, KeyListener
         MnuInvenario = new JMenu();
         MnuInvenario.setName("MnuInvenario");
         MnuInvenario.setText("Tools.DataBase.Inventario");
-        //MnuInvenario.setIcon(new ImageIcon(getClass().getResource("Imagenes/Mostrar.png")));
+        //MnuInvenario.setIcon(new ImageIcon(getClass().getResource("Forms.Imagenes/Mostrar.png")));
         MnuInvenario.setVisible(true);
         MnuInvenario.setFont(fontMenu);
         MnuBar.add(MnuInvenario);
@@ -56,7 +56,7 @@ public class FrmPrincipal extends JFrame implements ActionListener, KeyListener
         MnuEntradas = new JMenu();
         MnuEntradas.setName("MnuEntradas");
         MnuEntradas.setText("Tools.DataBase.Entradas");
-        //MnuEntradas.setIcon(new ImageIcon(getClass().getResource("Imagenes/Mostrar.png")));
+        //MnuEntradas.setIcon(new ImageIcon(getClass().getResource("Forms.Imagenes/Mostrar.png")));
         MnuEntradas.setVisible(true);
         MnuEntradas.setFont(fontMenu);
         MnuBar.add(MnuEntradas);
@@ -64,7 +64,7 @@ public class FrmPrincipal extends JFrame implements ActionListener, KeyListener
         MnuSalidas = new JMenu();
         MnuSalidas.setName("MnuSalidas");
         MnuSalidas.setText("Tools.DataBase.Salidas");
-        //MnuSalidas.setIcon(new ImageIcon(getClass().getResource("Imagenes/Mostrar.png")));
+        //MnuSalidas.setIcon(new ImageIcon(getClass().getResource("Forms.Imagenes/Mostrar.png")));
         MnuSalidas.setVisible(true);
         MnuSalidas.setFont(fontMenu);
         MnuBar.add(MnuSalidas);
@@ -72,7 +72,7 @@ public class FrmPrincipal extends JFrame implements ActionListener, KeyListener
         MnuUsuario = new JMenu();
         MnuUsuario.setName("MnuUsuario");
         MnuUsuario.setText("Tools.DataBase.Usuario");
-        //MnuUsuario.setIcon(new ImageIcon(getClass().getResource("Imagenes/Mostrar.png")));
+        //MnuUsuario.setIcon(new ImageIcon(getClass().getResource("Forms.Imagenes/Mostrar.png")));
         MnuUsuario.setVisible(true);
         MnuUsuario.setFont(fontMenu);
         MnuBar.add(MnuUsuario);
@@ -80,7 +80,7 @@ public class FrmPrincipal extends JFrame implements ActionListener, KeyListener
         MnuAcercaDe = new JMenu();
         MnuAcercaDe.setName("MnuAcercaDe");
         MnuAcercaDe.setText("Acerca De");
-        //MnuAcercaDe.setIcon(new ImageIcon(getClass().getResource("Imagenes/Mostrar.png")));
+        //MnuAcercaDe.setIcon(new ImageIcon(getClass().getResource("Forms.Imagenes/Mostrar.png")));
         MnuAcercaDe.setVisible(true);
         MnuAcercaDe.setFont(fontMenu);
         MnuBar.add(MnuAcercaDe);
@@ -88,7 +88,7 @@ public class FrmPrincipal extends JFrame implements ActionListener, KeyListener
         MnuItemAgregarInventario = new JMenuItem();
         MnuItemAgregarInventario.setName("MnuItemAgregarInventario");
         MnuItemAgregarInventario.setText("Agregar inventario");
-        //MnuItemAgregarInventario.setIcon(new ImageIcon(getClass().getResource("Imagenes/Mostrar.png")));
+        //MnuItemAgregarInventario.setIcon(new ImageIcon(getClass().getResource("Forms.Imagenes/Mostrar.png")));
         MnuItemAgregarInventario.setBackground(Color.WHITE);
         MnuItemAgregarInventario.setVisible(true);
         MnuItemAgregarInventario.setFont(fontMenu);
@@ -98,7 +98,7 @@ public class FrmPrincipal extends JFrame implements ActionListener, KeyListener
         MnuItemAgregarEntradas = new JMenuItem();
         MnuItemAgregarEntradas.setName("MnuItemAgregarEntradas");
         MnuItemAgregarEntradas.setText("Agregar entradas");
-        //MnuItemAgregarEntradas.setIcon(new ImageIcon(getClass().getResource("Imagenes/Mostrar.png")));
+        //MnuItemAgregarEntradas.setIcon(new ImageIcon(getClass().getResource("Forms.Imagenes/Mostrar.png")));
         MnuItemAgregarEntradas.setBackground(Color.WHITE);
         MnuItemAgregarEntradas.setVisible(true);
         MnuItemAgregarEntradas.setFont(fontMenu);
@@ -108,7 +108,7 @@ public class FrmPrincipal extends JFrame implements ActionListener, KeyListener
         MnuItemAgregarSalidas = new JMenuItem();
         MnuItemAgregarSalidas.setName("MnuItemAgregarSalidas");
         MnuItemAgregarSalidas.setText("Agregar salidas");
-        //MnuItemAgregarSalidas.setIcon(new ImageIcon(getClass().getResource("Imagenes/Mostrar.png")));
+        //MnuItemAgregarSalidas.setIcon(new ImageIcon(getClass().getResource("Forms.Imagenes/Mostrar.png")));
         MnuItemAgregarSalidas.setBackground(Color.WHITE);
         MnuItemAgregarSalidas.setVisible(true);
         MnuItemAgregarSalidas.setFont(fontMenu);
@@ -118,7 +118,7 @@ public class FrmPrincipal extends JFrame implements ActionListener, KeyListener
         MnuItemAgregarUsuario = new JMenuItem();
         MnuItemAgregarUsuario.setName("MnuItemAgregarUsuario");
         MnuItemAgregarUsuario.setText("Agregar usuario");
-        //MnuItemAgregarUsuario.setIcon(new ImageIcon(getClass().getResource("Imagenes/Mostrar.png")));
+        //MnuItemAgregarUsuario.setIcon(new ImageIcon(getClass().getResource("Forms.Imagenes/Mostrar.png")));
         MnuItemAgregarUsuario.setBackground(Color.WHITE);
         MnuItemAgregarUsuario.setVisible(true);
         MnuItemAgregarUsuario.setFont(fontMenu);
@@ -128,7 +128,7 @@ public class FrmPrincipal extends JFrame implements ActionListener, KeyListener
         MnuItemAcercaDe = new JMenuItem();
         MnuItemAcercaDe.setName("MnuItemAcercaDe");
         MnuItemAcercaDe.setText("Desarrollador");
-        //MnuItemAcercaDe.setIcon(new ImageIcon(getClass().getResource("Imagenes/Mostrar.png")));
+        //MnuItemAcercaDe.setIcon(new ImageIcon(getClass().getResource("Forms.Imagenes/Mostrar.png")));
         MnuItemAcercaDe.setBackground(Color.WHITE);
         MnuItemAcercaDe.setVisible(true);
         MnuItemAcercaDe.setFont(fontMenu);

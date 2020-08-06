@@ -18,9 +18,9 @@ public class FrmSplashScreen extends JFrame
         this.setLocationRelativeTo(null);
         this.setUndecorated(true);
         this.getContentPane().setBackground(Color.WHITE);
-        setIconImage(new ImageIcon(getClass().getResource("Imagenes/IconoTprlogistics.png")).getImage());
+        setIconImage(new ImageIcon(getClass().getResource("Forms/Imagenes/IconoTprlogistics.png")).getImage());
 
-        ImageIcon imagenFondo = new ImageIcon(this.getClass().getResource("Imagenes/IconoTprlogistics.png"));
+        ImageIcon imagenFondo = new ImageIcon(this.getClass().getResource("Forms/Imagenes/IconoTprlogistics.png"));
         Icon iconoFondo = new ImageIcon(imagenFondo.getImage().getScaledInstance(ancho, alto,  java.awt.Image.SCALE_SMOOTH));
 
         LblEtiqueta = new JLabel();
