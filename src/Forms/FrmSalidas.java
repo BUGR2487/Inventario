@@ -1,3 +1,7 @@
+package Forms;
+
+import Tools.DataBase.Salidas;
+
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -11,16 +15,38 @@ import java.awt.*;
 import java.awt.Font;
 import java.awt.event.*;
 import java.io.*;
+import java.sql.SQLException;
 
 public class FrmSalidas extends JFrame implements ActionListener, KeyListener, ItemListener
 {
-    JLabel LblCantidadPallet, LblCantidadPorPallet, LblTotalUnidades, LblNumPedido, LblChofer, LblEmpresa, LblPlacas, LblTractoCamion, LblSellos, LblEntregaDelDia;
-    JTextField TxtCantidadPallet, TxtCantidadPorPallet, TxtTotalUnidades, TxtNumPedido, TxtChofer, TxtEmpresa, TxtPlacas, TxtTractoCamion, TxtSellos, TxtEntregaDelDia;
-    JComboBox CmbNumPedido;
-    JButton BtnRegistrarSalida;
+    public JLabel  LblCantidadPallet,
+            LblCantidadPorPallet,
+            LblTotalUnidades,
+            LblNumPedido,
+            LblChofer,
+            LblEmpresa,
+            LblPlacas,
+            LblTractoCamion,
+            LblSellos,
+            LblEntregaDelDia;
+
+    public JTextField  TxtCantidadPallet,
+                TxtCantidadPorPallet,
+                TxtTotalUnidades,
+                TxtNumPedido,
+                TxtChofer,
+                TxtEmpresa,
+                TxtPlacas,
+                TxtTractoCamion,
+                TxtSellos,
+                TxtEntregaDelDia;
+
+    JComboBox   CmbNumPedido;
+    JButton     BtnRegistrarSalida;
 
     TableColumnModel columnModel;
-    JTable TblEntradas;
+
+    JTable      TblEntradas;
     JScrollPane ScrTabla;
 
     DefaultTableModel defaultTableModel;
@@ -28,10 +54,10 @@ public class FrmSalidas extends JFrame implements ActionListener, KeyListener, I
 
     Font font;
 
-    Salidas salidas = new Salidas();
+    Salidas salidas = null;
 
-    public FrmSalidas()
-    {
+    public FrmSalidas() throws SQLException {
+        salidas = new Salidas();
         this.setSize(1275, 830);
         this.setResizable(false);
         this.setLayout(null);
@@ -316,7 +342,9 @@ public class FrmSalidas extends JFrame implements ActionListener, KeyListener, I
                 salidas.setEmpresa(TxtEmpresa.getText());
                 salidas.setPlacas(TxtPlacas.getText());
                 salidas.setTractoCamion(TxtTractoCamion.getText());
-                Salidas.insertarSalidas(salidas);
+
+                salidas.insertarSalidas();
+
                 vaciarTextos();
                 crearPDF();
                 JOptionPane.showMessageDialog(this, "Salida registrada", "Registro de salidas", JOptionPane.INFORMATION_MESSAGE);
@@ -354,7 +382,7 @@ public class FrmSalidas extends JFrame implements ActionListener, KeyListener, I
         if(e.getStateChange() == ItemEvent.SELECTED)
         {
             salidas.setNumPedido(CmbNumPedido.getSelectedItem().toString());
-            Salidas.busquedaNumPedido(this, salidas);
+            salidas.busquedaNumPedido(this);
         }
     }
 
@@ -394,7 +422,7 @@ public class FrmSalidas extends JFrame implements ActionListener, KeyListener, I
 
                 document.open();
 
-                Paragraph titulo = new Paragraph("Salidas", FontFactory.getFont("Arial", 22, Font.BOLD, BaseColor.BLUE));
+                Paragraph titulo = new Paragraph("Tools.DataBase.Salidas", FontFactory.getFont("Arial", 22, Font.BOLD, BaseColor.BLUE));
                 document.add(titulo);
 
                 PdfPTable pdfTable = new PdfPTable(6);

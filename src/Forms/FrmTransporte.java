@@ -1,6 +1,11 @@
+package Forms;
+
+import Tools.DataBase.Transporte;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.SQLException;
 
 public class FrmTransporte extends JFrame implements ActionListener, KeyListener
 {
@@ -10,10 +15,11 @@ public class FrmTransporte extends JFrame implements ActionListener, KeyListener
     
     Font font;
 
-    Transporte chofer = new Transporte();
+    Transporte chofer = null;
 
-    public FrmTransporte()
-    {
+    public FrmTransporte() throws SQLException {
+        chofer = new Transporte();
+
         this.setSize(1040, 500);
         this.setResizable(false);
         this.setLayout(null);
@@ -102,7 +108,7 @@ public class FrmTransporte extends JFrame implements ActionListener, KeyListener
 
         BtnTransporte = new JButton();
         BtnTransporte.setName("BtnTransporte");
-        BtnTransporte.setText("Registrar Transporte");
+        BtnTransporte.setText("Registrar Tools.DataBase.Transporte");
         BtnTransporte.setBounds(388, 370, 250, 45);
         BtnTransporte.setFont(font);
         BtnTransporte.setBackground(Color.white);
@@ -130,9 +136,11 @@ public class FrmTransporte extends JFrame implements ActionListener, KeyListener
                 chofer.setEmpresa(TxtEmpresa.getText());
                 chofer.setPlacas(TxtPlacas.getText());
                 chofer.setTractoCamion(TxtTractoCamion.getText());
-                Transporte.insertarChofer(chofer);
+
+                chofer.insertar();
+
                 vaciarTextos();
-                JOptionPane.showMessageDialog(this, "Transporte registradas", "Registro de Transportes", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Tools.DataBase.Transporte registradas", "Registro de Transportes", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }

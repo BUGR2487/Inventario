@@ -1,5 +1,5 @@
-import java.sql.Connection;
-import java.sql.PreparedStatement;
+package Tools.DataBase;
+
 import java.sql.SQLException;
 
 public class Inventario
@@ -18,7 +18,10 @@ public class Inventario
     private int StockPallets = 0;
     private int StockPiezas = 0;
 
-    private static final String SQL_INSERT = "INSERT INTO `inventario`.`inventario` (`CodigoBarras`, `Diseno`, `CodigoInterno`, `Cliente`, `CantidadPorPallet`, `Producto`) VALUES  (?, ?, ?, ?, ?, ?);";
+    private Conexion conn = Conexion.getInstance();
+
+    public Inventario() throws SQLException {
+    }
 
     public String getCodigoBarras() {
         return CodigoBarras;
@@ -116,36 +119,9 @@ public class Inventario
         StockPiezas = stockPiezas;
     }
 
-    public static int insertarInventario(Inventario inventario)
+    public int insertarInventario()
     {
-        Connection conn = null;
-        PreparedStatement preparedStatement = null;
-        int rows = 0;
-
-        try
-        {
-            conn = Conexion.getConnection();
-            preparedStatement = conn.prepareStatement(SQL_INSERT);
-            preparedStatement.setString(1, inventario.getCodigoBarras());
-            preparedStatement.setInt(2, inventario.getDiseno());
-            preparedStatement.setString(3, inventario.getCodigoInterno());
-            preparedStatement.setString(4, inventario.getCliente());
-            preparedStatement.setString(5, inventario.getProducto());
-            preparedStatement.setInt(6, inventario.getCantidadPorPallet());
-
-            System.out.println("Ejecutanto query " + SQL_INSERT);
-            rows = preparedStatement.executeUpdate();
-            System.out.println("Registros afectados: " + rows);
-        }
-        catch (SQLException throwables)
-        {
-            throwables.printStackTrace(System.out);
-        }
-        finally
-        {
-            Conexion.close(preparedStatement);
-            Conexion.close(conn);
-        }
-        return rows;
+        return this.conn.insertarInventario(this);
     }
+
 }

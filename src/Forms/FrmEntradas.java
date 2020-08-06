@@ -1,3 +1,8 @@
+package Forms;
+
+import Tools.DataBase.Entradas;
+import Tools.RenderTable;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -5,6 +10,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -36,8 +42,8 @@ public class FrmEntradas extends JFrame implements ActionListener, KeyListener, 
             LblPlacas,
             LblTractoCamion;
 
-    // Jtext field usados en la vista del form Entradas:
-    JTextField  TxtDiseno,
+    // Jtext field usados en la vista del form Tools.DataBase.Entradas:
+   public JTextField  TxtDiseno,
                 TxtCodigoInterno,
                 TxtCliente,
                 TxtProducto,
@@ -95,7 +101,7 @@ public class FrmEntradas extends JFrame implements ActionListener, KeyListener, 
 
     Thread hiloHoras;
 
-    Entradas entradas = new Entradas();
+    Entradas entradas = null;
 
     Color[] rowColors = {
             Color.decode("#FF9292"), // rojo
@@ -109,8 +115,9 @@ public class FrmEntradas extends JFrame implements ActionListener, KeyListener, 
     };
 
 
-    public FrmEntradas()
-    {
+    public FrmEntradas() throws SQLException {
+
+        entradas = new Entradas();
         this.setSize(1275, 1005);
         this.setResizable(false);
         this.setLayout(null);
@@ -600,7 +607,7 @@ public class FrmEntradas extends JFrame implements ActionListener, KeyListener, 
 
         BtnRegistrarEntrada = new JButton();
         BtnRegistrarEntrada.setName("BtnRegistrarEntrada");
-        BtnRegistrarEntrada.setText("Registrar Entradas");
+        BtnRegistrarEntrada.setText("Registrar Tools.DataBase.Entradas");
         BtnRegistrarEntrada.setBounds(530, 895, 220, 45);
         BtnRegistrarEntrada.setFont(font);
         BtnRegistrarEntrada.setBackground(Color.white);
@@ -682,10 +689,12 @@ public class FrmEntradas extends JFrame implements ActionListener, KeyListener, 
                         entradas.setEmpresa(TxtEmpresa.getText());
                         entradas.setPlacas(TxtPlacas.getText());
                         entradas.setTractoCamion(TxtTractoCamion.getText());
-                        Entradas.insertarEntradas(entradas);
+
+                        entradas.insertarEntrada();
+
                         LlenarProgressBar();
                     }
-                    JOptionPane.showMessageDialog(this, "Entradas registradas", "Registro de entrada", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Tools.DataBase.Entradas registradas", "Registro de entrada", JOptionPane.INFORMATION_MESSAGE);
 
                     seleccion = JOptionPane.showConfirmDialog(null, "¿Quieres agregar otra orden?", "Confirmacion de órden", JOptionPane.YES_NO_OPTION);
 
@@ -864,10 +873,9 @@ public class FrmEntradas extends JFrame implements ActionListener, KeyListener, 
         if(e.getStateChange() == ItemEvent.SELECTED)
         {
             entradas.setCodigoBarras(CmbCodigoBarras.getSelectedItem().toString());
-            Entradas.busquedaCodigoBarras(this, entradas);
-
             entradas.setChofer(CmbChofer.getSelectedItem().toString());
-            Entradas.busquedaChofer(this, entradas);
+            entradas.busquedaCodigoBarras(this);
+            entradas.busquedaChofer(this);
         }
     }
 
@@ -984,7 +992,7 @@ public class FrmEntradas extends JFrame implements ActionListener, KeyListener, 
     SI YA LO CALASTE LO BORRARE EN UN COMMIT MAS ADELANTE UNA VEZ ME DIGAS QUE YA ESTA BIEN.
     public static void main(String[] args)
     {
-        FrmEntradas frmEntradas = new FrmEntradas();
+        Forms.FrmEntradas frmEntradas = new Forms.FrmEntradas();
         frmEntradas.show();
     }
     */

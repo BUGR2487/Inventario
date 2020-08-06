@@ -1,6 +1,10 @@
+package Forms;
+
+import Tools.DataBase.IniciarSesion;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.SQLException;
 
 public class FrmIniciarSesion extends JFrame implements ActionListener, KeyListener
 {
@@ -16,10 +20,11 @@ public class FrmIniciarSesion extends JFrame implements ActionListener, KeyListe
 
     Boolean MostrarOcultar = true;
 
-    IniciarSesion iniciarSesion = new IniciarSesion();
+    IniciarSesion iniciarSesion = null;
 
-    public FrmIniciarSesion()
-    {
+    public FrmIniciarSesion() throws SQLException {
+        iniciarSesion = new IniciarSesion();
+
         this.setSize(500, 650);
         this.setResizable(false);
         this.setLayout(null);
@@ -42,7 +47,7 @@ public class FrmIniciarSesion extends JFrame implements ActionListener, KeyListe
         this.add(LblImagenEmpresa);
 
         LblUsuario = new JLabel();
-        LblUsuario.setText("Usuario");
+        LblUsuario.setText("Tools.DataBase.Usuario");
         LblUsuario.setName("LblUsuario");
         LblUsuario.setBounds(198, 250, 90, 40);
         LblUsuario.setBackground(Color.WHITE);
@@ -156,15 +161,12 @@ public class FrmIniciarSesion extends JFrame implements ActionListener, KeyListe
     {
         iniciarSesion.setUsername(usuario);
         iniciarSesion.setPassword(String.valueOf(contrasena));
-        if(IniciarSesion.busquedaUsuario(iniciarSesion))
-        {
-            //FrmPrincipal frmPrincipal = new FrmPrincipal(TxtUsuario.getText());
-            //frmPrincipal.show();
+
+        if(iniciarSesion.login())
             dispose();
-        }
         else
         {
-            JOptionPane.showMessageDialog(this, "Datos no validos...", "Usuario Incorrecto", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Datos no validos...", "Tools.DataBase.Usuario Incorrecto", JOptionPane.ERROR_MESSAGE);
             TxtUsuario.requestFocus();
         }
     }

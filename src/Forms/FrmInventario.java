@@ -1,6 +1,11 @@
+package Forms;
+
+import Tools.DataBase.Inventario;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 
 public class FrmInventario extends JFrame implements ActionListener, KeyListener, FocusListener
@@ -11,15 +16,17 @@ public class FrmInventario extends JFrame implements ActionListener, KeyListener
     
     Font font;
 
-    Inventario inventario = new Inventario();
+    Inventario inventario = null;
 
-    public FrmInventario()
-    {
+    public FrmInventario() throws SQLException {
+
+        inventario = new Inventario();
+
         this.setSize(1275, 380);
         this.setResizable(false);
         this.setLayout(null);
         this.setLocationRelativeTo(null);
-        this.setTitle("Inventario");
+        this.setTitle("Tools.DataBase.Inventario");
         this.getContentPane().setBackground(Color.WHITE);
         setIconImage(new ImageIcon(getClass().getResource("Imagenes/IconoTprlogistics.png")).getImage());
 
@@ -172,7 +179,7 @@ public class FrmInventario extends JFrame implements ActionListener, KeyListener
                 inventario.setCliente(TxtCliente.getText());
                 inventario.setProducto(TxtProducto.getText());
                 inventario.setCantidadPorPallet(Integer.parseInt(TxtCantidadPorPallet.getText()));
-                inventario.insertarInventario(inventario);
+                inventario.insertarInventario();
                 vaciarTextos();
                 JOptionPane.showMessageDialog(this, "Producto registrado", "Registro de Productos", JOptionPane.INFORMATION_MESSAGE);
             }

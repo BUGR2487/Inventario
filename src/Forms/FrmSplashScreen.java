@@ -1,5 +1,8 @@
+package Forms;
+
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
 
 public class FrmSplashScreen extends JFrame
 {
@@ -74,7 +77,12 @@ public class FrmSplashScreen extends JFrame
                     }
                 }
                 dispose();
-                FrmIniciarSesion frmIniciarSesion = new FrmIniciarSesion();
+                FrmIniciarSesion frmIniciarSesion = null;
+                try {
+                    frmIniciarSesion = new FrmIniciarSesion();
+                } catch (SQLException throwables) {
+                    System.exit(1);
+                }
                 frmIniciarSesion.show();
             }
         });

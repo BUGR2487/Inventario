@@ -1,9 +1,14 @@
+package Forms;
+
+import Tools.DataBase.Usuario;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.sql.SQLException;
 
 public class FrmUsuario extends JFrame implements ActionListener, KeyListener {
     JLabel LblNombre, LblApellidoPaterno, LblApellidoMaterno, LblPuesto, LblCorreoElectronico, LblContrasena, LblContrasena2;
@@ -18,9 +23,12 @@ public class FrmUsuario extends JFrame implements ActionListener, KeyListener {
 
     Boolean MostrarOcultar = true;
 
-    Usuario usuario = new Usuario();
+    Usuario usuario = null;
 
-    public FrmUsuario() {
+    public FrmUsuario() throws SQLException {
+
+        usuario = new Usuario();
+
         this.setSize(1080, 400);
         this.setResizable(false);
         this.setLayout(null);
@@ -179,7 +187,7 @@ public class FrmUsuario extends JFrame implements ActionListener, KeyListener {
 
         BtnRegistrarUsuario = new JButton();
         BtnRegistrarUsuario.setName("BtnRegistrarUsuario");
-        BtnRegistrarUsuario.setText("Registrar Usuario");
+        BtnRegistrarUsuario.setText("Registrar Tools.DataBase.Usuario");
         BtnRegistrarUsuario.setBounds(433, 275, 200, 45);
         BtnRegistrarUsuario.setFont(font);
         BtnRegistrarUsuario.setBackground(Color.white);
@@ -207,12 +215,12 @@ public class FrmUsuario extends JFrame implements ActionListener, KeyListener {
                     usuario.setPuesto(TxtPuesto.getText());
                     usuario.setCorreoElectronico(TxtCorreoElectronico.getText());
                     usuario.setContrasena(TxtContrasena.getText());
-                    Usuario.insertarUsuario(usuario);
-                    //Usuario.actualizarUsuario(usuario);
-                    //Usuario.eliminarUsuario(usuario);
-                    //Usuario.seleccionarIdUsuario(usuario);
+                    usuario.insertar();//REGRESA UN -1 EN CASO DE ERROR
+                    //usuario.actualizar();//RETORNA UN -1 EN CASO DE ERROR
+                    //usuario.eliminarUsuario(); //REGRESA UN -1 EN CASO DE ERROR
+                    //usuario = Conexion.seleccionarIdUsuario(usuario); //OJO QUE SI NO ENCUENTRA EL USUARIO RETORNA UN NULL, SOLOVALIDA CON UN IF
                     vaciarTextos();
-                    JOptionPane.showMessageDialog(this, "Usuario registrado", "Registro de usuario", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Tools.DataBase.Usuario registrado", "Registro de usuario", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(this, "Contraseñas diferentes", "Error", JOptionPane.ERROR_MESSAGE);
                 }

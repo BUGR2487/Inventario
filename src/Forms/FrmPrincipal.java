@@ -1,15 +1,28 @@
+package Forms;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.sql.SQLException;
 
 public class FrmPrincipal extends JFrame implements ActionListener, KeyListener
 {
     JMenuBar MnuBar;
-    JMenu MnuInvenario, MnuEntradas, MnuSalidas, MnuUsuario, MnuAcercaDe;
-    JMenuItem MnuItemAgregarInventario, MnuItemAgregarEntradas, MnuItemAgregarSalidas, MnuItemAgregarUsuario, MnuItemAcercaDe;
+
+    JMenu    MnuInvenario,
+             MnuEntradas,
+             MnuSalidas,
+             MnuUsuario,
+             MnuAcercaDe;
+
+    JMenuItem   MnuItemAgregarInventario,
+                MnuItemAgregarEntradas,
+                MnuItemAgregarSalidas,
+                MnuItemAgregarUsuario,
+                MnuItemAcercaDe;
 
     Font fontMenu;
 
@@ -34,7 +47,7 @@ public class FrmPrincipal extends JFrame implements ActionListener, KeyListener
 
         MnuInvenario = new JMenu();
         MnuInvenario.setName("MnuInvenario");
-        MnuInvenario.setText("Inventario");
+        MnuInvenario.setText("Tools.DataBase.Inventario");
         //MnuInvenario.setIcon(new ImageIcon(getClass().getResource("Imagenes/Mostrar.png")));
         MnuInvenario.setVisible(true);
         MnuInvenario.setFont(fontMenu);
@@ -42,7 +55,7 @@ public class FrmPrincipal extends JFrame implements ActionListener, KeyListener
 
         MnuEntradas = new JMenu();
         MnuEntradas.setName("MnuEntradas");
-        MnuEntradas.setText("Entradas");
+        MnuEntradas.setText("Tools.DataBase.Entradas");
         //MnuEntradas.setIcon(new ImageIcon(getClass().getResource("Imagenes/Mostrar.png")));
         MnuEntradas.setVisible(true);
         MnuEntradas.setFont(fontMenu);
@@ -50,7 +63,7 @@ public class FrmPrincipal extends JFrame implements ActionListener, KeyListener
 
         MnuSalidas = new JMenu();
         MnuSalidas.setName("MnuSalidas");
-        MnuSalidas.setText("Salidas");
+        MnuSalidas.setText("Tools.DataBase.Salidas");
         //MnuSalidas.setIcon(new ImageIcon(getClass().getResource("Imagenes/Mostrar.png")));
         MnuSalidas.setVisible(true);
         MnuSalidas.setFont(fontMenu);
@@ -58,7 +71,7 @@ public class FrmPrincipal extends JFrame implements ActionListener, KeyListener
 
         MnuUsuario = new JMenu();
         MnuUsuario.setName("MnuUsuario");
-        MnuUsuario.setText("Usuario");
+        MnuUsuario.setText("Tools.DataBase.Usuario");
         //MnuUsuario.setIcon(new ImageIcon(getClass().getResource("Imagenes/Mostrar.png")));
         MnuUsuario.setVisible(true);
         MnuUsuario.setFont(fontMenu);
@@ -128,28 +141,68 @@ public class FrmPrincipal extends JFrame implements ActionListener, KeyListener
     {
         if(e.getSource() == MnuItemAgregarInventario)
         {
-            FrmInventario frmInventario = new FrmInventario();
-            frmInventario.show();
+            FrmInventario frmInventario = null;
+            try {
+                frmInventario = new FrmInventario();
+                frmInventario.show();
+            } catch (SQLException throwables) {
+                showDialogError("Ocurrio un error al conectar con la base de datos, verifique el error y vuelva a intentarlo.",
+                        "MY_SQL_ERROR_CONNECTION");
+                System.exit(1);
+            }
+
         }
         else if(e.getSource() == MnuItemAgregarEntradas)
         {
-            FrmEntradas frmEntradas = new FrmEntradas();
-            frmEntradas.show();
+            FrmEntradas frmEntradas = null;
+            try {
+                frmEntradas = new FrmEntradas();
+                frmEntradas.show();
+            } catch (SQLException throwables) {
+                showDialogError("Ocurrio un error al conectar con la base de datos, verifique el error y vuelva a intentarlo.",
+                        "MY_SQL_ERROR_CONNECTION");
+                System.exit(1);
+            }
+
         }
         else if(e.getSource() == MnuItemAgregarSalidas)
         {
-            FrmSalidas frmSalidas = new FrmSalidas();
-            frmSalidas.show();
+            FrmSalidas frmSalidas = null;
+            try {
+                frmSalidas = new FrmSalidas();
+                frmSalidas.show();
+            } catch (SQLException throwables) {
+                showDialogError("Ocurrio un error al conectar con la base de datos, verifique el error y vuelva a intentarlo.",
+                        "MY_SQL_ERROR_CONNECTION");
+                System.exit(1);
+            }
+
         }
         else if(e.getSource() == MnuItemAgregarUsuario)
         {
-            FrmUsuario frmUsuario = new FrmUsuario();
-            frmUsuario.show();
+            FrmUsuario frmUsuario = null;
+            try {
+                frmUsuario = new FrmUsuario();
+                frmUsuario.show();
+            } catch (SQLException throwables) {
+                showDialogError("Ocurrio un error al conectar con la base de datos, verifique el error y vuelva a intentarlo.",
+                        "MY_SQL_ERROR_CONNECTION");
+                System.exit(1);
+            }
+
         }
         else if(e.getSource() == MnuItemAcercaDe)
         {
 
         }
+    }
+
+    private void showDialogError(String err, String errTitle)
+    {
+        JOptionPane.showMessageDialog(this,
+                err,
+                errTitle,
+                JOptionPane.ERROR_MESSAGE);
     }
 
     @Override
