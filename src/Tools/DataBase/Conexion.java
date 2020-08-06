@@ -94,7 +94,10 @@ public class Conexion
             preparedStatement.setString(1, iniciarSesion.getUsername());
             preparedStatement.setString(2, iniciarSesion.getPassword());
             resultSet = preparedStatement.executeQuery();
-            return resultSet.getString("Nombre") + " " + resultSet.getString("ApellidoPaterno") + " " + resultSet.getString("ApellidoMaterno");
+            if(resultSet.next())
+                return resultSet.getString("Nombre") + " " + resultSet.getString("ApellidoPaterno") + " " + resultSet.getString("ApellidoMaterno");
+            else
+                return "";
         }
         catch (SQLException sqlException)
         {
