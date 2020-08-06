@@ -26,7 +26,7 @@ public class FrmTransporte extends JFrame implements ActionListener, KeyListener
         this.setLocationRelativeTo(null);
         this.setTitle("Formulario de transporte");
         this.getContentPane().setBackground(Color.WHITE);
-        setIconImage(new ImageIcon(getClass().getResource("Forms/Imagenes/IconoTprlogistics.png")).getImage());
+        setIconImage(new ImageIcon(getClass().getResource("Imagenes/IconoTprlogistics.png")).getImage());
 
         font = new Font("HELVETICA", Font.PLAIN, 25);
 

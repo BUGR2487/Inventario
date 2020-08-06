@@ -31,11 +31,11 @@ public class FrmIniciarSesion extends JFrame implements ActionListener, KeyListe
         this.setLocationRelativeTo(null);
         this.setTitle("Iniciar Sesión");
         this.getContentPane().setBackground(Color.WHITE);
-        setIconImage(new ImageIcon(getClass().getResource("Forms/Imagenes/IconoTprlogistics.png")).getImage());
+        setIconImage(new ImageIcon(getClass().getResource("Imagenes/IconoTprlogistics.png")).getImage());
 
         font = new Font("HELVETICA", Font.PLAIN, 25);
 
-        imageIcon = new ImageIcon(this.getClass().getResource("Forms/Imagenes/LogoTprlogistics.png"));
+        imageIcon = new ImageIcon(this.getClass().getResource("Imagenes/LogoTprlogistics.png"));
         icon = new ImageIcon(imageIcon.getImage().getScaledInstance(440, 200,  java.awt.Image.SCALE_SMOOTH));
 
         LblImagenEmpresa = new JLabel();
@@ -86,7 +86,7 @@ public class FrmIniciarSesion extends JFrame implements ActionListener, KeyListe
 
         BtnOcultarMostrar = new JButton();
         BtnOcultarMostrar.setName("BtnOcultarMostrar");
-        CambiarImagenBoton("Forms/Imagenes/Mostrar.png");
+        CambiarImagenBoton("Imagenes/Mostrar.png");
         BtnOcultarMostrar.setBounds(403, 390, 40, 40);
         BtnOcultarMostrar.setFont(font);
         BtnOcultarMostrar.setBackground(Color.white);
@@ -145,13 +145,13 @@ public class FrmIniciarSesion extends JFrame implements ActionListener, KeyListe
     {
         if (mostrarOcultar)
         {
-            CambiarImagenBoton("Forms/Imagenes/Ocultar.png");
+            CambiarImagenBoton("Imagenes/Ocultar.png");
             TxtContrasena.setEchoChar((char)0);
             MostrarOcultar = false;
         }
         else
         {
-            CambiarImagenBoton("Forms/Imagenes/Mostrar.png");
+            CambiarImagenBoton("Imagenes/Mostrar.png");
             TxtContrasena.setEchoChar('•');
             MostrarOcultar = true;
         }

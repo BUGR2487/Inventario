@@ -33,7 +33,7 @@ public class FrmPrincipal extends JFrame implements ActionListener, KeyListener
         this.setLocationRelativeTo(null);
         this.setTitle("Control de inventario - TPRLogistics - Bienvenido: " + Usuario);
         this.getContentPane().setBackground(Color.WHITE);
-        setIconImage(new ImageIcon(getClass().getResource("Forms/Imagenes/IconoTprlogistics.png")).getImage());
+        setIconImage(new ImageIcon(getClass().getResource("Imagenes/IconoTprlogistics.png")).getImage());
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
