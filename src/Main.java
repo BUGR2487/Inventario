@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 
 import static com.itextpdf.text.Element.*;
+import static com.itextpdf.text.PageSize.A4;
 
 public class Main
 {
@@ -65,7 +66,7 @@ public class Main
     private static void crearPDF()
     {
         Document document = new Document();
-        document.setPageSize(PageSize.A4.rotate());
+        document.setPageSize(A4.rotate());
 
         try
         {
@@ -92,280 +93,425 @@ public class Main
 
             document.add(Chunk.NEWLINE);
 
-            PdfPTable TblFilaUno = new PdfPTable(5);
-            TblFilaUno.getDefaultCell().setBorder(0);
+            /* Inicio primera fila de tablas */
+            PdfPTable TblNoSalida = new PdfPTable(5);
+            float[] anchoCeldas = {30f, 385f, 60f, 60f, 60f};
+            TblNoSalida.setWidthPercentage(anchoCeldas, A4);
 
-            PdfPTable TblNoSalida = new PdfPTable(1);
-            //TblNoSalida.setWidthPercentage(1f);
-            PdfPCell ClTituloNoSalida = new PdfPCell(new Paragraph("No.Salida", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
-            ClTituloNoSalida.setHorizontalAlignment(ALIGN_CENTER);
-            TblNoSalida.addCell(ClTituloNoSalida);
+            PdfPCell NoSalida = new PdfPCell(new Paragraph("No.Salida", FontFactory.getFont("Arial", 6, Font.BOLD, BaseColor.BLACK)));
+            NoSalida.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TblNoSalida.addCell(NoSalida);
+
+            PdfPCell ColumnaBlanco = new PdfPCell(new Paragraph(""));
+            ColumnaBlanco.setRowspan(2);
+            ColumnaBlanco.setBorder(Rectangle.NO_BORDER);
+            ColumnaBlanco.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TblNoSalida.addCell(ColumnaBlanco);
+
+            PdfPCell FechaEnvio = new PdfPCell(new Phrase("Fecha de Envío", FontFactory.getFont("Arial", 6, Font.BOLD, BaseColor.BLACK)));
+            FechaEnvio.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TblNoSalida.addCell(FechaEnvio);
+
+            PdfPCell Hora = new PdfPCell(new Phrase("Hora", FontFactory.getFont("Arial", 6, Font.BOLD, BaseColor.BLACK)));
+            Hora.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TblNoSalida.addCell(Hora);
+
+            PdfPCell Almacenista = new PdfPCell(new Phrase("Almacenista", FontFactory.getFont("Arial", 6, Font.BOLD, BaseColor.BLACK)));
+            Almacenista.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TblNoSalida.addCell(Almacenista);
+
             PdfPCell ClNoSalida = new PdfPCell(new Paragraph("81", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
-            ClNoSalida.setHorizontalAlignment(ALIGN_CENTER);
+            ClNoSalida.setHorizontalAlignment(Element.ALIGN_CENTER);
             TblNoSalida.addCell(ClNoSalida);
-            //document.add(TblNoSalida);
 
-            PdfPCell ClTblNoSalida = new PdfPCell(TblNoSalida);
-
-            PdfPTable ColumnaBlanca = new PdfPTable(1);
-
-            PdfPTable TblDatosUsuario = new PdfPTable(3);
-            TblDatosUsuario.setWidthPercentage(100f);
-            Paragraph FechaEnvio = new Paragraph("Fecha de Envío", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            FechaEnvio.setAlignment(ALIGN_CENTER);
-            TblDatosUsuario.addCell(FechaEnvio);
-            Paragraph Hora = new Paragraph("Hora", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            Hora.setAlignment(Element.ALIGN_CENTER);
-            TblDatosUsuario.addCell(Hora);
-            Paragraph Almacenista = new Paragraph("Almacenista", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            Almacenista.setAlignment(ALIGN_CENTER);
-            TblDatosUsuario.addCell(Almacenista);
             PdfPCell ClHora = new PdfPCell(new Paragraph("10:15:26 p.m.", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
-            ClHora.setHorizontalAlignment(ALIGN_CENTER);
-            TblDatosUsuario.addCell(ClHora);
+            ClHora.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TblNoSalida.addCell(ClHora);
+
             PdfPCell ClFechaEnvio = new PdfPCell(new Paragraph("06/06/2020", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
-            ClFechaEnvio.setHorizontalAlignment(ALIGN_CENTER);
-            TblDatosUsuario.addCell(ClFechaEnvio);
+            ClFechaEnvio.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TblNoSalida.addCell(ClFechaEnvio);
+
             PdfPCell ClAlmacenista = new PdfPCell(new Paragraph("ALAN R.", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
-            ClAlmacenista.setHorizontalAlignment(ALIGN_CENTER);
-            TblDatosUsuario.addCell(ClAlmacenista);
-            //document.add(TblDatosUsuario);
+            ClAlmacenista.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TblNoSalida.addCell(ClAlmacenista);
 
-            PdfPCell ClTblDatosUsuario = new PdfPCell(TblDatosUsuario);
+            document.add(TblNoSalida);
+            /* Fin primera fila de tablas */
 
-            TblFilaUno.addCell(ClTblNoSalida);
-            TblFilaUno.addCell(ColumnaBlanca);
-            TblFilaUno.addCell(ColumnaBlanca);
-            TblFilaUno.addCell(ColumnaBlanca);
-            TblFilaUno.addCell(ClTblDatosUsuario);
-            document.add(TblFilaUno);
+            document.add(Chunk.NEWLINE);
 
-            /*
-            PdfPTable TblLugarOrigen = new PdfPTable(2);
-            TblLugarOrigen.setWidthPercentage(20f);
-            TblLugarOrigen.setHorizontalAlignment(Element.ALIGN_LEFT);
-            Paragraph LugarOrigen = new Paragraph("Lugar de origen:", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            LugarOrigen.setAlignment(Element.ALIGN_CENTER);
+            /* Inicio segunda fila de tablas */
+            PdfPTable TblLugarOrigen = new PdfPTable(5);
+            float[] anchoCeldas2 = {60f, 220f, 10f, 60f, 220f};
+            TblLugarOrigen.setWidthPercentage(anchoCeldas2, A4);
+
+            PdfPCell LugarOrigen = new PdfPCell(new Phrase("Lugar de origen:", FontFactory.getFont("Arial", 6, Font.BOLD, BaseColor.BLACK)));
+            LugarOrigen.setRowspan(2);
+            LugarOrigen.setHorizontalAlignment(Element.ALIGN_CENTER);
+            LugarOrigen.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            LugarOrigen.setFixedHeight(50f);
             TblLugarOrigen.addCell(LugarOrigen);
-            Paragraph DatosLugarOrigen = new Paragraph("TAPATRANSPORTES S.A. DE C.V. S/C Almacén.   PROL. LOPEZ \n MATEOS SUR #1800 PRIV. NO.23 SANTACRUZ DE LAS FLORES, TLAJOMULCO DE ZÚÑIGA, JAL. MEX.", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            DatosLugarOrigen.setAlignment(Element.ALIGN_CENTER);
+
+            PdfPCell DatosLugarOrigen = new PdfPCell(new Phrase("TAPATRANSPORTES S.A. DE C.V. S/C Almacén.   PROL. LOPEZ \n\n MATEOS SUR #1800 PRIV. NO.23 SANTACRUZ DE LAS FLORES, TLAJOMULCO DE ZÚÑIGA, JAL. MEX.", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            DatosLugarOrigen.setRowspan(2);
+            DatosLugarOrigen.setHorizontalAlignment(Element.ALIGN_CENTER);
+            DatosLugarOrigen.setVerticalAlignment(Element.ALIGN_MIDDLE);
             TblLugarOrigen.addCell(DatosLugarOrigen);
+
+            PdfPCell ColumnaBlanco2 = new PdfPCell(new Paragraph(""));
+            ColumnaBlanco2.setRowspan(2);
+            ColumnaBlanco2.setBorder(Rectangle.NO_BORDER);
+            ColumnaBlanco2.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TblLugarOrigen.addCell(ColumnaBlanco2);
+
+            PdfPCell ClienteExpedidor = new PdfPCell(new Phrase("Cliente Expedidor:", FontFactory.getFont("Arial", 6, Font.BOLD, BaseColor.BLACK)));
+            ClienteExpedidor.setHorizontalAlignment(Element.ALIGN_CENTER);
+            ClienteExpedidor.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            ClienteExpedidor.setFixedHeight(25f);
+            TblLugarOrigen.addCell(ClienteExpedidor);
+
+            PdfPCell DatosClienteExpedidor = new PdfPCell(new Phrase("INTERNATIONAL PAPER MÉXICO COMPANY, S DE RL DE CV.", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            DatosClienteExpedidor.setHorizontalAlignment(Element.ALIGN_CENTER);
+            DatosClienteExpedidor.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            TblLugarOrigen.addCell(DatosClienteExpedidor);
+
+            PdfPCell Direccion = new PdfPCell(new Phrase("Dirección:", FontFactory.getFont("Arial", 6, Font.BOLD, BaseColor.BLACK)));
+            Direccion.setHorizontalAlignment(Element.ALIGN_CENTER);
+            Direccion.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            TblLugarOrigen.addCell(Direccion);
+
+            PdfPCell DatosDireccion = new PdfPCell(new Phrase("AV. BICENTENARIO 372 COL. S/C, LOC. LA CANTERA, SAN JOSE ITURBIDE, GTO, MEX. C.P. 37988", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            DatosDireccion.setHorizontalAlignment(Element.ALIGN_CENTER);
+            DatosDireccion.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            TblLugarOrigen.addCell(DatosDireccion);
+
             document.add(TblLugarOrigen);
+            /* Fin segunda fila de tablas */
 
-            PdfPTable TblClienteExpendidor = new PdfPTable(2);
-            TblClienteExpendidor.setWidthPercentage(20f);
-            TblClienteExpendidor.setHorizontalAlignment(Element.ALIGN_RIGHT);
-            Paragraph ClienteExpedidor = new Paragraph("Cliente Expedidor:", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            ClienteExpedidor.setAlignment(Element.ALIGN_CENTER);
-            TblClienteExpendidor.addCell(ClienteExpedidor);
-            Paragraph DatosClienteExpedidor = new Paragraph("INTERNATIONAL PAPER MÉXICO COMPANY, S DE RL DE CV.", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            DatosClienteExpedidor.setAlignment(Element.ALIGN_CENTER);
-            TblClienteExpendidor.addCell(DatosClienteExpedidor);
-            Paragraph Direccion = new Paragraph("Dirección:", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            Direccion.setAlignment(Element.ALIGN_CENTER);
-            TblClienteExpendidor.addCell(Direccion);
-            Paragraph DatosDireccion = new Paragraph("AV. BICENTENARIO 372 COL. S/C, LOC. LA CANTERA, SAN JOSE ITURBIDE, GTO, MEX. C.P. 37988", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            DatosDireccion.setAlignment(Element.ALIGN_CENTER);
-            TblClienteExpendidor.addCell(DatosDireccion);
-            document.add(TblClienteExpendidor);
+            document.add(Chunk.NEWLINE);
 
-            PdfPTable TblEntregar = new PdfPTable(2);
-            TblEntregar.setWidthPercentage(20f);
-            TblEntregar.setHorizontalAlignment(Element.ALIGN_LEFT);
-            Paragraph Entregar = new Paragraph("Entregar a:", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            Entregar.setAlignment(Element.ALIGN_CENTER);
+            /* Inicio tercera fila de tablas */
+            PdfPTable TblEntregar = new PdfPTable(7);
+            float[] anchoCeldas3 = {60f, 220f, 10f, 60f, 100f, 60f, 60f};
+            TblEntregar.setWidthPercentage(anchoCeldas3, A4);
+
+            PdfPCell Entregar = new PdfPCell(new Phrase("Entregar a:", FontFactory.getFont("Arial", 6, Font.BOLD, BaseColor.BLACK)));
+            Entregar.setHorizontalAlignment(Element.ALIGN_CENTER);
+            Entregar.setVerticalAlignment(Element.ALIGN_MIDDLE);
             TblEntregar.addCell(Entregar);
-            Paragraph DatosEntregar = new Paragraph("NATURESWEET INVERNADEROS, S DE RL DE CV; AV. PABLO NERUDA", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            DatosEntregar.setAlignment(Element.ALIGN_CENTER);
+
+            PdfPCell DatosEntregar = new PdfPCell(new Phrase("NATURESWEET INVERNADEROS, S DE RL DE CV; AV. PABLO NERUDA", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            DatosEntregar.setHorizontalAlignment(Element.ALIGN_CENTER);
+            DatosEntregar.setVerticalAlignment(Element.ALIGN_MIDDLE);
             TblEntregar.addCell(DatosEntregar);
+
+            PdfPCell ColumnaBlanco3 = new PdfPCell(new Paragraph(""));
+            ColumnaBlanco3.setBorder(Rectangle.NO_BORDER);
+            ColumnaBlanco3.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TblEntregar.addCell(ColumnaBlanco3);
+
+            PdfPCell InstruccionesEmbarque = new PdfPCell(new Phrase("Instrucciones de embarque:", FontFactory.getFont("Arial", 6, Font.BOLD, BaseColor.BLACK)));
+            InstruccionesEmbarque.setHorizontalAlignment(Element.ALIGN_CENTER);
+            InstruccionesEmbarque.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            TblEntregar.addCell(InstruccionesEmbarque);
+
+            PdfPCell DatosInstruccionesEmbarque = new PdfPCell(new Phrase("", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            DatosInstruccionesEmbarque.setHorizontalAlignment(Element.ALIGN_CENTER);
+            DatosInstruccionesEmbarque.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            TblEntregar.addCell(DatosInstruccionesEmbarque);
+
+            PdfPCell EntregaDia = new PdfPCell(new Phrase("ENTREGA EL DIA:", FontFactory.getFont("Arial", 6, Font.BOLD, BaseColor.BLACK)));
+            EntregaDia.setHorizontalAlignment(Element.ALIGN_CENTER);
+            EntregaDia.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            TblEntregar.addCell(EntregaDia);
+
+            PdfPCell DatosEntregaDia = new PdfPCell(new Phrase("08/06/2020", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            DatosEntregaDia.setHorizontalAlignment(Element.ALIGN_CENTER);
+            DatosEntregaDia.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            TblEntregar.addCell(DatosEntregaDia);
+
             document.add(TblEntregar);
+            /* Fin tercera fila de tablas */
 
-            PdfPTable TblIntruccionesEmbarque = new PdfPTable(3);
-            TblIntruccionesEmbarque.setWidthPercentage(20f);
-            TblIntruccionesEmbarque.setHorizontalAlignment(Element.ALIGN_RIGHT);
-            Paragraph InstruccionesEmbarque = new Paragraph("Instrucciones de embarque:", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            InstruccionesEmbarque.setAlignment(Element.ALIGN_CENTER);
-            TblIntruccionesEmbarque.addCell(InstruccionesEmbarque);
-            Paragraph EntregaDia = new Paragraph("ENTREGA EL DIA:", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            EntregaDia.setAlignment(Element.ALIGN_CENTER);
-            TblIntruccionesEmbarque.addCell(EntregaDia);
-            Paragraph DatosEntregaDia = new Paragraph("08/06/2020", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            DatosEntregaDia.setAlignment(Element.ALIGN_CENTER);
-            TblIntruccionesEmbarque.addCell(DatosEntregaDia);
-            document.add(TblIntruccionesEmbarque);
+            document.add(Chunk.NEWLINE);
 
+            /* Inicio cuarta fila de tablas */
             PdfPTable TblPrincipal = new PdfPTable(8);
-            TblPrincipal.setWidthPercentage(50f);
-            TblPrincipal.setHorizontalAlignment(ALIGN_CENTER);
-            Paragraph NoOrden = new Paragraph("No. Orden", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            NoOrden.setAlignment(Element.ALIGN_CENTER);
+            float[] anchoCeldas4 = {50f, 50f, 50f, 50f, 50f, 50f, 50f, 220f};
+            TblPrincipal.setWidthPercentage(anchoCeldas4, A4);
+
+            PdfPCell NoOrden = new PdfPCell(new Phrase("No. Orden", FontFactory.getFont("Arial", 6, Font.BOLD, BaseColor.BLACK)));
+            NoOrden.setHorizontalAlignment(Element.ALIGN_CENTER);
             TblPrincipal.addCell(NoOrden);
-            Paragraph NoSello = new Paragraph("No. De Sello", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            NoSello.setAlignment(Element.ALIGN_CENTER);
+
+            PdfPCell NoSello = new PdfPCell(new Phrase("No. De Sello", FontFactory.getFont("Arial", 6, Font.BOLD, BaseColor.BLACK)));
+            NoSello.setHorizontalAlignment(Element.ALIGN_CENTER);
             TblPrincipal.addCell(NoSello);
-            Paragraph NoPedido = new Paragraph("No. De Guia", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            NoPedido.setAlignment(Element.ALIGN_CENTER);
+
+            PdfPCell NoPedido = new PdfPCell(new Phrase("No. De pedido", FontFactory.getFont("Arial", 6, Font.BOLD, BaseColor.BLACK)));
+            NoPedido.setHorizontalAlignment(Element.ALIGN_CENTER);
             TblPrincipal.addCell(NoPedido);
-            Paragraph Placas = new Paragraph("Placas", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            Placas.setAlignment(Element.ALIGN_CENTER);
+
+            PdfPCell Placas = new PdfPCell(new Phrase("Placas", FontFactory.getFont("Arial", 6, Font.BOLD, BaseColor.BLACK)));
+            Placas.setHorizontalAlignment(Element.ALIGN_CENTER);
             TblPrincipal.addCell(Placas);
-            Paragraph ViaEmbarque = new Paragraph("Vía de Embarque", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            ViaEmbarque.setAlignment(Element.ALIGN_CENTER);
+
+            PdfPCell ViaEmbarque = new PdfPCell(new Phrase("Vía de Embarque", FontFactory.getFont("Arial", 6, Font.BOLD, BaseColor.BLACK)));
+            ViaEmbarque.setHorizontalAlignment(Element.ALIGN_CENTER);
             TblPrincipal.addCell(ViaEmbarque);
-            Paragraph Chofer = new Paragraph("Chofer", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            Chofer.setAlignment(Element.ALIGN_CENTER);
+
+            PdfPCell Chofer = new PdfPCell(new Phrase("Chofer", FontFactory.getFont("Arial", 6, Font.BOLD, BaseColor.BLACK)));
+            Chofer.setHorizontalAlignment(Element.ALIGN_CENTER);
             TblPrincipal.addCell(Chofer);
-            Paragraph Empresa = new Paragraph("Empresa", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            Empresa.setAlignment(Element.ALIGN_CENTER);
+
+            PdfPCell Empresa = new PdfPCell(new Phrase("Empresa", FontFactory.getFont("Arial", 6, Font.BOLD, BaseColor.BLACK)));
+            Empresa.setHorizontalAlignment(Element.ALIGN_CENTER);
             TblPrincipal.addCell(Empresa);
-            Paragraph Observaciones = new Paragraph("Observaciones", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            Observaciones.setAlignment(Element.ALIGN_CENTER);
+
+            PdfPCell Observaciones = new PdfPCell(new Phrase("Observaciones", FontFactory.getFont("Arial", 6, Font.BOLD, BaseColor.BLACK)));
+            Observaciones.setHorizontalAlignment(Element.ALIGN_CENTER);
             TblPrincipal.addCell(Observaciones);
-            PdfPCell ClNoOrden = new PdfPCell(new Paragraph("81", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
-            ClHora.setHorizontalAlignment(ALIGN_CENTER);
+
+            PdfPCell ClNoOrden = new PdfPCell(new Phrase("81", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            ClNoOrden.setHorizontalAlignment(Element.ALIGN_CENTER);
             TblPrincipal.addCell(ClNoOrden);
-            PdfPCell ClNoSello = new PdfPCell(new Paragraph("3168947", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
-            ClFechaEnvio.setHorizontalAlignment(ALIGN_CENTER);
+
+            PdfPCell ClNoSello = new PdfPCell(new Phrase("3168947", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            ClNoSello.setHorizontalAlignment(Element.ALIGN_CENTER);
             TblPrincipal.addCell(ClNoSello);
-            PdfPCell ClNoGuia = new PdfPCell(new Paragraph("1-7136A", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
-            ClAlmacenista.setHorizontalAlignment(ALIGN_CENTER);
+
+            PdfPCell ClNoGuia = new PdfPCell(new Phrase("1-7136A", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            ClNoGuia.setHorizontalAlignment(Element.ALIGN_CENTER);
             TblPrincipal.addCell(ClNoGuia);
-            PdfPCell ClPlacas = new PdfPCell(new Paragraph(" ", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
-            ClHora.setHorizontalAlignment(ALIGN_CENTER);
+
+            PdfPCell ClPlacas = new PdfPCell(new Phrase(" ", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            ClPlacas.setHorizontalAlignment(Element.ALIGN_CENTER);
             TblPrincipal.addCell(ClPlacas);
-            PdfPCell ClViaEmbarque = new PdfPCell(new Paragraph(" ", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
-            ClFechaEnvio.setHorizontalAlignment(ALIGN_CENTER);
+
+            PdfPCell ClViaEmbarque = new PdfPCell(new Phrase(" ", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            ClViaEmbarque.setHorizontalAlignment(Element.ALIGN_CENTER);
             TblPrincipal.addCell(ClViaEmbarque);
-            PdfPCell ClChofer = new PdfPCell(new Paragraph("PABLO CISNEROS", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
-            ClAlmacenista.setHorizontalAlignment(ALIGN_CENTER);
+
+            PdfPCell ClChofer = new PdfPCell(new Phrase("PABLO CISNEROS", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            ClChofer.setHorizontalAlignment(Element.ALIGN_CENTER);
             TblPrincipal.addCell(ClChofer);
-            PdfPCell ClEmpresa = new PdfPCell(new Paragraph("CALDERON", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
-            ClHora.setHorizontalAlignment(ALIGN_CENTER);
+
+            PdfPCell ClEmpresa = new PdfPCell(new Phrase("CALDERON", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            ClEmpresa.setHorizontalAlignment(Element.ALIGN_CENTER);
             TblPrincipal.addCell(ClEmpresa);
-            PdfPCell ClObservaciones = new PdfPCell(new Paragraph("N/A", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
-            ClFechaEnvio.setHorizontalAlignment(ALIGN_CENTER);
+
+            PdfPCell ClObservaciones = new PdfPCell(new Phrase("N/A", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            ClObservaciones.setHorizontalAlignment(Element.ALIGN_CENTER);
             TblPrincipal.addCell(ClObservaciones);
+
             document.add(TblPrincipal);
+            /* Fin cuarta fila de tablas */
 
-            PdfPTable TblPrincipal2 = new PdfPTable(7);
-            TblPrincipal2.setWidthPercentage(50f);
-            TblPrincipal2.setHorizontalAlignment(ALIGN_CENTER);
-            Paragraph SKU = new Paragraph("SKU", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            SKU.setAlignment(Element.ALIGN_CENTER);
+            document.add(Chunk.NEWLINE);
+
+            /* Inicio quinta fila de tablas */
+            PdfPTable TblPrincipal2 = new PdfPTable(8);
+            float[] anchoCeldas5 = {50f, 50f, 50f, 50f, 50f, 50f, 50f, 220f};
+            TblPrincipal2.setWidthPercentage(anchoCeldas5, A4);
+
+            PdfPCell SKU = new PdfPCell(new Phrase("SKU", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            SKU.setHorizontalAlignment(Element.ALIGN_CENTER);
             TblPrincipal2.addCell(SKU);
-            Paragraph Diseno = new Paragraph("Diseño", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            Diseno.setAlignment(Element.ALIGN_CENTER);
-            TblPrincipal2.addCell(Diseno);
-            Paragraph Descripcion = new Paragraph("Descripción", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            Descripcion.setAlignment(Element.ALIGN_CENTER);
-            TblPrincipal2.addCell(Descripcion);
-            Paragraph Total = new Paragraph("Total", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            Total.setAlignment(Element.ALIGN_CENTER);
-            TblPrincipal2.addCell(Total);
-            Paragraph CantidadPallets = new Paragraph("Cantidad Pallets", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            CantidadPallets.setAlignment(Element.ALIGN_CENTER);
-            TblPrincipal2.addCell(CantidadPallets);
-            Paragraph PiezasPallet = new Paragraph("Piezas por Pallet", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            PiezasPallet.setAlignment(Element.ALIGN_CENTER);
-            TblPrincipal2.addCell(PiezasPallet);
-            Paragraph TotalUnidades = new Paragraph("Total de Unidades", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            TotalUnidades.setAlignment(Element.ALIGN_CENTER);
-            TblPrincipal2.addCell(TotalUnidades);
-            PdfPCell ClSKU = new PdfPCell(new Paragraph("EM0020394", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
-            ClSKU.setHorizontalAlignment(ALIGN_CENTER);
-            TblPrincipal2.addCell(ClSKU);
-            PdfPCell ClDiseno = new PdfPCell(new Paragraph("3070050", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
-            ClDiseno.setHorizontalAlignment(ALIGN_CENTER);
-            TblPrincipal2.addCell(ClDiseno);
-            PdfPCell ClDescripcion = new PdfPCell(new Paragraph("Caja Universal 10 OZ AUTO 3070050", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
-            ClDescripcion.setHorizontalAlignment(ALIGN_CENTER);
-            TblPrincipal2.addCell(ClDescripcion);
-            PdfPCell ClTotal = new PdfPCell(new Paragraph("Total", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
-            ClTotal.setHorizontalAlignment(ALIGN_CENTER);
-            TblPrincipal2.addCell(ClTotal);
-            PdfPCell ClCantidadPallets = new PdfPCell(new Paragraph("11", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
-            ClCantidadPallets.setHorizontalAlignment(ALIGN_CENTER);
-            TblPrincipal2.addCell(ClCantidadPallets);
-            PdfPCell ClPiezasPallet = new PdfPCell(new Paragraph("500", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
-            ClPiezasPallet.setHorizontalAlignment(ALIGN_CENTER);
-            TblPrincipal2.addCell(ClPiezasPallet);
-            PdfPCell ClTotalUnidades = new PdfPCell(new Paragraph("5,500", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
-            ClTotalUnidades.setHorizontalAlignment(ALIGN_CENTER);
-            TblPrincipal2.addCell(ClTotalUnidades);
-            document.add(TblPrincipal2);
 
+            PdfPCell Diseno = new PdfPCell(new Phrase("Diseño", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            Diseno.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TblPrincipal2.addCell(Diseno);
+
+            PdfPCell Descripcion = new PdfPCell(new Phrase("Descripción", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            Descripcion.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TblPrincipal2.addCell(Descripcion);
+
+            PdfPCell ColumnaBlanco4 = new PdfPCell(new Paragraph(""));
+            ColumnaBlanco4.setRowspan(2);
+            ColumnaBlanco4.setBorder(Rectangle.NO_BORDER);
+            ColumnaBlanco4.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TblPrincipal2.addCell(ColumnaBlanco4);
+
+            PdfPCell Total = new PdfPCell(new Phrase(" ", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            Total.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TblPrincipal2.addCell(Total);
+
+            PdfPCell CantidadPallets = new PdfPCell(new Phrase("Cantidad Pallets", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            CantidadPallets.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TblPrincipal2.addCell(CantidadPallets);
+
+            PdfPCell PiezasPallet = new PdfPCell(new Phrase("Piezas por Pallet", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            PiezasPallet.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TblPrincipal2.addCell(PiezasPallet);
+
+            PdfPCell TotalUnidades = new PdfPCell(new Phrase("Total de Unidades", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            TotalUnidades.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TblPrincipal2.addCell(TotalUnidades);
+
+            PdfPCell ClSKU = new PdfPCell(new Phrase("EM0020394", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            ClSKU.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TblPrincipal2.addCell(ClSKU);
+
+            PdfPCell ClDiseno = new PdfPCell(new Phrase("3070050", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            ClDiseno.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TblPrincipal2.addCell(ClDiseno);
+
+            PdfPCell ClDescripcion = new PdfPCell(new Phrase("Caja Universal 10 OZ AUTO 3070050", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            ClDescripcion.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TblPrincipal2.addCell(ClDescripcion);
+
+            PdfPCell ClTotal = new PdfPCell(new Phrase("Total", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            ClTotal.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TblPrincipal2.addCell(ClTotal);
+
+            PdfPCell ClCantidadPallets = new PdfPCell(new Phrase("11", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            ClCantidadPallets.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TblPrincipal2.addCell(ClCantidadPallets);
+
+            PdfPCell ClPiezasPallet = new PdfPCell(new Phrase("500", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            ClPiezasPallet.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TblPrincipal2.addCell(ClPiezasPallet);
+
+            PdfPCell ClTotalUnidades = new PdfPCell(new Phrase("5,500", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            ClTotalUnidades.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TblPrincipal2.addCell(ClTotalUnidades);
+
+            document.add(TblPrincipal2);
+            /* Fin quinta fila de tablas */
+
+            document.add(Chunk.NEWLINE);
+
+            /* Inicio clausula */
             PdfPTable TblTexto = new PdfPTable(1);
-            TblTexto.setWidthPercentage(100f);
+            TblTexto.setWidthPercentage(96f);
             TblTexto.setHorizontalAlignment(ALIGN_CENTER);
+
             Paragraph Texto = new Paragraph("SALVO QUE SE TRATE DE CARGA CONSOLIDADA, LA RESPONSABILIDAD DE TAPATRANSPORTES, S.A. DE C.V. POR PÉRDIDA, DEMORA O CUALQUIERA OTRA CAUSA SE LIMITARA AL EMBARQUE DE LAS MERCANCÍAS A NOMBRE DEL CLIENTE EXPEDIDOR, EN LOS TÉRMINOS Y CONDICIONES INDICADOS EN LA PRESENTE ORDEN DE SALIDA. EL CLIENTE EXPEDIDOR PROPORCIONARÁ AL TRANSPORTISTA LA INFORMACIÓN ADICIONAL QUE PUDIERA REQUERIR PARA DETERMINAR LAS RUTAS, EL MODO Y MEDIO DE TRANSPORTE DE LA MERCANÍA Y ASUMIRÁ TODA LA RESPONSABILIDAD POR LA IDONEIDAD DE SUS INSTRUCCIONES Y/O DE LA ELECCIÓN QUE HAGA DE DICHAS RUTAS, MODOS Y MEDIOS. ASIMISMO, SALVO INDICACIONES ESPECIALES DEL CLEINTE EXSPEDIDOR, EL PESO ORDENADO PARA EL EMBARQUE DEBERÁ CUMPLIR CON LA NORMATIVIDAD APLICABLE Y EL VALOR DE LAS MERCANCIAS, NO SUPERARÁ LOS $150,000.00.", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
             Texto.setAlignment(Element.ALIGN_CENTER);
+
             TblTexto.addCell(Texto);
             document.add(TblTexto);
+            /* Fin clausula */
 
-            PdfPTable TblFirmaTransportista = new PdfPTable(1);
-            TblFirmaTransportista.setWidthPercentage(50f);
-            TblFirmaTransportista.setHorizontalAlignment(ALIGN_LEFT);
-            Paragraph ZonaFirmaTransportista = new Paragraph("____________________________________________________", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            ZonaFirmaTransportista.setAlignment(Element.ALIGN_CENTER);
-            TblFirmaTransportista.addCell(ZonaFirmaTransportista);
-            PdfPCell TextoTransportista = new PdfPCell(new Paragraph("Nombre y Forma Transportista.", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
-            TextoTransportista.setHorizontalAlignment(ALIGN_CENTER);
-            TblFirmaTransportista.addCell(TextoTransportista);
-            document.add(TblFirmaTransportista);
+            document.add(Chunk.NEWLINE);
+            document.add(Chunk.NEWLINE);
+            document.add(Chunk.NEWLINE);
+            document.add(Chunk.NEWLINE);
+            document.add(Chunk.NEWLINE);
+            document.add(Chunk.NEWLINE);
+            document.add(Chunk.NEWLINE);
+            document.add(Chunk.NEWLINE);
+            document.add(Chunk.NEWLINE);
+            document.add(Chunk.NEWLINE);
+            document.add(Chunk.NEWLINE);
+            document.add(Chunk.NEWLINE);
 
-            PdfPTable TblFirmaRemitente = new PdfPTable(1);
-            TblFirmaRemitente.setWidthPercentage(50f);
-            TblFirmaRemitente.setHorizontalAlignment(ALIGN_RIGHT);
-            Paragraph ZonaFirmaRemitente = new Paragraph("____________________________________________________", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            ZonaFirmaRemitente.setAlignment(Element.ALIGN_CENTER);
-            TblFirmaRemitente.addCell(ZonaFirmaRemitente);
-            PdfPCell TextoRemitente = new PdfPCell(new Paragraph("Nombre y Forma Remitente.", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
-            TextoRemitente.setHorizontalAlignment(ALIGN_CENTER);
-            TblFirmaRemitente.addCell(TextoRemitente);
-            document.add(TblFirmaRemitente);
+            /* Inicio zona de firmas */
+            PdfPTable TblZonaFirmas = new PdfPTable(3);
+            float[] anchoCeldas6 = {140f, 200f, 140f};
+            TblZonaFirmas.setWidthPercentage(anchoCeldas6, A4);
 
-            PdfPTable TblEntregarA = new PdfPTable(1);
-            TblEntregarA.setWidthPercentage(100f);
-            TblEntregarA.setHorizontalAlignment(ALIGN_LEFT);
-            Paragraph TextoEntrega = new Paragraph("Entregar a: NATURESWEET INVERNADERO", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            TextoEntrega.setAlignment(Element.ALIGN_CENTER);
-            TblEntregarA.addCell(TextoEntrega);
-            document.add(TblEntregarA);
+            PdfPCell ZonaFirmaTransportista = new PdfPCell(new Phrase("____________________________________________________", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            ZonaFirmaTransportista.setHorizontalAlignment(Element.ALIGN_CENTER);
+            ZonaFirmaTransportista.setBorder(Rectangle.NO_BORDER);
+            TblZonaFirmas.addCell(ZonaFirmaTransportista);
 
-            PdfPTable TblInformacionEntrega = new PdfPTable(2);
-            TblInformacionEntrega.setWidthPercentage(20f);
-            TblInformacionEntrega.setHorizontalAlignment(Element.ALIGN_RIGHT);
-            Paragraph FechaEntrega = new Paragraph("FECHA", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            FechaEntrega.setAlignment(Element.ALIGN_CENTER);
-            TblInformacionEntrega.addCell(FechaEntrega);
-            Paragraph DatosFechaEntrega = new Paragraph("06/06/2020", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            DatosFechaEntrega.setAlignment(Element.ALIGN_CENTER);
-            TblInformacionEntrega.addCell(DatosFechaEntrega);
-            Paragraph HoraEntrega = new Paragraph("HORA", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            HoraEntrega.setAlignment(Element.ALIGN_CENTER);
-            TblInformacionEntrega.addCell(HoraEntrega);
-            Paragraph DatosHoraEntrega = new Paragraph("10:16:53 p.m.", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            DatosHoraEntrega.setAlignment(Element.ALIGN_CENTER);
-            TblInformacionEntrega.addCell(DatosHoraEntrega);
-            document.add(TblInformacionEntrega);
+            PdfPCell ColumnaBlanco5 = new PdfPCell(new Paragraph(""));
+            ColumnaBlanco5.setRowspan(2);
+            ColumnaBlanco5.setBorder(Rectangle.NO_BORDER);
+            ColumnaBlanco5.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TblZonaFirmas.addCell(ColumnaBlanco5);
 
-            PdfPTable TblSalidas = new PdfPTable(2);
-            TblSalidas.setWidthPercentage(50f);
-            TblSalidas.setHorizontalAlignment(ALIGN_CENTER);
-            Paragraph NoPLT = new Paragraph("No. PLT'S", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            NoPLT.setAlignment(Element.ALIGN_CENTER);
-            TblSalidas.addCell(NoPLT);
-            Paragraph Folio = new Paragraph("FOLIO", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
-            Folio.setAlignment(Element.ALIGN_CENTER);
-            TblSalidas.addCell(Folio);
-            PdfPCell ClNoPLT = new PdfPCell(new Paragraph("1", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
-            ClNoPLT.setHorizontalAlignment(ALIGN_CENTER);
-            TblSalidas.addCell(ClNoPLT);
-            PdfPCell ClFolio = new PdfPCell(new Paragraph("02886335", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
-            ClFolio.setHorizontalAlignment(ALIGN_CENTER);
-            TblSalidas.addCell(ClFolio);
-            document.add(TblSalidas);
-            */
+            PdfPCell ZonaFirmaRemitente = new PdfPCell(new Phrase("____________________________________________________", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            ZonaFirmaRemitente.setHorizontalAlignment(Element.ALIGN_CENTER);
+            ZonaFirmaRemitente.setBorder(Rectangle.NO_BORDER);
+            TblZonaFirmas.addCell(ZonaFirmaRemitente);
+
+            PdfPCell TextoTransportista = new PdfPCell(new Phrase("Nombre y Firma Transportista.", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            TextoTransportista.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TextoTransportista.setBorder(Rectangle.NO_BORDER);
+            TblZonaFirmas.addCell(TextoTransportista);
+
+            PdfPCell TextoRemitente = new PdfPCell(new Phrase("Nombre y Firma Remitente.", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            TextoRemitente.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TextoRemitente.setBorder(Rectangle.NO_BORDER);
+            TblZonaFirmas.addCell(TextoRemitente);
+
+            document.add(TblZonaFirmas);
+            /* Fin zona de firmas */
+
+            document.add(Chunk.NEWLINE);
+            document.add(Chunk.NEWLINE);
+            document.add(Chunk.NEWLINE);
+            document.add(Chunk.NEWLINE);
+            document.add(Chunk.NEWLINE);
+            document.add(Chunk.NEWLINE);
+
+            /* Inicio encabezado segunda pagina */
+            PdfPTable TblClienteAEntregar = new PdfPTable(6);
+            float[] anchoCeldas7 = {150f, 150f, 50f, 50f, 50f, 50f};
+            TblClienteAEntregar.setWidthPercentage(anchoCeldas7, A4);
+
+            PdfPCell TextoEntrega = new PdfPCell(new Phrase("Entregar a: NATURESWEET INVERNADERO", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            TextoEntrega.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TblClienteAEntregar.addCell(TextoEntrega);
+
+            PdfPCell ColumnaBlanco6 = new PdfPCell(new Paragraph(""));
+            ColumnaBlanco6.setBorder(Rectangle.NO_BORDER);
+            TblClienteAEntregar.addCell(ColumnaBlanco6);
+
+            PdfPCell FechaEntrega = new PdfPCell(new Phrase("FECHA", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            FechaEntrega.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TblClienteAEntregar.addCell(FechaEntrega);
+
+            PdfPCell DatosFechaEntrega = new PdfPCell(new Phrase("06/06/2020", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            DatosFechaEntrega.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TblClienteAEntregar.addCell(DatosFechaEntrega);
+
+            PdfPCell HoraEntrega = new PdfPCell(new Phrase("HORA", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            HoraEntrega.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TblClienteAEntregar.addCell(HoraEntrega);
+
+            PdfPCell DatosHoraEntrega = new PdfPCell(new Phrase("10:16:53 p.m.", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            DatosHoraEntrega.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TblClienteAEntregar.addCell(DatosHoraEntrega);
+
+            document.add(TblClienteAEntregar);
+            /* Fin encabezado segunda pagina */
+
+            document.add(Chunk.NEWLINE);
+
+            /* Inicio tabla de pallets */
+            Paragraph foliosCargados = new Paragraph("Folios cargados", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
+            foliosCargados.setAlignment(Element.ALIGN_LEFT);
+            document.add(foliosCargados);
+
+            document.add(Chunk.NEWLINE);
+
+            PdfPTable TblPallets = new PdfPTable(2);
+            float[] anchoCeldas8 = {50f, 50f};
+            TblPallets.setWidthPercentage(anchoCeldas8, A4);
+
+            PdfPCell NoPLT = new PdfPCell(new Phrase("No. PLT'S", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            NoPLT.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TblPallets.addCell(NoPLT);
+
+            PdfPCell Folio = new PdfPCell(new Phrase("FOLIO", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            Folio.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TblPallets.addCell(Folio);
+
+            PdfPCell ClNoPLT = new PdfPCell(new Phrase("1", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            ClNoPLT.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TblPallets.addCell(ClNoPLT);
+
+            PdfPCell ClFolio = new PdfPCell(new Phrase("02886335", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            ClFolio.setHorizontalAlignment(Element.ALIGN_CENTER);
+            TblPallets.addCell(ClFolio);
+
+            document.add(TblPallets);
+            /* Fin tabla de pallets */
+
             document.close();
         }
         catch (DocumentException | IOException e)
