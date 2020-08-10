@@ -83,6 +83,7 @@ public class FrmSplashScreen extends JFrame
                 try {
                     frmIniciarSesion = new FrmIniciarSesion();
                 } catch (SQLException throwables) {
+                    throwables.printStackTrace();
                     System.exit(1);
                 }catch (Config.EmptyProperty emptyProperty) {
                     showDialogError(emptyProperty.getMessage(),

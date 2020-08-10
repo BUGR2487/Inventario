@@ -66,10 +66,7 @@ public class Conexion
         if(url.isEmpty())
             throw new Config.EmptyProperty("URL vacío");
 
-
         System.out.println(url);
-        System.out.println(user);
-        System.out.println(pass);
 
         this.conn = DriverManager.getConnection(url, user, pass);
     }
