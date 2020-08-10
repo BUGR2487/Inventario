@@ -1,5 +1,7 @@
 package Tools.DataBase;
 
+import Tools.Config;
+
 import java.sql.SQLException;
 
 public class Usuario
@@ -22,7 +24,7 @@ public class Usuario
     private static final String SQL_UPDATE = "UPDATE `inventario`.`usuario` SET `Nombre` = ?, `ApellidoPaterno` = ?, `ApellidoMaterno` = ?, `Puesto` = ?, `CorreoElectronico` = ?, `Contrasena` = ? WHERE (`IdUsuario` = ?);";
     private static final String SQL_DELETE = "DELETE FROM `inventario`.`usuario` WHERE (`CorreoElectronico` = ?);";
 
-    public Usuario() throws SQLException {
+    public Usuario() throws SQLException, Config.ReadException, Config.EmptyProperty {
     }
 
     public int getIdUsuario() { return idUsuario; }

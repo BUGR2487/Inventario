@@ -1,5 +1,7 @@
 package Forms;
 
+import Tools.Config;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -149,6 +151,14 @@ public class FrmPrincipal extends JFrame implements ActionListener, KeyListener
                 showDialogError("Ocurrio un error al conectar con la base de datos, verifique el error y vuelva a intentarlo.",
                         "MY_SQL_ERROR_CONNECTION");
                 System.exit(1);
+            } catch (Config.EmptyProperty emptyProperty) {
+                showDialogError(emptyProperty.getMessage(),
+                        "ERR_PROPERTY");
+                System.exit(1);
+            } catch (Config.ReadException readException) {
+                showDialogError(readException.getMessage(),
+                        "ERR_PROPERTY");
+                System.exit(1);
             }
 
         }
@@ -161,6 +171,14 @@ public class FrmPrincipal extends JFrame implements ActionListener, KeyListener
             } catch (SQLException throwables) {
                 showDialogError("Ocurrio un error al conectar con la base de datos, verifique el error y vuelva a intentarlo.",
                         "MY_SQL_ERROR_CONNECTION");
+                System.exit(1);
+            } catch (Config.EmptyProperty emptyProperty) {
+                showDialogError(emptyProperty.getMessage(),
+                        "ERR_PROPERTY");
+                System.exit(1);
+            } catch (Config.ReadException readException) {
+                showDialogError(readException.getMessage(),
+                        "ERR_PROPERTY");
                 System.exit(1);
             }
 
@@ -175,6 +193,14 @@ public class FrmPrincipal extends JFrame implements ActionListener, KeyListener
                 showDialogError("Ocurrio un error al conectar con la base de datos, verifique el error y vuelva a intentarlo.",
                         "MY_SQL_ERROR_CONNECTION");
                 System.exit(1);
+            }catch (Config.EmptyProperty emptyProperty) {
+                showDialogError(emptyProperty.getMessage(),
+                        "ERR_PROPERTY");
+                System.exit(1);
+            } catch (Config.ReadException readException) {
+                showDialogError(readException.getMessage(),
+                        "ERR_PROPERTY");
+                System.exit(1);
             }
 
         }
@@ -187,6 +213,14 @@ public class FrmPrincipal extends JFrame implements ActionListener, KeyListener
             } catch (SQLException throwables) {
                 showDialogError("Ocurrio un error al conectar con la base de datos, verifique el error y vuelva a intentarlo.",
                         "MY_SQL_ERROR_CONNECTION");
+                System.exit(1);
+            }catch (Config.EmptyProperty emptyProperty) {
+                showDialogError(emptyProperty.getMessage(),
+                        "ERR_PROPERTY");
+                System.exit(1);
+            } catch (Config.ReadException readException) {
+                showDialogError(readException.getMessage(),
+                        "ERR_PROPERTY");
                 System.exit(1);
             }
 

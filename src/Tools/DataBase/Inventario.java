@@ -1,5 +1,7 @@
 package Tools.DataBase;
 
+import Tools.Config;
+
 import java.sql.SQLException;
 
 public class Inventario
@@ -20,7 +22,7 @@ public class Inventario
 
     private Conexion conn = Conexion.getInstance();
 
-    public Inventario() throws SQLException {
+    public Inventario() throws SQLException, Config.ReadException, Config.EmptyProperty {
     }
 
     public String getCodigoBarras() {

@@ -1,5 +1,6 @@
 package Forms;
 
+import Tools.Config;
 import Tools.DataBase.Usuario;
 
 import javax.swing.*;
@@ -25,7 +26,7 @@ public class FrmUsuario extends JFrame implements ActionListener, KeyListener {
 
     Usuario usuario = null;
 
-    public FrmUsuario() throws SQLException {
+    public FrmUsuario() throws SQLException, Config.ReadException, Config.EmptyProperty {
 
         usuario = new Usuario();
 

@@ -1,5 +1,7 @@
 package Forms;
 
+import Tools.Config;
+
 import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
@@ -82,10 +84,26 @@ public class FrmSplashScreen extends JFrame
                     frmIniciarSesion = new FrmIniciarSesion();
                 } catch (SQLException throwables) {
                     System.exit(1);
+                }catch (Config.EmptyProperty emptyProperty) {
+                    showDialogError(emptyProperty.getMessage(),
+                            "ERR_PROPERTY");
+                    System.exit(1);
+                } catch (Config.ReadException readException) {
+                    showDialogError(readException.getMessage(),
+                            "ERR_PROPERTY");
+                    System.exit(1);
                 }
                 frmIniciarSesion.show();
             }
         });
         thread.start();
+    }
+
+    private void showDialogError(String err, String errTitle)
+    {
+        JOptionPane.showMessageDialog(this,
+                err,
+                errTitle,
+                JOptionPane.ERROR_MESSAGE);
     }
 }

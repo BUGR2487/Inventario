@@ -1,5 +1,6 @@
 package Forms;
 
+import Tools.Config;
 import Tools.DataBase.Entradas;
 import Tools.RenderTable;
 
@@ -115,7 +116,7 @@ public class FrmEntradas extends JFrame implements ActionListener, KeyListener, 
     };
 
 
-    public FrmEntradas() throws SQLException {
+    public FrmEntradas() throws SQLException, Config.ReadException, Config.EmptyProperty {
 
         entradas = new Entradas();
         this.setSize(1275, 1005);

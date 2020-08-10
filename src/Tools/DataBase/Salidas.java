@@ -1,6 +1,7 @@
 package Tools.DataBase;
 
 import Forms.FrmSalidas;
+import Tools.Config;
 
 import javax.swing.*;
 import java.sql.SQLException;
@@ -19,7 +20,7 @@ public class Salidas
     private String TractoCamion = "";
     private Conexion conn = Conexion.getInstance();
 
-    public Salidas() throws SQLException {
+    public Salidas() throws SQLException, Config.ReadException, Config.EmptyProperty {
     }
 
     public String getNumPedido() {
