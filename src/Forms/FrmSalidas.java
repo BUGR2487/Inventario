@@ -1,5 +1,6 @@
 package Forms;
 
+import Tools.Config;
 import Tools.DataBase.Salidas;
 
 import com.itextpdf.text.*;
@@ -56,7 +57,7 @@ public class FrmSalidas extends JFrame implements ActionListener, KeyListener, I
 
     Salidas salidas = null;
 
-    public FrmSalidas() throws SQLException {
+    public FrmSalidas() throws SQLException, Config.ReadException, Config.EmptyProperty {
         salidas = new Salidas();
         this.setSize(1275, 830);
         this.setResizable(false);

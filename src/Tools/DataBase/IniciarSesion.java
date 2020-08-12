@@ -1,6 +1,7 @@
 package Tools.DataBase;
 
 import Forms.FrmPrincipal;
+import Tools.Config;
 
 import java.sql.SQLException;
 
@@ -12,7 +13,7 @@ public class IniciarSesion
     private String Password = "";
     static boolean resultado = false;
 
-    public IniciarSesion() throws SQLException {
+    public IniciarSesion() throws SQLException, Config.ReadException, Config.EmptyProperty {
     }
 
     public String getUsername() {

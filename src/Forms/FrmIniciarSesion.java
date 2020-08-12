@@ -1,5 +1,6 @@
 package Forms;
 
+import Tools.Config;
 import Tools.DataBase.IniciarSesion;
 import javax.swing.*;
 import java.awt.*;
@@ -22,7 +23,7 @@ public class FrmIniciarSesion extends JFrame implements ActionListener, KeyListe
 
     IniciarSesion iniciarSesion = null;
 
-    public FrmIniciarSesion() throws SQLException {
+    public FrmIniciarSesion() throws SQLException, Config.ReadException, Config.EmptyProperty {
         iniciarSesion = new IniciarSesion();
 
         this.setSize(500, 650);

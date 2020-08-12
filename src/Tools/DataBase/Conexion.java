@@ -2,6 +2,7 @@ package Tools.DataBase;
 
 import Forms.FrmEntradas;
 import Forms.FrmSalidas;
+import Tools.Config;
 
 import javax.swing.*;
 import java.sql.*;
@@ -17,12 +18,6 @@ public class Conexion
 {
     //instacia para hacer el singleton:
     private static Conexion instance = null;
-
-    //variables privadas y estaticas que configuran la conexion a la base de datos:
-    private static final String JDBC_NOMBRE_BD = "inventario";
-    private static final String JDBC_URL = "jdbc:mysql://localhost:8889/" + JDBC_NOMBRE_BD + "?useSSL=false&serverTimezone=UTC";
-    private static final String JDBC_USER = "root";
-    private static final String JDBC_PASSWORD = "root";
 
     //Querys:
 
@@ -62,19 +57,29 @@ public class Conexion
     //variables privadas de la clase:
     private Connection conn = null;
 
-    private Conexion() throws SQLException {
-        this.conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+    private Conexion() throws SQLException, Config.ReadException, Config.EmptyProperty {
+        Config cnf = Config.getInstance();
+        String url = cnf.getProperty(Config.JDBC_URL);
+        String user = cnf.getProperty(Config.MYSQL_USER);
+        String pass = cnf.getProperty(Config.MYSQL_PASS);
+
+        if(url.isEmpty())
+            throw new Config.EmptyProperty("URL vacío");
+
+        System.out.println(url);
+
+        this.conn = DriverManager.getConnection(url, user, pass);
     }
 
    //Metodos estaticos:
-        public static Conexion getInstance() throws SQLException {
+        public static Conexion getInstance() throws SQLException, Config.ReadException, Config.EmptyProperty {
             if (instance == null)
                 instance = new Conexion();
             return instance;
         }
 
         // -- Usuarios:
-        public static Usuario seleccionarIdUsuario(String mail) throws SQLException {
+        public static Usuario seleccionarIdUsuario(String mail) throws SQLException, Config.ReadException, Config.EmptyProperty {
             return getInstance().getUsuario(mail);
         }
 
@@ -609,11 +614,12 @@ public class Conexion
 
             return null;
         }
-        catch (SQLException throwables)
+        catch (SQLException | Config.ReadException | Config.EmptyProperty throwables)
         {
             throwables.printStackTrace(System.out);
             return null;
         }
+
         finally
         {
             if(preparedStatement != null){try{preparedStatement.close();}catch (Exception e){}}

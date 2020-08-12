@@ -1,5 +1,7 @@
 package Tools.DataBase;
 
+import Tools.Config;
+
 import java.sql.SQLException;
 
 public class Transporte
@@ -10,7 +12,7 @@ public class Transporte
     private String TractoCamion = "";
     private final Conexion conn = Conexion.getInstance();
 
-    public Transporte() throws SQLException {
+    public Transporte() throws SQLException, Config.ReadException, Config.EmptyProperty {
     }
 
     public String getChofer() {

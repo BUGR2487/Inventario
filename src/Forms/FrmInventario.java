@@ -1,5 +1,6 @@
 package Forms;
 
+import Tools.Config;
 import Tools.DataBase.Inventario;
 
 import javax.swing.*;
@@ -18,7 +19,7 @@ public class FrmInventario extends JFrame implements ActionListener, KeyListener
 
     Inventario inventario = null;
 
-    public FrmInventario() throws SQLException {
+    public FrmInventario() throws SQLException, Config.ReadException, Config.EmptyProperty {
 
         inventario = new Inventario();
 

@@ -9,18 +9,13 @@ import java.awt.Font;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-<<<<<<< HEAD:src/Main.java
 import static com.itextpdf.text.Element.*;
 import static com.itextpdf.text.PageSize.A4;
-=======
-import static com.itextpdf.text.Element.ALIGN_CENTER;
->>>>>>> d04231632fabaa17eb9b9d44efb9e41e16b44b26:src/start/Main.java
 
 public class Main
 {
     public static void main(String[] args)
     {
-
         Forms.FrmSplashScreen frmSplashScreen = new Forms.FrmSplashScreen();
         frmSplashScreen.show();
     }

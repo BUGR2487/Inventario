@@ -1,6 +1,7 @@
 package Tools.DataBase;
 
 import Forms.FrmEntradas;
+import Tools.Config;
 
 import javax.swing.*;
 import java.sql.SQLException;
@@ -28,7 +29,7 @@ public class Entradas
     private String TractoCamion = "";
     private final Conexion conn = Conexion.getInstance();
 
-    public Entradas() throws SQLException {
+    public Entradas() throws SQLException, Config.ReadException, Config.EmptyProperty {
     }
 
     public String getFechaEntrada() {

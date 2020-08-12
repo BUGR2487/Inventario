@@ -1,5 +1,6 @@
 package Forms;
 
+import Tools.Config;
 import Tools.DataBase.Transporte;
 
 import javax.swing.*;
@@ -17,7 +18,7 @@ public class FrmTransporte extends JFrame implements ActionListener, KeyListener
 
     Transporte chofer = null;
 
-    public FrmTransporte() throws SQLException {
+    public FrmTransporte() throws SQLException, Config.ReadException, Config.EmptyProperty {
         chofer = new Transporte();
 
         this.setSize(1040, 500);
