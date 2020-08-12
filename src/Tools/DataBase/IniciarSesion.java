@@ -1,0 +1,48 @@
+package Tools.DataBase;
+
+import Forms.FrmPrincipal;
+
+import java.sql.SQLException;
+
+public class IniciarSesion
+{
+    private final Conexion conn = Conexion.getInstance();
+
+    private String Username = "";
+    private String Password = "";
+    static boolean resultado = false;
+
+    public IniciarSesion() throws SQLException {
+    }
+
+    public String getUsername() {
+        return Username;
+    }
+
+    public void setUsername(String username) {
+        Username = username;
+    }
+
+    public String getPassword() {
+        return Password;
+    }
+
+    public void setPassword(String password) {
+        Password = password;
+    }
+
+    public boolean login()
+    {
+
+        String NombreUsuario = this.conn.busquedaUsuario(this);
+        if(!NombreUsuario.isEmpty())
+        {
+              FrmPrincipal frmPrincipal = new FrmPrincipal(NombreUsuario);
+              frmPrincipal.show();
+        }
+
+        return !NombreUsuario.isEmpty();
+    }
+
+
+}
