@@ -146,7 +146,7 @@ public class FrmIniciarSesion extends JFrame implements ActionListener, KeyListe
     {
         if (mostrarOcultar)
         {
-            CambiarImagenBoton("Imagenes/Ocultar.png");
+            CambiarImagenBoton("Imagees/Ocultar.png");
             TxtContrasena.setEchoChar((char)0);
             MostrarOcultar = false;
         }

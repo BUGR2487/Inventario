@@ -15,5 +15,8 @@
     <orderEntry type="library" name="mysql-connector-java-8.0.20 (2)" level="project" />
     <orderEntry type="library" name="mysql-connector-java-8.0.20" level="project" />
     <orderEntry type="library" name="junit-4.13" level="project" />
+    <orderEntry type="library" name="batik-all-1.13" level="project" />
+    <orderEntry type="library" name="jiconfont-1.0.0" level="project" />
+    <orderEntry type="library" name="jiconfont-swing-1.0.1" level="project" />
   </component>
 </module>

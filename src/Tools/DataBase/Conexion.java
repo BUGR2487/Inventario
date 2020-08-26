@@ -1,7 +1,6 @@
 package Tools.DataBase;
 
-import Forms.FrmEntradas;
-import Forms.FrmSalidas;
+import Forms.Principal.Panels.PanelSalidas;
 import Tools.Config;
 
 import javax.swing.*;
@@ -25,7 +24,7 @@ public class Conexion
 
         private static final String SQL_INSERT_ENTRADAS = "INSERT INTO `inventario`.`entradas` (`NoOrden`, `NoPedido`, `FechaEntrada`, `HoraEntrada`, `CodigoBarras`, `Diseno`, `CodigoInterno`, `Cliente`, `Folio`, `Producto`, `CantidadPallet`, `CantidadPorPallet`, `TotalUnidades`, `Condicion`, `Observaciones`, `Chofer`, `Empresa`, `Placas`, `TractoCamion`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         private static final String SQL_SELECT_CODIGOBARRAS = "SELECT CodigoBarras FROM inventario.inventario;";
-        private static final String SQL_SELECT_BUSQUEDACODIGOBARRAS = "SELECT Folio, Diseno, CodigoInterno, Cliente, Producto, CantidadPorPallet FROM inventario.entradas WHERE CodigoBarras=?;";
+        private static final String SQL_SELECT_BUSQUEDACODIGOBARRAS = "SELECT Diseno, CodigoInterno, Cliente, Producto, CantidadPorPallet FROM inventario.inventario WHERE CodigoBarras=?;";
         private static final String SQL_SELECT_CHOFER = "SELECT Chofer FROM inventario.transporte;";
         private static final String SQL_SELECT_BUSQUEDACHOFER = "SELECT Empresa, Placas, TractoCamion FROM inventario.transporte WHERE Chofer=?;";
 
@@ -204,10 +203,12 @@ public class Conexion
         return  ListaModelo;
     }
 
-    public void busquedaCodigoBarras(FrmEntradas frmEntradas, String codigoBarras)
+    public Entradas busquedaCodigoBarras(String codigoBarras)
     {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
+        Entradas entradaBuscada = null;
+
         try
         {
             preparedStatement = conn.prepareStatement(SQL_SELECT_BUSQUEDACODIGOBARRAS);
@@ -216,20 +217,35 @@ public class Conexion
 
             if(resultSet.next())
             {
-                frmEntradas.TxtFolio.setText(resultSet.getString("Folio"));
-                frmEntradas.TxtDiseno.setText(resultSet.getString("Diseno"));
-                frmEntradas.TxtCodigoInterno.setText(resultSet.getString("CodigoInterno"));
-                frmEntradas.TxtCliente.setText(resultSet.getString("Cliente"));
-                frmEntradas.TxtProducto.setText(resultSet.getString("Producto"));
-                frmEntradas.TxtCantidadPorPallet.setText(resultSet.getString("CantidadPorPallet"));
+                entradaBuscada = new Entradas();
+
+                entradaBuscada.setDiseno(resultSet.getInt("Diseno"));
+                entradaBuscada.setCodigoInterno(resultSet.getString("CodigoInterno"));
+                entradaBuscada.setCliente(resultSet.getString("Cliente"));
+                entradaBuscada.setProducto(resultSet.getString("Producto"));
+                entradaBuscada.setCantidadPorPallet(resultSet.getInt("CantidadPorPallet"));
+
+               /* frmEntradas.TxtFolio.setText();
+                frmEntradas.TxtDiseno.setText();
+                frmEntradas.TxtCodigoInterno.setText);
+                frmEntradas.TxtCliente.setText();
+                frmEntradas.TxtProducto.setText();
+                frmEntradas.TxtCantidadPorPallet.setText();*/
             }
-            return;
+
+            return entradaBuscada;
         }
         catch (SQLException sqlException)
         {
             sqlException.printStackTrace();
-            return;
-        }finally {
+            return null;
+        } catch (Config.EmptyProperty emptyProperty) {
+            emptyProperty.printStackTrace();
+            return null;
+        } catch (Config.ReadException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
             if(preparedStatement != null){try{preparedStatement.close();}catch (Exception e){}}
             if(resultSet != null){try{resultSet.close();}catch (Exception e1){}}
         }
@@ -284,29 +300,41 @@ public class Conexion
             return  ListaModelo;
     }
 
-    public void busquedaChofer(FrmEntradas frmEntradas, String chofer)
+    public Transporte busquedaChofer(String chofer)
     {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-
+        Transporte choferBuscado = null;
         try
         {
             preparedStatement = conn.prepareStatement(SQL_SELECT_BUSQUEDACHOFER);
             preparedStatement.setString(1, chofer);
             resultSet = preparedStatement.executeQuery();
 
-            while(resultSet.next())
+            if(resultSet.next())
             {
-                frmEntradas.TxtEmpresa.setText(resultSet.getString("Empresa"));
-                frmEntradas.TxtPlacas.setText(resultSet.getString("Placas"));
-                frmEntradas.TxtTractoCamion.setText(resultSet.getString("TractoCamion"));
+                choferBuscado = new Transporte();
+                choferBuscado.setChofer(chofer);
+                choferBuscado.setEmpresa(resultSet.getString("Empresa"));
+                choferBuscado.setPlacas(resultSet.getString("Placas"));
+                choferBuscado.setTractoCamion(resultSet.getString("TractoCamion"));
+
+                /*frmEntradas.TxtEmpresa.setText();
+                frmEntradas.TxtPlacas.setText();
+                frmEntradas.TxtTractoCamion.setText();*/
+
             }
+
+            return choferBuscado;
         }
         catch (SQLException sqlException)
         {
-            sqlException.printStackTrace();
-        }
-        finally {
+            return null;
+        } catch (Config.EmptyProperty emptyProperty) {
+            return null;
+        } catch (Config.ReadException e) {
+            return null;
+        } finally {
             if(preparedStatement != null){try{preparedStatement.close();}catch (Exception e){}}
             if(resultSet != null){try{resultSet.close();}catch (Exception e1){}}
         }
@@ -325,8 +353,8 @@ public class Conexion
             preparedStatement.setInt(2, inventario.getDiseno());
             preparedStatement.setString(3, inventario.getCodigoInterno());
             preparedStatement.setString(4, inventario.getCliente());
-            preparedStatement.setString(5, inventario.getProducto());
-            preparedStatement.setInt(6, inventario.getCantidadPorPallet());
+            preparedStatement.setInt(5, inventario.getCantidadPorPallet());
+            preparedStatement.setString(6, inventario.getProducto());
 
             //System.out.println("Ejecutanto query " + SQL_INSERT);
             rows = preparedStatement.executeUpdate();
@@ -429,7 +457,7 @@ public class Conexion
         return  ListaModelo;
     }
 
-    public void busquedaNumPedido(FrmSalidas frmSalidas, String nPedido)
+    public void busquedaNumPedido(PanelSalidas frmSalidas, String nPedido)
     {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -442,13 +470,13 @@ public class Conexion
 
             while(resultSet.next())
             {
-                frmSalidas.TxtCantidadPallet.setText(resultSet.getString("CantidadPallet"));
-                frmSalidas.TxtCantidadPorPallet.setText(resultSet.getString("CantidadPorPallet"));
-                frmSalidas.TxtTotalUnidades.setText(resultSet.getString("TotalUnidades"));
-                frmSalidas.TxtChofer.setText(resultSet.getString("Chofer"));
-                frmSalidas.TxtEmpresa.setText(resultSet.getString("Empresa"));
-                frmSalidas.TxtPlacas.setText(resultSet.getString("Placas"));
-                frmSalidas.TxtTractoCamion.setText(resultSet.getString("TractoCamion"));
+                frmSalidas.getCANT_PALLET_TXT().setText(resultSet.getString("CantidadPallet"));
+                frmSalidas.getCANT_POR_PALETT_TXT().setText(resultSet.getString("CantidadPorPallet"));
+                frmSalidas.getTOTAL_UNIDADES_TXT().setText(resultSet.getString("TotalUnidades"));
+                frmSalidas.getCHOFER_TXT().setText(resultSet.getString("Chofer"));
+                frmSalidas.getEMPRESA_TXT().setText(resultSet.getString("Empresa"));
+                frmSalidas.getPLACAS_TXT().setText(resultSet.getString("Placas"));
+                frmSalidas.getTRACTO_TXT().setText(resultSet.getString("TractoCamion"));
             }
 
         }

@@ -36,7 +36,7 @@ public class FrmUsuario extends JFrame implements ActionListener, KeyListener {
         this.setLocationRelativeTo(null);
         this.setTitle("Registro de usuarios");
         this.getContentPane().setBackground(Color.WHITE);
-        setIconImage(new ImageIcon(getClass().getResource("Imagenes/IconoTprlogistics.png")).getImage());
+        setIconImage(new ImageIcon("./Data/Imagenes/IconoTprlogistics.png").getImage());
 
         font = new Font("HELVETICA", Font.PLAIN, 25);
 
@@ -175,7 +175,7 @@ public class FrmUsuario extends JFrame implements ActionListener, KeyListener {
 
         BtnOcultarMostrar = new JButton();
         BtnOcultarMostrar.setName("BtnOcultarMostrar");
-        CambiarImagenBoton("Imagenes/Mostrar.png");
+        CambiarImagenBoton("./Data/Imagenes/Mostrar.png");
         BtnOcultarMostrar.setBounds(962, 195, 40, 40);
         BtnOcultarMostrar.setFont(font);
         BtnOcultarMostrar.setBackground(Color.white);
@@ -252,12 +252,12 @@ public class FrmUsuario extends JFrame implements ActionListener, KeyListener {
 
     private void MostrarContrasena(Boolean mostrarOcultar) {
         if (mostrarOcultar) {
-            CambiarImagenBoton("Imagenes/Ocultar.png");
+            CambiarImagenBoton("./Data/Imagenes/Ocultar.png");
             TxtContrasena.setEchoChar((char) 0);
             TxtContrasena2.setEchoChar((char) 0);
             MostrarOcultar = false;
         } else {
-            CambiarImagenBoton("Imagenes/Mostrar.png");
+            CambiarImagenBoton("./Data/Imagenes/Mostrar.png");
             TxtContrasena.setEchoChar('•');
             TxtContrasena2.setEchoChar('•');
             MostrarOcultar = true;
@@ -265,7 +265,7 @@ public class FrmUsuario extends JFrame implements ActionListener, KeyListener {
     }
 
     private void CambiarImagenBoton(String RutaImagen) {
-        ImgOcultarMostrar = new ImageIcon(this.getClass().getResource(RutaImagen));
+        ImgOcultarMostrar = new ImageIcon(RutaImagen);
         IcnOcultarMostrar = new ImageIcon(ImgOcultarMostrar.getImage().getScaledInstance(40, 40, java.awt.Image.SCALE_SMOOTH));
         BtnOcultarMostrar.setIcon(IcnOcultarMostrar);
     }

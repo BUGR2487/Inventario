@@ -1,6 +1,6 @@
 package Tools.DataBase;
 
-import Forms.FrmEntradas;
+import Forms.Principal.Panels.PanelEntradas;
 import Tools.Config;
 
 import javax.swing.*;
@@ -192,9 +192,21 @@ public class Entradas
     {
         return this.conn.obtenerCodigoBarras();
     }
-    public void busquedaCodigoBarras(FrmEntradas frmEntradas)
+    public void busquedaCodigoBarras(PanelEntradas tab, String codigoDeBarras)
     {
-        this.conn.busquedaCodigoBarras(frmEntradas, this.getCodigoBarras());
+       Entradas result =  this.conn.busquedaCodigoBarras(codigoDeBarras);
+
+       if(result != null)
+       {
+           tab.getDISENO_TXT().setText(String.valueOf(result.getDiseno()));
+           tab.getCLIENTE_TXT().setText(result.getCliente());
+           tab.getPRODUCTO_TXT().setText(result.getProducto());
+
+           tab.getCODIGO_INTERNO_TXT().setText(String.valueOf(result.getCodigoInterno()));
+           tab.getCANT_POR_PALETT_TXT().setText(String.valueOf(result.getCantidadPorPallet()));
+       }
+
+        result = null;
     }
 
     public DefaultComboBoxModel obtenerChofer()
@@ -202,9 +214,17 @@ public class Entradas
         return this.conn.obtenerChofer();
     }
 
-    public void busquedaChofer(FrmEntradas frmEntradas)
+    public void busquedaChofer(PanelEntradas tab, String idChofer)
     {
-        this.conn.busquedaChofer(frmEntradas, this.getChofer());
+        Transporte result = this.conn.busquedaChofer(idChofer);
+
+        if (result != null)
+        {
+            tab.getEMPRESA_TXT().setText(result.getEmpresa());
+            tab.getPLACAS_TXT().setText(result.getPlacas());
+            tab.getTRACTO_TXT().setText(result.getTractoCamion());
+        }
+
     }
 
 }

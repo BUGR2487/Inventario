@@ -125,7 +125,7 @@ public class FrmEntradas extends JFrame implements ActionListener, KeyListener, 
         this.setLocationRelativeTo(null);
         this.setTitle("Formulario de entradas");
         this.getContentPane().setBackground(Color.WHITE);
-        setIconImage(new ImageIcon(getClass().getResource("Imagenes/IconoTprlogistics.png")).getImage());
+        setIconImage(new ImageIcon("./Data/Imagenes/IconoTprlogistics.png").getImage());
 
         font = new Font("HELVETICA", Font.PLAIN, 25);
 
@@ -579,6 +579,7 @@ public class FrmEntradas extends JFrame implements ActionListener, KeyListener, 
         TblEntradas.setPreferredScrollableViewportSize(Toolkit.getDefaultToolkit().getScreenSize());
         TblEntradas.setFillsViewportHeight(true);
         TblEntradas.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
         defaultTableModel.setColumnIdentifiers(new String[] {"#", "Folio", "Código de barras", "Diseño", "Producto", "Cantidad/Unidad","color"});
         ScrTabla = new JScrollPane(TblEntradas, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         ScrTabla.setBounds(50, 570, 1160, 300);
@@ -586,6 +587,7 @@ public class FrmEntradas extends JFrame implements ActionListener, KeyListener, 
 
         defaultTableCellRenderer = new DefaultTableCellRenderer();
         defaultTableCellRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
         TblEntradas.getColumnModel().getColumn(0).setCellRenderer(defaultTableCellRenderer);
         TblEntradas.getColumnModel().getColumn(1).setCellRenderer(defaultTableCellRenderer);
         TblEntradas.getColumnModel().getColumn(2).setCellRenderer(defaultTableCellRenderer);
@@ -734,8 +736,6 @@ public class FrmEntradas extends JFrame implements ActionListener, KeyListener, 
             {
                 int veces = 0;
                 int valor = 0;
-
-
                 for(int i = 1; i <= Integer.parseInt(TxtCantidad.getText()); i++)
                 {
                     String [] fila = new String[7];
@@ -875,8 +875,8 @@ public class FrmEntradas extends JFrame implements ActionListener, KeyListener, 
         {
             entradas.setCodigoBarras(CmbCodigoBarras.getSelectedItem().toString());
             entradas.setChofer(CmbChofer.getSelectedItem().toString());
-            entradas.busquedaCodigoBarras(this);
-            entradas.busquedaChofer(this);
+            //entradas.busquedaCodigoBarras(this);
+            //entradas.busquedaChofer(this);
         }
     }
 
@@ -988,14 +988,5 @@ public class FrmEntradas extends JFrame implements ActionListener, KeyListener, 
         catch (Exception e) {}
     }
 
-    /*
-    DESCOMENTA ESTE MAIN SI QUIERES PROBAR DIRECTAMENTE EL FORM EN ESTA CLASE SIN LLAMAR AL MAIN,
-    SI YA LO CALASTE LO BORRARE EN UN COMMIT MAS ADELANTE UNA VEZ ME DIGAS QUE YA ESTA BIEN.
-    public static void main(String[] args)
-    {
-        Forms.FrmEntradas frmEntradas = new Forms.FrmEntradas();
-        frmEntradas.show();
-    }
-    */
 
 }

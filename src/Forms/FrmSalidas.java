@@ -65,7 +65,7 @@ public class FrmSalidas extends JFrame implements ActionListener, KeyListener, I
         this.setLocationRelativeTo(null);
         this.setTitle("Formulario de salidas");
         this.getContentPane().setBackground(Color.WHITE);
-        setIconImage(new ImageIcon(getClass().getResource("Imagenes/IconoTprlogistics.png")).getImage());
+        setIconImage(new ImageIcon("./Data/Imagenes/IconoTprlogistics.png").getImage());
 
         font = new Font("HELVETICA", Font.PLAIN, 25);
 
@@ -383,7 +383,7 @@ public class FrmSalidas extends JFrame implements ActionListener, KeyListener, I
         if(e.getStateChange() == ItemEvent.SELECTED)
         {
             salidas.setNumPedido(CmbNumPedido.getSelectedItem().toString());
-            salidas.busquedaNumPedido(this);
+          //  salidas.busquedaNumPedido(this);
         }
     }
 

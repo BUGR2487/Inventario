@@ -1,6 +1,5 @@
 package Tools.DataBase;
 
-import Forms.FrmPrincipal;
 import Tools.Config;
 
 import java.sql.SQLException;
@@ -36,11 +35,6 @@ public class IniciarSesion
     {
 
         String NombreUsuario = this.conn.busquedaUsuario(this);
-        if(!NombreUsuario.isEmpty())
-        {
-              FrmPrincipal frmPrincipal = new FrmPrincipal(NombreUsuario);
-              frmPrincipal.show();
-        }
 
         return !NombreUsuario.isEmpty();
     }

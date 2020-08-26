@@ -1,6 +1,6 @@
 package Tools.DataBase;
 
-import Forms.FrmSalidas;
+import Forms.Principal.Panels.PanelSalidas;
 import Tools.Config;
 
 import javax.swing.*;
@@ -112,7 +112,8 @@ public class Salidas
     {
         return this.conn.obtenerPedidos();
     }
-    public void busquedaNumPedido(FrmSalidas frmSalidas)
+
+    public void busquedaNumPedido(PanelSalidas frmSalidas)
     {
         this.conn.busquedaNumPedido(frmSalidas, this.getNumPedido());
     }
