@@ -1,6 +1,6 @@
 package Tools;
 
-import Forms.Components.Fecha_y_hora;
+import Tools.DataBase.Salidas;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -15,9 +15,27 @@ import static com.itextpdf.text.PageSize.A4;
 
 public class PDF
 {
-    
+    private static PDF  instance = null;
 
-    public static void generarPDF()
+    public static PDF getInstance(){
+
+        if (instance == null)
+            instance = new PDF();
+
+        return instance;
+    }
+
+    public void generarPDF(Object data)
+    {
+        if(data instanceof Salidas)
+        {
+            System.out.println("es de salidas");
+            this.salidaPDF((Salidas) data);
+        }
+
+    }
+
+    private void salidaPDF(Salidas obj)
     {
         Document document = new Document();
         document.setPageSize(A4.rotate());
@@ -37,11 +55,14 @@ public class PDF
             EncabezadoDerecha.setAlignment(Element.ALIGN_RIGHT);
             document.add(EncabezadoDerecha);
 
-            Paragraph titulo = new Paragraph("Orden de Salida.", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
+            Paragraph titulo = new Paragraph("Orden de Salida.",
+                    FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
+
             titulo.setAlignment(ALIGN_CENTER);
             document.add(titulo);
 
-            Paragraph datosEmpresa = new Paragraph("tpr@tapatransportes.com | Tel: 33 - 2001 - 0553", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
+            Paragraph datosEmpresa = new Paragraph("tpr@tapatransportes.com | Tel: 33 - 2001 - 0553",
+                    FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK));
             datosEmpresa.setAlignment(Element.ALIGN_RIGHT);
             document.add(datosEmpresa);
 
@@ -62,31 +83,38 @@ public class PDF
             ColumnaBlanco.setHorizontalAlignment(ALIGN_CENTER);
             TblNoSalida.addCell(ColumnaBlanco);
 
-            PdfPCell FechaEnvio = new PdfPCell(new Phrase("Fecha de Envío", FontFactory.getFont("Arial", 6, Font.BOLD, BaseColor.BLACK)));
+            PdfPCell FechaEnvio = new PdfPCell(new Phrase("Fecha de Envío", FontFactory.getFont("Arial",
+                    6, Font.BOLD, BaseColor.BLACK)));
             FechaEnvio.setHorizontalAlignment(ALIGN_CENTER);
             TblNoSalida.addCell(FechaEnvio);
 
-            PdfPCell Hora = new PdfPCell(new Phrase("Hora", FontFactory.getFont("Arial", 6, Font.BOLD, BaseColor.BLACK)));
+            PdfPCell Hora = new PdfPCell(new Phrase("Hora", FontFactory.getFont("Arial", 6,
+                    Font.BOLD, BaseColor.BLACK)));
             Hora.setHorizontalAlignment(ALIGN_CENTER);
             TblNoSalida.addCell(Hora);
 
-            PdfPCell Almacenista = new PdfPCell(new Phrase("Almacenista", FontFactory.getFont("Arial", 6, Font.BOLD, BaseColor.BLACK)));
+            PdfPCell Almacenista = new PdfPCell(new Phrase("Almacenista", FontFactory.getFont("Arial",
+                    6, Font.BOLD, BaseColor.BLACK)));
             Almacenista.setHorizontalAlignment(ALIGN_CENTER);
             TblNoSalida.addCell(Almacenista);
 
-            PdfPCell ClNoSalida = new PdfPCell(new Paragraph("1", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            PdfPCell ClNoSalida = new PdfPCell(new Paragraph("1", FontFactory.getFont("Arial", 6,
+                    Font.PLAIN, BaseColor.BLACK)));
             ClNoSalida.setHorizontalAlignment(ALIGN_CENTER);
             TblNoSalida.addCell(ClNoSalida);
 
-            PdfPCell ClHora = new PdfPCell(new Paragraph("10:15:26 p.m.", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            PdfPCell ClHora = new PdfPCell(new Paragraph("10:15:26 p.m.", FontFactory.getFont("Arial",
+                    6, Font.PLAIN, BaseColor.BLACK)));
             ClHora.setHorizontalAlignment(ALIGN_CENTER);
             TblNoSalida.addCell(ClHora);
 
-            PdfPCell ClFechaEnvio = new PdfPCell(new Paragraph("06/06/2020", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            PdfPCell ClFechaEnvio = new PdfPCell(new Paragraph("06/06/2020", FontFactory.getFont(
+                    "Arial", 6, Font.PLAIN, BaseColor.BLACK)));
             ClFechaEnvio.setHorizontalAlignment(ALIGN_CENTER);
             TblNoSalida.addCell(ClFechaEnvio);
 
-            PdfPCell ClAlmacenista = new PdfPCell(new Paragraph("ALAN R.", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            PdfPCell ClAlmacenista = new PdfPCell(new Paragraph("ALAN R.", FontFactory.getFont(
+                    "Arial", 6, Font.PLAIN, BaseColor.BLACK)));
             ClAlmacenista.setHorizontalAlignment(ALIGN_CENTER);
             TblNoSalida.addCell(ClAlmacenista);
 
@@ -100,14 +128,18 @@ public class PDF
             float[] anchoCeldas2 = {60f, 220f, 10f, 60f, 220f};
             TblLugarOrigen.setWidthPercentage(anchoCeldas2, A4);
 
-            PdfPCell LugarOrigen = new PdfPCell(new Phrase("Lugar de origen:", FontFactory.getFont("Arial", 6, Font.BOLD, BaseColor.BLACK)));
+            PdfPCell LugarOrigen = new PdfPCell(new Phrase("Lugar de origen:", FontFactory.getFont(
+                    "Arial", 6, Font.BOLD, BaseColor.BLACK)));
             LugarOrigen.setRowspan(2);
             LugarOrigen.setHorizontalAlignment(ALIGN_CENTER);
             LugarOrigen.setVerticalAlignment(Element.ALIGN_MIDDLE);
             LugarOrigen.setFixedHeight(50f);
             TblLugarOrigen.addCell(LugarOrigen);
 
-            PdfPCell DatosLugarOrigen = new PdfPCell(new Phrase("TAPATRANSPORTES S.A. DE C.V. S/C Almacén.   PROL. LOPEZ \n\n MATEOS SUR #1800 PRIV. NO.23 SANTACRUZ DE LAS FLORES, TLAJOMULCO DE ZÚÑIGA, JAL. MEX.", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            PdfPCell DatosLugarOrigen = new PdfPCell(new Phrase(
+                    "TAPATRANSPORTES S.A. DE C.V. S/C Almacén.   PROL. LOPEZ \n\n MATEOS SUR " +
+                            "#1800 PRIV. NO.23 SANTACRUZ DE LAS FLORES, TLAJOMULCO DE ZÚÑIGA, JAL. MEX.",
+                    FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
             DatosLugarOrigen.setRowspan(2);
             DatosLugarOrigen.setHorizontalAlignment(ALIGN_CENTER);
             DatosLugarOrigen.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -119,23 +151,30 @@ public class PDF
             ColumnaBlanco2.setHorizontalAlignment(ALIGN_CENTER);
             TblLugarOrigen.addCell(ColumnaBlanco2);
 
-            PdfPCell ClienteExpedidor = new PdfPCell(new Phrase("Cliente Expedidor:", FontFactory.getFont("Arial", 6, Font.BOLD, BaseColor.BLACK)));
+            PdfPCell ClienteExpedidor = new PdfPCell(new Phrase("Cliente Expedidor:",
+                    FontFactory.getFont("Arial", 6, Font.BOLD, BaseColor.BLACK)));
             ClienteExpedidor.setHorizontalAlignment(ALIGN_CENTER);
             ClienteExpedidor.setVerticalAlignment(Element.ALIGN_MIDDLE);
             ClienteExpedidor.setFixedHeight(25f);
             TblLugarOrigen.addCell(ClienteExpedidor);
 
-            PdfPCell DatosClienteExpedidor = new PdfPCell(new Phrase("INTERNATIONAL PAPER MÉXICO COMPANY, S DE RL DE CV.", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            PdfPCell DatosClienteExpedidor = new PdfPCell(new Phrase("INTERNATIONAL PAPER MÉXICO " +
+                    "COMPANY, S DE RL DE CV.", FontFactory.getFont("Arial",
+                    6, Font.PLAIN, BaseColor.BLACK)));
             DatosClienteExpedidor.setHorizontalAlignment(ALIGN_CENTER);
             DatosClienteExpedidor.setVerticalAlignment(Element.ALIGN_MIDDLE);
             TblLugarOrigen.addCell(DatosClienteExpedidor);
 
-            PdfPCell Direccion = new PdfPCell(new Phrase("Dirección:", FontFactory.getFont("Arial", 6, Font.BOLD, BaseColor.BLACK)));
+            PdfPCell Direccion = new PdfPCell(new Phrase("Dirección:", FontFactory.getFont("Arial",
+                    6, Font.BOLD, BaseColor.BLACK)));
             Direccion.setHorizontalAlignment(ALIGN_CENTER);
             Direccion.setVerticalAlignment(Element.ALIGN_MIDDLE);
             TblLugarOrigen.addCell(Direccion);
 
-            PdfPCell DatosDireccion = new PdfPCell(new Phrase("AV. BICENTENARIO 372 COL. S/C, LOC. LA CANTERA, SAN JOSE ITURBIDE, GTO, MEX. C.P. 37988", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            PdfPCell DatosDireccion = new PdfPCell(new Phrase("AV. BICENTENARIO 372 COL. S/C," +
+                    " LOC. LA CANTERA, " +
+                    "SAN JOSE ITURBIDE, GTO, MEX. C.P. 37988", FontFactory.getFont("Arial", 6,
+                    Font.PLAIN, BaseColor.BLACK)));
             DatosDireccion.setHorizontalAlignment(ALIGN_CENTER);
             DatosDireccion.setVerticalAlignment(Element.ALIGN_MIDDLE);
             TblLugarOrigen.addCell(DatosDireccion);

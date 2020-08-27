@@ -5,20 +5,11 @@ import Forms.Principal.Layouts.SalidasLayout;
 import Tools.Config;
 import Tools.DataBase.Salidas;
 import Tools.PDF;
-import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.Font;
-import java.awt.Rectangle;
 import java.awt.event.*;
 import java.awt.geom.Point2D;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.sql.SQLException;
 
 public class PanelSalidas extends JPanel implements ActionListener, KeyListener, Panel{
@@ -223,7 +214,7 @@ public class PanelSalidas extends JPanel implements ActionListener, KeyListener,
 
             this.vaciarTextos();
 
-            PDF.generarPDF();
+            PDF.getInstance().generarPDF(this.SALIDAS);
 
             JOptionPane.showMessageDialog(this,
                                             "Salida registrada",
