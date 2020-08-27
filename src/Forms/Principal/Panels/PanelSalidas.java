@@ -4,6 +4,7 @@ import Forms.Components.Table;
 import Forms.Principal.Layouts.SalidasLayout;
 import Tools.Config;
 import Tools.DataBase.Salidas;
+import Tools.PDF;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -222,54 +223,12 @@ public class PanelSalidas extends JPanel implements ActionListener, KeyListener,
 
             this.vaciarTextos();
 
-            this.crearPDF();
+            PDF.generarPDF();
 
             JOptionPane.showMessageDialog(this,
                                             "Salida registrada",
                                             "Registro de salidas",
                                             JOptionPane.INFORMATION_MESSAGE);
-        }
-    }
-
-    private void crearPDF() {
-        JFileChooser seleccionadorArchivos = new JFileChooser();
-        seleccionadorArchivos.setCurrentDirectory(new File(System.getProperty("user.home")));
-        seleccionadorArchivos.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        FileNameExtensionFilter filtroArchivos = new FileNameExtensionFilter("Documentos PDF (*pdf)", "pdf");
-        seleccionadorArchivos.setFileFilter(filtroArchivos);
-
-        int seleccion = seleccionadorArchivos.showSaveDialog(this);
-
-        if (seleccion == JFileChooser.APPROVE_OPTION)
-        {
-            File archivo = seleccionadorArchivos.getSelectedFile();
-
-            Document document = new Document();
-            try
-            {
-                FileOutputStream fileOutputStream = new FileOutputStream(archivo.getAbsoluteFile() + ".pdf");
-                PdfWriter.getInstance(document, fileOutputStream);
-
-                document.open();
-
-                Paragraph titulo = new Paragraph("Tools.DataBase.Salidas", FontFactory.getFont("Arial", 22, Font.BOLD, BaseColor.BLUE));
-                document.add(titulo);
-
-                PdfPTable pdfTable = new PdfPTable(6);
-                pdfTable.addCell("Num.Pedido");
-                pdfTable.addCell("Código de barras");
-                pdfTable.addCell("Diseño");
-                pdfTable.addCell("Producto");
-                pdfTable.addCell("Folio");
-                pdfTable.addCell("Cantidad por pallet");
-                document.add(pdfTable);
-
-                document.close();
-            }
-            catch (FileNotFoundException | DocumentException e)
-            {
-                e.printStackTrace();
-            }
         }
     }
 

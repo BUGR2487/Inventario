@@ -2,20 +2,15 @@ package Forms;
 
 import Tools.Config;
 import Tools.DataBase.Salidas;
-
-import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
+import Tools.PDF;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.Font;
 import java.awt.event.*;
-import java.io.*;
 import java.sql.SQLException;
 
 public class FrmSalidas extends JFrame implements ActionListener, KeyListener, ItemListener
@@ -347,7 +342,7 @@ public class FrmSalidas extends JFrame implements ActionListener, KeyListener, I
                 salidas.insertarSalidas();
 
                 vaciarTextos();
-                crearPDF();
+
                 JOptionPane.showMessageDialog(this, "Salida registrada", "Registro de salidas", JOptionPane.INFORMATION_MESSAGE);
             }
         }
@@ -399,48 +394,5 @@ public class FrmSalidas extends JFrame implements ActionListener, KeyListener, I
         TxtTractoCamion.setText("");
         TxtSellos.setText("");
         TxtEntregaDelDia.setText("");
-    }
-
-    private void crearPDF()
-    {
-        JFileChooser seleccionadorArchivos = new JFileChooser();
-        seleccionadorArchivos.setCurrentDirectory(new File(System.getProperty("user.home")));
-        seleccionadorArchivos.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        FileNameExtensionFilter filtroArchivos = new FileNameExtensionFilter("Documentos PDF (*pdf)", "pdf");
-        seleccionadorArchivos.setFileFilter(filtroArchivos);
-
-        int seleccion = seleccionadorArchivos.showSaveDialog(this);
-
-        if (seleccion == JFileChooser.APPROVE_OPTION)
-        {
-            File archivo = seleccionadorArchivos.getSelectedFile();
-
-            Document document = new Document();
-            try
-            {
-                FileOutputStream fileOutputStream = new FileOutputStream(archivo.getAbsoluteFile() + ".pdf");
-                PdfWriter.getInstance(document, fileOutputStream);
-
-                document.open();
-
-                Paragraph titulo = new Paragraph("Tools.DataBase.Salidas", FontFactory.getFont("Arial", 22, Font.BOLD, BaseColor.BLUE));
-                document.add(titulo);
-
-                PdfPTable pdfTable = new PdfPTable(6);
-                pdfTable.addCell("Num.Pedido");
-                pdfTable.addCell("Código de barras");
-                pdfTable.addCell("Diseño");
-                pdfTable.addCell("Producto");
-                pdfTable.addCell("Folio");
-                pdfTable.addCell("Cantidad por pallet");
-                document.add(pdfTable);
-
-                document.close();
-            }
-            catch (FileNotFoundException | DocumentException e)
-            {
-                e.printStackTrace();
-            }
-        }
     }
 }
