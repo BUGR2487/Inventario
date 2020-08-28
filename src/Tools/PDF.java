@@ -15,10 +15,10 @@ import static com.itextpdf.text.PageSize.A4;
 
 public class PDF
 {
-    private static PDF  instance = null;
+    private static PDF instance = null;
 
-    public static PDF getInstance(){
-
+    public static PDF getInstance()
+    {
         if (instance == null)
             instance = new PDF();
 
@@ -32,7 +32,6 @@ public class PDF
             System.out.println("es de salidas");
             this.salidaPDF((Salidas) data);
         }
-
     }
 
     private void salidaPDF(Salidas obj)
@@ -270,15 +269,15 @@ public class PDF
             ClNoOrden.setHorizontalAlignment(ALIGN_CENTER);
             TblPrincipal.addCell(ClNoOrden);
 
-            PdfPCell ClNoSello = new PdfPCell(new Phrase("3168947", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            PdfPCell ClNoSello = new PdfPCell(new Phrase(obj.getSellos(), FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
             ClNoSello.setHorizontalAlignment(ALIGN_CENTER);
             TblPrincipal.addCell(ClNoSello);
 
-            PdfPCell ClNoGuia = new PdfPCell(new Phrase("1-7136A", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            PdfPCell ClNoGuia = new PdfPCell(new Phrase(obj.getNumPedido(), FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
             ClNoGuia.setHorizontalAlignment(ALIGN_CENTER);
             TblPrincipal.addCell(ClNoGuia);
 
-            PdfPCell ClPlacas = new PdfPCell(new Phrase(" ", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            PdfPCell ClPlacas = new PdfPCell(new Phrase(obj.getPlacas(), FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
             ClPlacas.setHorizontalAlignment(ALIGN_CENTER);
             TblPrincipal.addCell(ClPlacas);
 
@@ -286,11 +285,11 @@ public class PDF
             ClViaEmbarque.setHorizontalAlignment(ALIGN_CENTER);
             TblPrincipal.addCell(ClViaEmbarque);
 
-            PdfPCell ClChofer = new PdfPCell(new Phrase("PABLO CISNEROS", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            PdfPCell ClChofer = new PdfPCell(new Phrase(obj.getChofer(), FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
             ClChofer.setHorizontalAlignment(ALIGN_CENTER);
             TblPrincipal.addCell(ClChofer);
 
-            PdfPCell ClEmpresa = new PdfPCell(new Phrase("CALDERON", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            PdfPCell ClEmpresa = new PdfPCell(new Phrase(obj.getEmpresa(), FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
             ClEmpresa.setHorizontalAlignment(ALIGN_CENTER);
             TblPrincipal.addCell(ClEmpresa);
 
@@ -358,7 +357,7 @@ public class PDF
             ClTotal.setHorizontalAlignment(ALIGN_CENTER);
             TblPrincipal2.addCell(ClTotal);
 
-            PdfPCell ClCantidadPallets = new PdfPCell(new Phrase("11", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            PdfPCell ClCantidadPallets = new PdfPCell(new Phrase(String.valueOf(obj.getCantidadPallet()), FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
             ClCantidadPallets.setHorizontalAlignment(ALIGN_CENTER);
             TblPrincipal2.addCell(ClCantidadPallets);
 
@@ -366,7 +365,7 @@ public class PDF
             ClPiezasPallet.setHorizontalAlignment(ALIGN_CENTER);
             TblPrincipal2.addCell(ClPiezasPallet);
 
-            PdfPCell ClTotalUnidades = new PdfPCell(new Phrase("5,500", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            PdfPCell ClTotalUnidades = new PdfPCell(new Phrase(String.valueOf(obj.getTotalUnidades()), FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
             ClTotalUnidades.setHorizontalAlignment(ALIGN_CENTER);
             TblPrincipal2.addCell(ClTotalUnidades);
 
@@ -454,7 +453,7 @@ public class PDF
             ColumnaBlanco6.setBorder(com.itextpdf.text.Rectangle.NO_BORDER);
             TblClienteAEntregar.addCell(ColumnaBlanco6);
 
-            PdfPCell FechaEntrega = new PdfPCell(new Phrase("FECHA", FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
+            PdfPCell FechaEntrega = new PdfPCell(new Phrase(obj.getFechaEntrega(), FontFactory.getFont("Arial", 6, Font.PLAIN, BaseColor.BLACK)));
             FechaEntrega.setHorizontalAlignment(ALIGN_CENTER);
             TblClienteAEntregar.addCell(FechaEntrega);
 
