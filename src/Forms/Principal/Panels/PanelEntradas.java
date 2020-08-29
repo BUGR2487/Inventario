@@ -3,17 +3,12 @@ package Forms.Principal.Panels;
 import Forms.Components.Fecha_y_hora;
 import Forms.Components.Table;
 import Forms.Principal.Layouts.EntradasLayout;
-import Tools.Config;
 import Tools.DataBase.Entradas;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Point2D;
-import java.sql.SQLException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class PanelEntradas extends JPanel
         implements ActionListener, KeyListener, FocusListener, Panel {
@@ -22,7 +17,8 @@ public class PanelEntradas extends JPanel
 
     private final JLabel N_ORDEN_LB             = new JLabel("No. Orden");
     private final JLabel N_PEDIDO_LB            = new JLabel("No. Pedido");
-    private final JLabel FECHA_ENTRADA_LB       = new JLabel("");
+
+    private JLabel FECHA_ENTRADA_LB             = null;
 
     private final JLabel CODIGO_DE_BARRAS_LB    = new JLabel("C\u00f3digo de barras");
     private final JLabel DISENO_LB              = new JLabel("Dise\u00f1o");
@@ -83,19 +79,12 @@ public class PanelEntradas extends JPanel
 
     // -- Runnable que actualiza la hora y fecha:
 
-    private final Fecha_y_hora DATE_CONTROLLER = new Fecha_y_hora( this.FECHA_ENTRADA_LB );
-
-    // -- Timer que se llamara al runnable anteriormente declarado:
-
-    private final ScheduledExecutorService UPDATE_TIME = Executors.newSingleThreadScheduledExecutor();
+    private Fecha_y_hora DATE_CONTROLLER = null;
 
     // -- scroll de la vista:
     private final JScrollPane PANE = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
             ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 
-    // -- variable del modelo:
-
-    private final Entradas ENTRADAS_MDL = new Entradas();
 
     // -- Tabla de entradas:
     private final Table TABLA_DE_ENTRADAS = new Table(true, new String[] {
@@ -113,12 +102,14 @@ public class PanelEntradas extends JPanel
     
     // -- CONSTRUCTOR:
 
-    public PanelEntradas() throws Config.EmptyProperty, SQLException, Config.ReadException {
+    public PanelEntradas( JLabel dateTime, Fecha_y_hora dateController ){
 
+        this.FECHA_ENTRADA_LB = dateTime;
+        this.DATE_CONTROLLER = dateController;
         this.prepareAll();
         this.setLayout(new EntradasLayout(this));
         this.PANE.getViewport().add(this);
-        this.UPDATE_TIME.scheduleAtFixedRate(this.DATE_CONTROLLER, 0, 1, TimeUnit.SECONDS);
+
     }
 
     // -- METODOS DE LA CLASE:
@@ -256,10 +247,10 @@ public class PanelEntradas extends JPanel
     }
     protected void completarInfoCB(String id) {
 
-        ENTRADAS_MDL.busquedaCodigoBarras(this, id);
+        Entradas.busquedaCodigoBarras(this, id);
     }
     protected void completarInfoChofer(String id){
-        ENTRADAS_MDL.busquedaChofer(this, id);
+        Entradas.busquedaChofer(this, id);
     }
     public void cargaComboBoxs() {
 
@@ -275,10 +266,10 @@ public class PanelEntradas extends JPanel
         this.CONDICION_CMB.addItem("Promedio");
 
         // -- chofer:
-        this.CHOFER_CMB.setModel(this.ENTRADAS_MDL.obtenerChofer());
+        this.CHOFER_CMB.setModel(Entradas.obtenerChofer());
 
         // -- codigo de barras:
-        this.CODIGO_DE_BARRAS_CMB.setModel(this.ENTRADAS_MDL.obtenerCodigoBarras());
+        this.CODIGO_DE_BARRAS_CMB.setModel(Entradas.obtenerCodigoBarras());
 
     }
     public boolean camposVacios(){
@@ -299,37 +290,35 @@ public class PanelEntradas extends JPanel
                 this.TRACTO_TXT .getText().isEmpty() ||
                 this.CANTIDAD_FOLIOS_TXT.getText().isEmpty();
     }
-    private void guardarEntrada( int row){
+    private void guardarEntrada( int row ){
 
-        ENTRADAS_MDL.setFechaEntrada(this.DATE_CONTROLLER.getFecha());
-        ENTRADAS_MDL.setHoraEntrada(this.DATE_CONTROLLER.getHoraString());
-        ENTRADAS_MDL.setCodigoBarras((String) this.getTABLA_DE_ENTRADAS().getValueAt(row, 2));
+        Entradas nuevaEntrada = new Entradas();
 
-        ENTRADAS_MDL.setDiseno(Integer.parseInt((String) this.getTABLA_DE_ENTRADAS().getValueAt(row, 3)));
-        ENTRADAS_MDL.setCliente(this.getCLIENTE_TXT().getText());
-        ENTRADAS_MDL.setProducto((String) this.getTABLA_DE_ENTRADAS().getValueAt(row, 4));
+        nuevaEntrada.setFechaEntrada(this.DATE_CONTROLLER.getFecha());
+        nuevaEntrada.setHoraEntrada(this.DATE_CONTROLLER.getHora());
+        nuevaEntrada.setCodigoBarras((String) this.getTABLA_DE_ENTRADAS().getValueAt(row, 2));
 
-        ENTRADAS_MDL.setCantidadPallet(Integer.parseInt(this.getCANT_PALLET_TXT().getText()));
-        ENTRADAS_MDL.setCantidadPorPallet(Integer.parseInt((String)
+        nuevaEntrada.setDiseno((String)this.getTABLA_DE_ENTRADAS().getValueAt(row, 3));
+        nuevaEntrada.setCliente(this.getCLIENTE_TXT().getText());
+        nuevaEntrada.setProducto((String) this.getTABLA_DE_ENTRADAS().getValueAt(row, 4));
+
+        nuevaEntrada.setCantidadPallet(Integer.parseInt(this.getCANT_PALLET_TXT().getText()));
+        nuevaEntrada.setCantidadPorPallet(Integer.parseInt((String)
                 this.getTABLA_DE_ENTRADAS().getValueAt(row, 5)));
-        ENTRADAS_MDL.setCodigoInterno(this.getCODIGO_INTERNO_TXT().getText());
+        nuevaEntrada.setCodigoInterno(this.getCODIGO_INTERNO_TXT().getText());
 
-        ENTRADAS_MDL.setTotalUnidades(Integer.parseInt(this.getTOTAL_UNIDADES_TXT().getText()));
-        ENTRADAS_MDL.setNumOrden(Integer.parseInt(this.getN_ORDEN_TXT().getText()));
-        ENTRADAS_MDL.setNumPedido(Integer.parseInt(this.getN_PEDIDO_TXT().getText()));
+        nuevaEntrada.setTotalUnidades(Integer.parseInt(this.getTOTAL_UNIDADES_TXT().getText()));
+        nuevaEntrada.setNumOrden(Integer.parseInt(this.getN_ORDEN_TXT().getText()));
+        nuevaEntrada.setNumPedido(Integer.parseInt(this.getN_PEDIDO_TXT().getText()));
 
-        ENTRADAS_MDL.setCondicion(this.getCONDICION_CMB().getSelectedItem().toString());
-        ENTRADAS_MDL.setObservaciones(this.getOBSERVACIONES_TXT().getText());
-        //ENTRADAS_MDL.setFolio(Integer.parseInt((String) TblENTRADAS_MDL.getValueAt(i, 1)));
-        ENTRADAS_MDL.setFolio(0);
+        nuevaEntrada.setCondicion(this.getCONDICION_CMB().getSelectedItem().toString());
+        nuevaEntrada.setObservaciones(this.getOBSERVACIONES_TXT().getText());
+        //nuevaEntrada.setFolio(Integer.parseInt((String) TblENTRADAS_MDL.getValueAt(i, 1)));
+        nuevaEntrada.setFolio(0);
 
-        ENTRADAS_MDL.setChofer((String) this.getCHOFER_CMB().getSelectedItem());
-        ENTRADAS_MDL.setEmpresa(this.getEMPRESA_TXT().getText());
-        ENTRADAS_MDL.setPlacas(this.getPLACAS_TXT().getText());
+        nuevaEntrada.setTransporte((String) this.getCHOFER_CMB().getSelectedItem());
 
-        ENTRADAS_MDL.setTractoCamion(this.getTRACTO_TXT().getText());
-
-        ENTRADAS_MDL.insertarEntrada();
+        nuevaEntrada.insertarEntrada();
     }
     public void vaciarTextos() {
         this.N_ORDEN_TXT.setText("");

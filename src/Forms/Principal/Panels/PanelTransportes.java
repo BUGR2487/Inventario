@@ -88,13 +88,15 @@ public class PanelTransportes extends JPanel implements ActionListener, KeyListe
             this.TRANSPORTE.setPlacas(this.getPLACAS_TXT().getText());
             this.TRANSPORTE.setTractoCamion(this.getTRACTO_CAMION_TXT().getText());
 
-            this.TRANSPORTE.insertar();
+            int i = this.TRANSPORTE.insertar();
 
-            vaciarTextos();
-            JOptionPane.showMessageDialog(this,
-                    "Tools.DataBase.Transporte registradas",
-                    "Registro de Transportes",
-                    JOptionPane.INFORMATION_MESSAGE);
+            if(i > 0) {
+                vaciarTextos();
+                JOptionPane.showMessageDialog(this,
+                        "Transporte registrado!",
+                        "Registro de Transportes",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
         }
     }
 

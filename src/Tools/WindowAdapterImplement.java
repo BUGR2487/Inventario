@@ -41,6 +41,7 @@ public class WindowAdapterImplement extends WindowAdapter {
 
         if (choose == JOptionPane.YES_OPTION)
         {
+            instance.stopTimer();
             instance.setVisible(false);
             from.cerrarSesion();
             from.setVisible(true);

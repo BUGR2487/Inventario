@@ -2,50 +2,68 @@ package Tools.DataBase;
 
 import Forms.Principal.Panels.PanelEntradas;
 import Tools.Config;
+import Tools.Fecha;
+import Tools.Hora;
 
 import javax.swing.*;
 import java.sql.SQLException;
 
 public class Entradas
 {
-    private String FechaEntrada = "";
-    private String HoraEntrada = "";
+
+    private Fecha FechaEntrada = null;
+    private Hora HoraEntrada = null;
+
+    private String Diseno = "";
     private String CodigoBarras = "";
-    private int Diseno = 0;
     private String CodigoInterno = "";
     private String Cliente = "";
     private String Producto = "";
+
     private int CantidadPallet = 0;
     private int CantidadPorPallet = 0;
     private int TotalUnidades = 0;
     private int NumOrden = 0;
     private int NumPedido = 0;
+    private int Folio = 0;
+
     private String Condicion = "";
     private String Observaciones = "";
-    private int Folio = 0;
-    private String Chofer = "";
-    private String Empresa = "";
-    private String Placas = "";
-    private String TractoCamion = "";
-    private final Conexion conn = Conexion.getInstance();
 
-    public Entradas() throws SQLException, Config.ReadException, Config.EmptyProperty {
+    private Transporte transporte = null;
+
+    // -- CONSTRUCTOR:
+    public Entradas(){
+
+
+
     }
 
-    public String getFechaEntrada() {
+    // -- GET'S Y SET'S:
+
+
+    public Fecha getFechaEntrada() {
         return FechaEntrada;
     }
 
-    public void setFechaEntrada(String fechaEntrada) {
+    public void setFechaEntrada(Fecha fechaEntrada) {
         FechaEntrada = fechaEntrada;
     }
 
-    public String getHoraEntrada() {
+    public Hora getHoraEntrada() {
         return HoraEntrada;
     }
 
-    public void setHoraEntrada(String horaEntrada) {
+    public void setHoraEntrada(Hora horaEntrada) {
         HoraEntrada = horaEntrada;
+    }
+
+    public String getDiseno() {
+        return Diseno;
+    }
+
+    public void setDiseno(String diseno) {
+        Diseno = diseno;
     }
 
     public String getCodigoBarras() {
@@ -54,14 +72,6 @@ public class Entradas
 
     public void setCodigoBarras(String codigoBarras) {
         CodigoBarras = codigoBarras;
-    }
-
-    public int getDiseno() {
-        return Diseno;
-    }
-
-    public void setDiseno(int diseno) {
-        Diseno = diseno;
     }
 
     public String getCodigoInterno() {
@@ -128,6 +138,14 @@ public class Entradas
         NumPedido = numPedido;
     }
 
+    public int getFolio() {
+        return Folio;
+    }
+
+    public void setFolio(int folio) {
+        Folio = folio;
+    }
+
     public String getCondicion() {
         return Condicion;
     }
@@ -144,86 +162,109 @@ public class Entradas
         Observaciones = observaciones;
     }
 
-    public int getFolio() {
-        return Folio;
+    public Transporte getTransporte() {
+        return transporte;
     }
 
-    public void setFolio(int folio) {
-        Folio = folio;
+    public void setTransporte(Transporte transporte) {
+        this.transporte = transporte;
     }
 
-    public String getChofer() {
-        return Chofer;
+    public void setTransporte(String idTransporte) {
+        this.buscaTransporte( idTransporte );
     }
 
-    public void setChofer(String chofer) {
-        Chofer = chofer;
-    }
+    // -- METODOS DEL MODELO:
 
-    public String getEmpresa() {
-        return Empresa;
-    }
-
-    public void setEmpresa(String empresa) {
-        Empresa = empresa;
-    }
-
-    public String getPlacas() {
-        return Placas;
-    }
-
-    public void setPlacas(String placas) {
-        Placas = placas;
-    }
-
-    public String getTractoCamion() {
-        return TractoCamion;
-    }
-
-    public void setTractoCamion(String tractoCamion) {
-        TractoCamion = tractoCamion;
+    private void buscaTransporte( String id )
+    {
+            this.transporte = Transporte.getTransporteByID( id );
+        if (this.transporte == null)
+        {
+            JOptionPane.showMessageDialog(null,
+                    "No se encontr\u00f3 el transporte indicado, compruebe que " +
+                            "realmente le transporte este" +
+                            "dado de alta en el sistema",
+                    "Aviso!",
+                    JOptionPane.WARNING_MESSAGE);
+        }
     }
 
     public int insertarEntrada()
     {
-        return this.conn.insertarEntradas(this);
-    }
-    public DefaultComboBoxModel obtenerCodigoBarras()
-    {
-        return this.conn.obtenerCodigoBarras();
-    }
-    public void busquedaCodigoBarras(PanelEntradas tab, String codigoDeBarras)
-    {
-       Entradas result =  this.conn.busquedaCodigoBarras(codigoDeBarras);
 
-       if(result != null)
-       {
-           tab.getDISENO_TXT().setText(String.valueOf(result.getDiseno()));
-           tab.getCLIENTE_TXT().setText(result.getCliente());
-           tab.getPRODUCTO_TXT().setText(result.getProducto());
-
-           tab.getCODIGO_INTERNO_TXT().setText(String.valueOf(result.getCodigoInterno()));
-           tab.getCANT_POR_PALETT_TXT().setText(String.valueOf(result.getCantidadPorPallet()));
-       }
-
-        result = null;
-    }
-
-    public DefaultComboBoxModel obtenerChofer()
-    {
-        return this.conn.obtenerChofer();
-    }
-
-    public void busquedaChofer(PanelEntradas tab, String idChofer)
-    {
-        Transporte result = this.conn.busquedaChofer(idChofer);
-
-        if (result != null)
-        {
-            tab.getEMPRESA_TXT().setText(result.getEmpresa());
-            tab.getPLACAS_TXT().setText(result.getPlacas());
-            tab.getTRACTO_TXT().setText(result.getTractoCamion());
+        try {
+            Conexion conn = Conexion.getInstance();
+            return conn.insertarEntradas(this);
+        } catch (SQLException |Config.ReadException|Config.EmptyProperty throwables) {
+            return -1;
         }
+    }
+
+    public static DefaultComboBoxModel obtenerCodigoBarras()
+    {
+        try {
+
+            Conexion conn = Conexion.getInstance();
+            return conn.obtenerCodigoBarras();
+        } catch (SQLException |Config.ReadException|Config.EmptyProperty throwables) {
+            return null;
+        }
+
+    }
+
+    public static void busquedaCodigoBarras(PanelEntradas tab, String codigoDeBarras)
+    {
+        try {
+            Conexion conn = Conexion.getInstance();
+
+            Inventario result =  Inventario.getInventario(codigoDeBarras);
+
+           if(result != null)
+           {
+               tab.getDISENO_TXT().setText(String.valueOf(result.getDiseno()));
+               tab.getCLIENTE_TXT().setText(result.getCliente());
+               tab.getPRODUCTO_TXT().setText(result.getProducto());
+
+               tab.getCODIGO_INTERNO_TXT().setText(String.valueOf(result.getCodigoInterno()));
+               tab.getCANT_POR_PALETT_TXT().setText(String.valueOf(result.getStockPiezas()));
+           }
+
+        } catch (SQLException |Config.ReadException|Config.EmptyProperty throwables) {
+            return;
+        }
+    }
+
+    public static DefaultComboBoxModel obtenerChofer()
+    {
+        try {
+            Conexion conn = Conexion.getInstance();
+            return conn.obtenerChofer();
+        } catch (SQLException |Config.ReadException|Config.EmptyProperty throwables) {
+            return null;
+        }
+    }
+
+    public static void busquedaChofer(PanelEntradas tab, String idChofer)
+    {
+
+            Transporte result = Transporte.getTransporteByID(idChofer);
+            if (result != null)
+            {
+                tab.getEMPRESA_TXT().setText(result.getEmpresa());
+                tab.getPLACAS_TXT().setText(result.getPlacas());
+                tab.getTRACTO_TXT().setText(result.getTractoCamion());
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null,
+                        "No se encontr\u00f3 el transporte indicado, compruebe que " +
+                                "realmente le transporte este" +
+                                "dado de alta en el sistema",
+                        "Aviso!",
+                        JOptionPane.WARNING_MESSAGE);
+            }
+
 
     }
 

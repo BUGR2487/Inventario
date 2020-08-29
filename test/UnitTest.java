@@ -6,8 +6,6 @@ public class UnitTest {
     public void runTest()
     {
 
-        Forms.FrmSplashScreen frmSplashScreen = new Forms.FrmSplashScreen();
-        frmSplashScreen.show();
 
 
         /*

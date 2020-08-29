@@ -1,5 +1,7 @@
 package start;
 
+import Forms.Login.Login;
+import Tools.Config;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -8,6 +10,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Font;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.SQLException;
 
 import static com.itextpdf.text.Element.*;
 import static com.itextpdf.text.PageSize.A4;
@@ -16,8 +19,15 @@ public class Main
 {
     public static void main(String[] args)
     {
-        Forms.FrmSplashScreen frmSplashScreen = new Forms.FrmSplashScreen();
-        frmSplashScreen.show();
+        try {
+            Login obj = new Login();
+        } catch (Config.EmptyProperty emptyProperty) {
+            emptyProperty.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (Config.ReadException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void crearPDF()

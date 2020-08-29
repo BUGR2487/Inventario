@@ -15,7 +15,7 @@ public class Login extends JFrame implements ActionListener, KeyListener{
     private PanelLogin panel;
     private Principal panelUser;
 
-    Login() throws Config.EmptyProperty, SQLException, Config.ReadException {
+    public Login() throws Config.EmptyProperty, SQLException, Config.ReadException {
         this.panel = new PanelLogin(this);
         this.setContentPane(this.panel);
         this.setBounds(300,30, 500,700);
@@ -92,16 +92,6 @@ public class Login extends JFrame implements ActionListener, KeyListener{
 
     }
 
-    public static void main(String[] args) {
-        try {
-            Login obj = new Login();
-        } catch (Config.EmptyProperty emptyProperty) {
-            emptyProperty.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        } catch (Config.ReadException e) {
-            e.printStackTrace();
-        }
-    }
+
 
 }

@@ -6,23 +6,44 @@ import java.sql.SQLException;
 
 public class Inventario
 {
-    private String CodigoBarras = "";
-    private int Diseno = 0;
-    private String CodigoInterno = "";
-    private String Cliente = "";
-    private String Producto = "";
-    private int CantidadPorPallet = 0;
-
-    private int EntradaPallet = 0;
-    private int SalidaPallet = 0;
-    private int EntradaPiezas = 0;
-    private int SalidaPiezas = 0;
+    private int id = 0;
     private int StockPallets = 0;
     private int StockPiezas = 0;
 
-    private Conexion conn = Conexion.getInstance();
+    private String CodigoBarras = "";
+    private String Diseno = "";
+    private String CodigoInterno = "";
+    private String Cliente = "";
 
-    public Inventario() throws SQLException, Config.ReadException, Config.EmptyProperty {
+    private String Producto = "";
+
+
+    public Inventario(){
+    }
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getStockPallets() {
+        return StockPallets;
+    }
+
+    public void setStockPallets(int stockPallets) {
+        StockPallets = stockPallets;
+    }
+
+    public int getStockPiezas() {
+        return StockPiezas;
+    }
+
+    public void setStockPiezas(int stockPiezas) {
+        StockPiezas = stockPiezas;
     }
 
     public String getCodigoBarras() {
@@ -33,11 +54,11 @@ public class Inventario
         CodigoBarras = codigoBarras;
     }
 
-    public int getDiseno() {
+    public String getDiseno() {
         return Diseno;
     }
 
-    public void setDiseno(int diseno) {
+    public void setDiseno(String diseno) {
         Diseno = diseno;
     }
 
@@ -65,65 +86,24 @@ public class Inventario
         Producto = producto;
     }
 
-    public int getCantidadPorPallet() {
-        return CantidadPorPallet;
-    }
-
-    public void setCantidadPorPallet(int cantidadPorPallet) {
-        CantidadPorPallet = cantidadPorPallet;
-    }
-
-    public int getEntradaPallet() {
-        return EntradaPallet;
-    }
-
-    public void setEntradaPallet(int entradaPallet) {
-        EntradaPallet = entradaPallet;
-    }
-
-    public int getSalidaPallet() {
-        return SalidaPallet;
-    }
-
-    public void setSalidaPallet(int salidaPallet) {
-        SalidaPallet = salidaPallet;
-    }
-
-    public int getEntradaPiezas() {
-        return EntradaPiezas;
-    }
-
-    public void setEntradaPiezas(int entradaPiezas) {
-        EntradaPiezas = entradaPiezas;
-    }
-
-    public int getSalidaPiezas() {
-        return SalidaPiezas;
-    }
-
-    public void setSalidaPiezas(int salidaPiezas) {
-        SalidaPiezas = salidaPiezas;
-    }
-
-    public int getStockPallets() {
-        return StockPallets;
-    }
-
-    public void setStockPallets(int stockPallets) {
-        StockPallets = stockPallets;
-    }
-
-    public int getStockPiezas() {
-        return StockPiezas;
-    }
-
-    public void setStockPiezas(int stockPiezas) {
-        StockPiezas = stockPiezas;
-    }
-
     public int insertarInventario()
     {
-        return this.conn.insertarInventario(this);
+        try {
+            Conexion conn = Conexion.getInstance();
+            return conn.insertarInventario( this );
+        } catch (SQLException |Config.ReadException|Config.EmptyProperty throwables) {
+            return -1;
+        }
+    }
+
+    public static Inventario getInventario(String codigoDeBarras)
+    {
+        try {
+            Conexion conn = Conexion.getInstance();
+            return conn.getInventario(codigoDeBarras);
+        } catch (SQLException |Config.ReadException|Config.EmptyProperty throwables) {
+            return null;
+        }
     }
 
 }

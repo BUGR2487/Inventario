@@ -204,11 +204,11 @@ public class PanelInventario extends JPanel implements ActionListener, KeyListen
             if(!this.camposVacios())
             {
                 this.INVENTARIO.setCodigoBarras(this.getCODIGO_BARRAS_TXT().getText());
-                this.INVENTARIO.setDiseno(Integer.parseInt(this.getDISENO_TXT().getText()));
+                this.INVENTARIO.setDiseno(this.getDISENO_TXT().getText());
                 this.INVENTARIO.setCodigoInterno(this.getCODIGO_INTERNO_TXT().getText());
                 this.INVENTARIO.setCliente(this.getCLIENTE_TXT().getText());
                 this.INVENTARIO.setProducto(this.getPRODUCTO_TXT().getText());
-                this.INVENTARIO.setCantidadPorPallet(Integer.parseInt(this.getCANTIDAD_PALLET_TXT().getText()));
+                this.INVENTARIO.setStockPallets(Integer.parseInt(this.getCANTIDAD_PALLET_TXT().getText()));
 
                 this.INVENTARIO.insertarInventario();
 

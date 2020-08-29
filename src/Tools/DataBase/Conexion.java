@@ -24,9 +24,8 @@ public class Conexion
 
         private static final String SQL_INSERT_ENTRADAS = "INSERT INTO `inventario`.`entradas` (`NoOrden`, `NoPedido`, `FechaEntrada`, `HoraEntrada`, `CodigoBarras`, `Diseno`, `CodigoInterno`, `Cliente`, `Folio`, `Producto`, `CantidadPallet`, `CantidadPorPallet`, `TotalUnidades`, `Condicion`, `Observaciones`, `Chofer`, `Empresa`, `Placas`, `TractoCamion`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         private static final String SQL_SELECT_CODIGOBARRAS = "SELECT CodigoBarras FROM inventario.inventario;";
-        private static final String SQL_SELECT_BUSQUEDACODIGOBARRAS = "SELECT Diseno, CodigoInterno, Cliente, Producto, CantidadPorPallet FROM inventario.inventario WHERE CodigoBarras=?;";
         private static final String SQL_SELECT_CHOFER = "SELECT Chofer FROM inventario.transporte;";
-        private static final String SQL_SELECT_BUSQUEDACHOFER = "SELECT Empresa, Placas, TractoCamion FROM inventario.transporte WHERE Chofer=?;";
+        private static final String SQL_SELECT_BUSQUEDACHOFER = "SELECT * FROM inventario.transporte WHERE Chofer=?;";
 
         // -- login:
 
@@ -34,7 +33,8 @@ public class Conexion
 
         // -- inventario:
 
-        private static final String SQL_INSERT_INVENTARIO = "INSERT INTO `inventario`.`inventario` (`CodigoBarras`, `Diseno`, `CodigoInterno`, `Cliente`, `CantidadPorPallet`, `Producto`) VALUES  (?, ?, ?, ?, ?, ?);";
+        private static final String SQL_SELECT_BUSQUEDACODIGOBARRAS = "SELECT * FROM inventario.inventario WHERE CodigoBarras=?;";
+        private static final String SQL_INSERT_INVENTARIO = "INSERT INTO `inventario`(`IdInventario`, `CodigoBarras`, `Diseno`, `CodigoInterno`, `Cliente`, `StockPallets`, `StockPiezas`, `Producto`) VALUES  (null, ?, ?, ?, ?, ?, ?, ?, ?);";
 
         // -- salidas:
 
@@ -124,10 +124,10 @@ public class Conexion
             preparedStatement = conn.prepareStatement(SQL_INSERT_ENTRADAS);
             preparedStatement.setInt(1, entradas.getNumOrden());
             preparedStatement.setInt(2, entradas.getNumPedido());
-            preparedStatement.setString(3, entradas.getFechaEntrada());
-            preparedStatement.setString(4, entradas.getHoraEntrada());
+            preparedStatement.setDate(3, entradas.getFechaEntrada());
+            preparedStatement.setTime(4, entradas.getHoraEntrada());
             preparedStatement.setString(5, entradas.getCodigoBarras());
-            preparedStatement.setInt(6, entradas.getDiseno());
+            preparedStatement.setString(6, entradas.getDiseno());
             preparedStatement.setString(7, entradas.getCodigoInterno());
             preparedStatement.setString(8, entradas.getCliente());
             preparedStatement.setInt(9, entradas.getFolio());
@@ -137,10 +137,7 @@ public class Conexion
             preparedStatement.setInt(13, entradas.getTotalUnidades());
             preparedStatement.setString(14, entradas.getCondicion());
             preparedStatement.setString(15, entradas.getObservaciones());
-            preparedStatement.setString(16, entradas.getChofer());
-            preparedStatement.setString(17, entradas.getEmpresa());
-            preparedStatement.setString(18, entradas.getPlacas());
-            preparedStatement.setString(19, entradas.getTractoCamion());
+            preparedStatement.setString(16, "");
 
             rows = preparedStatement.executeUpdate();
             return rows;
@@ -203,55 +200,6 @@ public class Conexion
         return  ListaModelo;
     }
 
-    public Entradas busquedaCodigoBarras(String codigoBarras)
-    {
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        Entradas entradaBuscada = null;
-
-        try
-        {
-            preparedStatement = conn.prepareStatement(SQL_SELECT_BUSQUEDACODIGOBARRAS);
-            preparedStatement.setString(1, codigoBarras);
-            resultSet = preparedStatement.executeQuery();
-
-            if(resultSet.next())
-            {
-                entradaBuscada = new Entradas();
-
-                entradaBuscada.setDiseno(resultSet.getInt("Diseno"));
-                entradaBuscada.setCodigoInterno(resultSet.getString("CodigoInterno"));
-                entradaBuscada.setCliente(resultSet.getString("Cliente"));
-                entradaBuscada.setProducto(resultSet.getString("Producto"));
-                entradaBuscada.setCantidadPorPallet(resultSet.getInt("CantidadPorPallet"));
-
-               /* frmEntradas.TxtFolio.setText();
-                frmEntradas.TxtDiseno.setText();
-                frmEntradas.TxtCodigoInterno.setText);
-                frmEntradas.TxtCliente.setText();
-                frmEntradas.TxtProducto.setText();
-                frmEntradas.TxtCantidadPorPallet.setText();*/
-            }
-
-            return entradaBuscada;
-        }
-        catch (SQLException sqlException)
-        {
-            sqlException.printStackTrace();
-            return null;
-        } catch (Config.EmptyProperty emptyProperty) {
-            emptyProperty.printStackTrace();
-            return null;
-        } catch (Config.ReadException e) {
-            e.printStackTrace();
-            return null;
-        } finally {
-            if(preparedStatement != null){try{preparedStatement.close();}catch (Exception e){}}
-            if(resultSet != null){try{resultSet.close();}catch (Exception e1){}}
-        }
-
-
-    }
 
     private ArrayList<String> __consultaChofer()
     {
@@ -314,14 +262,12 @@ public class Conexion
             if(resultSet.next())
             {
                 choferBuscado = new Transporte();
-                choferBuscado.setChofer(chofer);
+
+                choferBuscado.setId( resultSet.getInt("IdTransporte"));
                 choferBuscado.setEmpresa(resultSet.getString("Empresa"));
                 choferBuscado.setPlacas(resultSet.getString("Placas"));
                 choferBuscado.setTractoCamion(resultSet.getString("TractoCamion"));
-
-                /*frmEntradas.TxtEmpresa.setText();
-                frmEntradas.TxtPlacas.setText();
-                frmEntradas.TxtTractoCamion.setText();*/
+                choferBuscado.setChofer(chofer);
 
             }
 
@@ -330,17 +276,53 @@ public class Conexion
         catch (SQLException sqlException)
         {
             return null;
-        } catch (Config.EmptyProperty emptyProperty) {
-            return null;
-        } catch (Config.ReadException e) {
-            return null;
-        } finally {
+        }finally {
             if(preparedStatement != null){try{preparedStatement.close();}catch (Exception e){}}
             if(resultSet != null){try{resultSet.close();}catch (Exception e1){}}
         }
     }
 
     // -- Inventario:
+
+    public Inventario getInventario(String codigoBarras)
+    {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Inventario entradaBuscada = null;
+
+        try
+        {
+            preparedStatement = conn.prepareStatement(SQL_SELECT_BUSQUEDACODIGOBARRAS);
+            preparedStatement.setString(1, codigoBarras);
+            resultSet = preparedStatement.executeQuery();
+
+            if(resultSet.next())
+            {
+                entradaBuscada = new Inventario();
+
+                entradaBuscada.setId( resultSet.getInt(1) );
+                entradaBuscada.setCodigoBarras( resultSet.getString(2) );
+                entradaBuscada.setDiseno( resultSet.getString(3) );
+                entradaBuscada.setCodigoInterno( resultSet.getString(4) );
+                entradaBuscada.setCliente( resultSet.getString(5) );
+                entradaBuscada.setStockPallets( resultSet.getInt(6) );
+                entradaBuscada.setStockPiezas( resultSet.getInt(7) );
+                entradaBuscada.setProducto( resultSet.getString(8) );
+            }
+
+            return entradaBuscada;
+        }
+        catch (SQLException sqlException)
+        {
+            sqlException.printStackTrace();
+            return null;
+        }
+        finally {
+            if(preparedStatement != null){try{preparedStatement.close();}catch (Exception e){}}
+            if(resultSet != null){try{resultSet.close();}catch (Exception e1){}}
+        }
+    }
+
     public int insertarInventario(Inventario inventario)
     {
         PreparedStatement preparedStatement = null;
@@ -348,13 +330,16 @@ public class Conexion
 
         try
         {
+            //(`IdInventario`, `CodigoBarras`, `Diseno`, `CodigoInterno`, `Cliente`, `StockPallets`, `StockPiezas`, `Producto`)
+            //(null, ?, ?, ?, ?, ?, ?, ?, ?)
             preparedStatement = conn.prepareStatement(SQL_INSERT_INVENTARIO);
             preparedStatement.setString(1, inventario.getCodigoBarras());
-            preparedStatement.setInt(2, inventario.getDiseno());
+            preparedStatement.setString(2, inventario.getDiseno());
             preparedStatement.setString(3, inventario.getCodigoInterno());
             preparedStatement.setString(4, inventario.getCliente());
-            preparedStatement.setInt(5, inventario.getCantidadPorPallet());
-            preparedStatement.setString(6, inventario.getProducto());
+            preparedStatement.setInt(5, inventario.getStockPallets());
+            preparedStatement.setInt(6, inventario.getStockPiezas());
+            preparedStatement.setString(7, inventario.getProducto());
 
             //System.out.println("Ejecutanto query " + SQL_INSERT);
             rows = preparedStatement.executeUpdate();

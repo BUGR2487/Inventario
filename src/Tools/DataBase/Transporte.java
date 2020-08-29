@@ -6,13 +6,22 @@ import java.sql.SQLException;
 
 public class Transporte
 {
+    private int id = 0;
     private String Chofer = "";
     private String Empresa = "";
     private String Placas = "";
     private String TractoCamion = "";
-    private final Conexion conn = Conexion.getInstance();
 
-    public Transporte() throws SQLException, Config.ReadException, Config.EmptyProperty {
+
+    public Transporte(){
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getChofer() {
@@ -49,6 +58,23 @@ public class Transporte
 
     public int insertar()
     {
-        return this.conn.insertarChofer(this);
+        try {
+            Conexion conn = Conexion.getInstance();
+            return conn.insertarChofer(this);
+        }  catch (SQLException |Config.ReadException|Config.EmptyProperty throwables) {
+            return -1;
+        }
+    }
+
+    public static Transporte getTransporteByID(String idChofer)
+    {
+        try {
+            Conexion conn = Conexion.getInstance();
+            Transporte result = conn.busquedaChofer(idChofer);
+            return result;
+        } catch (SQLException |Config.ReadException|Config.EmptyProperty throwables) {
+            return null;
+        }
+
     }
 }
