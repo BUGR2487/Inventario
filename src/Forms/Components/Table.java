@@ -58,25 +58,22 @@ public class Table extends JTable {
         
         this.defaultTableCellRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 
-        this.getColumnModel().getColumn(0).setCellRenderer(defaultTableCellRenderer);
-        this.getColumnModel().getColumn(1).setCellRenderer(defaultTableCellRenderer);
-        this.getColumnModel().getColumn(2).setCellRenderer(defaultTableCellRenderer);
-        this.getColumnModel().getColumn(3).setCellRenderer(defaultTableCellRenderer);
-        this.getColumnModel().getColumn(4).setCellRenderer(defaultTableCellRenderer);
-        this.getColumnModel().getColumn(5).setCellRenderer(defaultTableCellRenderer);
-        this.getColumnModel().getColumn(6).setCellRenderer(defaultTableCellRenderer);
+        for(int i = 0; i < headers.length; i++) {
 
+            this.getColumnModel().getColumn(i).setCellRenderer(defaultTableCellRenderer);
 
-        this.columnModel.getColumn(0).setPreferredWidth(52);
-        this.columnModel.getColumn(1).setPreferredWidth(221);
-        this.columnModel.getColumn(2).setPreferredWidth(221);
-        this.columnModel.getColumn(3).setPreferredWidth(221);
-        this.columnModel.getColumn(4).setPreferredWidth(221);
-        this.columnModel.getColumn(5).setPreferredWidth(221);
+            if(i == 0)
+                this.columnModel.getColumn(i).setPreferredWidth(52);
+            else if(i < (headers.length - 1) )
+                this.columnModel.getColumn(i).setPreferredWidth(221);
+            else if( i == (headers.length - 1) )
+            {
+                this.columnModel.getColumn(i).setMaxWidth(0);
+                this.columnModel.getColumn(i).setMinWidth(0);
+                this.columnModel.getColumn(i).setPreferredWidth(0);
+            }
 
-        this.columnModel.getColumn(6).setMaxWidth(0);
-        this.columnModel.getColumn(6).setMinWidth(0);
-        this.columnModel.getColumn(6).setPreferredWidth(0);
+        }
 
         this.setAutoResizeMode( JTable.AUTO_RESIZE_ALL_COLUMNS );
 

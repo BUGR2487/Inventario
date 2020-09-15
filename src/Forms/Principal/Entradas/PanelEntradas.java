@@ -89,7 +89,6 @@ public class PanelEntradas extends JPanel
     // -- Tabla de entradas:
     private final Table TABLA_DE_ENTRADAS = new Table(true, new String[] {
                                                                                     "#",
-                                                                                    "Folio",
                                                                                     "Código de barras",
                                                                                     "Diseño",
                                                                                     "Producto",
