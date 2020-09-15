@@ -1,7 +1,8 @@
-package Forms.Principal.Entradas;
+package Forms.Principal.Entradas.Panels;
 
 import Forms.Components.Fecha_y_hora;
 import Forms.Components.Table;
+import Forms.Principal.Entradas.Layouts.InsertarEntradasLayout;
 import Forms.Principal.Panel;
 import Tools.DataBase.Entradas;
 
@@ -10,7 +11,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Point2D;
 
-public class PanelEntradas extends JPanel
+public class InsertarEntradas extends JPanel
         implements ActionListener, KeyListener, FocusListener, Panel {
 
     // -- Etiquetas:
@@ -101,12 +102,12 @@ public class PanelEntradas extends JPanel
     
     // -- CONSTRUCTOR:
 
-    public PanelEntradas( JLabel dateTime, Fecha_y_hora dateController ){
+    public InsertarEntradas(JLabel dateTime, Fecha_y_hora dateController ){
 
         this.setFECHA_ENTRADA_LB( dateTime );
         this.setDATE_CONTROLLER( dateController );
         this.prepareAll();
-        this.setLayout(new EntradasLayout(this));
+        this.setLayout(new InsertarEntradasLayout(this));
         this.PANE.getViewport().add(this);
 
 

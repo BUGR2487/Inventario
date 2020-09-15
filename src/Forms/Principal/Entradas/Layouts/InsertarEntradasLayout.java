@@ -1,10 +1,11 @@
-package Forms.Principal.Entradas;
+package Forms.Principal.Entradas.Layouts;
 
+import Forms.Principal.Entradas.Panels.InsertarEntradas;
 import Forms.Principal.Layouts;
 
 import javax.swing.*;
 
-public class EntradasLayout extends GroupLayout implements Layouts {
+public class InsertarEntradasLayout extends GroupLayout implements Layouts {
 
     private SequentialGroup Horizontal;
     private SequentialGroup Vertical;
@@ -12,7 +13,7 @@ public class EntradasLayout extends GroupLayout implements Layouts {
 
 
 
-    public EntradasLayout(PanelEntradas host) {
+    public InsertarEntradasLayout(InsertarEntradas host) {
         super(host);
 
         this.Horizontal = this.createSequentialGroup();

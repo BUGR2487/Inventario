@@ -39,6 +39,7 @@ public class Principal extends JFrame{
         private final ScheduledExecutorService UPDATE_TIME_SALIDA = Executors.newSingleThreadScheduledExecutor();
 
         // -- todas las vistas del usuario:
+        //private final InsertarEntradas entradas      = new InsertarEntradas( FECHA_ENTRADA_LB, DATE_CONTROLLER );
         private final PanelEntradas entradas      = new PanelEntradas( FECHA_ENTRADA_LB, DATE_CONTROLLER );
         private final PanelInventario inventario    = new PanelInventario();
         private final PanelSalidas salidas       = new PanelSalidas( FECHA_SALIDA_LB, DATE_CONTROLLER_SALIDA );
@@ -112,12 +113,12 @@ public class Principal extends JFrame{
                 int selectedIndex = tabbedPane.getSelectedIndex();
                 switch (selectedIndex)
                 {
-                    case 0:
+                    /*case 0:
                     {
                         entradas.cargaComboBoxs();
                         entradas.vaciarTextos();
                     }
-                    break;
+                    break;*/
                     case 1:
                     {
                         inventario.vaciarTextos();

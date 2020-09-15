@@ -1,6 +1,6 @@
 package Tools.DataBase;
 
-import Forms.Principal.Entradas.PanelEntradas;
+import Forms.Principal.Entradas.Panels.InsertarEntradas;
 import Tools.Config;
 import Tools.Fecha;
 import Tools.Hora;
@@ -213,7 +213,7 @@ public class Entradas
 
     }
 
-    public static void busquedaCodigoBarras(PanelEntradas tab, String codigoDeBarras)
+    public static void busquedaCodigoBarras(InsertarEntradas tab, String codigoDeBarras)
     {
         try {
             Conexion conn = Conexion.getInstance();
@@ -245,7 +245,7 @@ public class Entradas
         }
     }
 
-    public static void busquedaChofer(PanelEntradas tab, String idChofer)
+    public static void busquedaChofer(InsertarEntradas tab, String idChofer)
     {
 
             Transporte result = Transporte.getTransporteByID(idChofer);
