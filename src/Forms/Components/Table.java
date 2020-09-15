@@ -78,6 +78,7 @@ public class Table extends JTable {
         this.columnModel.getColumn(6).setMinWidth(0);
         this.columnModel.getColumn(6).setPreferredWidth(0);
 
+        this.setAutoResizeMode( JTable.AUTO_RESIZE_ALL_COLUMNS );
 
     }
 

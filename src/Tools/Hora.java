@@ -7,10 +7,11 @@ import java.util.Calendar;
 
 public class Hora extends Time {
 
-    private DateFormat format = new SimpleDateFormat("HH:mm:ss aa");
+    private DateFormat format = new SimpleDateFormat("hh:mm:ss aa");
 
     public Hora() {
         super(Calendar.getInstance().getTimeInMillis());
+
     }
 
     public Hora(long time) {

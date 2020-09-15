@@ -2,8 +2,11 @@ package Forms.Principal;
 
 import Forms.Components.Fecha_y_hora;
 import Forms.Login.Login;
-import Forms.Principal.Panels.Panel;
-import Forms.Principal.Panels.*;
+import Forms.Principal.Entradas.PanelEntradas;
+import Forms.Principal.Inventario.PanelInventario;
+import Forms.Principal.Salidas.PanelSalidas;
+import Forms.Principal.Transporte.PanelTransportes;
+import Forms.Principal.Usuario.PanelUsuarios;
 import Tools.Config;
 import Tools.WindowAdapterImplement;
 import jiconfont.icons.font_awesome.FontAwesome;
@@ -25,27 +28,30 @@ public class Principal extends JFrame{
     // -- Runnable que actualiza la hora y fecha:
 
         private final JLabel FECHA_ENTRADA_LB       = new JLabel("");
+        private final JLabel FECHA_SALIDA_LB        = new JLabel("");
 
-        private final Fecha_y_hora DATE_CONTROLLER  = new Fecha_y_hora( this.FECHA_ENTRADA_LB );
+        private final Fecha_y_hora DATE_CONTROLLER          = new Fecha_y_hora( this.FECHA_ENTRADA_LB );
+        private final Fecha_y_hora DATE_CONTROLLER_SALIDA   = new Fecha_y_hora( this.FECHA_SALIDA_LB );
 
         // -- Timer que se llamara al runnable anteriormente declarado:
 
         private final ScheduledExecutorService UPDATE_TIME = Executors.newSingleThreadScheduledExecutor();
+        private final ScheduledExecutorService UPDATE_TIME_SALIDA = Executors.newSingleThreadScheduledExecutor();
 
         // -- todas las vistas del usuario:
-        private final PanelEntradas       entradas      = new PanelEntradas( FECHA_ENTRADA_LB, DATE_CONTROLLER );
-        private final PanelInventario     inventario    = new PanelInventario();
-        private final PanelSalidas        salidas       = new PanelSalidas();
-        private final PanelTransportes    transportes   = new PanelTransportes();
-        private final PanelUsuarios       usuarios      = new PanelUsuarios();
+        private final PanelEntradas entradas      = new PanelEntradas( FECHA_ENTRADA_LB, DATE_CONTROLLER );
+        private final PanelInventario inventario    = new PanelInventario();
+        private final PanelSalidas salidas       = new PanelSalidas( FECHA_SALIDA_LB, DATE_CONTROLLER_SALIDA );
+        private final PanelTransportes transportes   = new PanelTransportes();
+        private final PanelUsuarios usuarios      = new PanelUsuarios();
 
         // -- iconos de pestaña:
 
         private final FontAwesome ANGLE_DOUBLE_DOWN = FontAwesome.ANGLE_DOUBLE_DOWN;
-        private final FontAwesome STACK_OVERFLOW = FontAwesome.STACK_OVERFLOW;
-        private final FontAwesome ANGLE_DOUBLE_UP = FontAwesome.ANGLE_DOUBLE_UP;
-        private final FontAwesome BUS = FontAwesome.BUS;
-        private final FontAwesome USERS = FontAwesome.USERS;
+        private final FontAwesome STACK_OVERFLOW    = FontAwesome.STACK_OVERFLOW;
+        private final FontAwesome ANGLE_DOUBLE_UP   = FontAwesome.ANGLE_DOUBLE_UP;
+        private final FontAwesome BUS               = FontAwesome.BUS;
+        private final FontAwesome USERS             = FontAwesome.USERS;
 
         private final Icon entradas_icon        = IconFontSwing.buildIcon(ANGLE_DOUBLE_DOWN	,28, Color.red);
         private final Icon inventario_icon      = IconFontSwing.buildIcon(STACK_OVERFLOW, 28, Color.red);
@@ -54,12 +60,12 @@ public class Principal extends JFrame{
         private final Icon usuario_icon         = IconFontSwing.buildIcon(USERS	, 28, Color.red);
 
         //panel con pestañas:
-        private JTabbedPane tabbedPane = null;
+        private JTabbedPane tabbedPane          = null;
 
         //variables de interfaz de uaurio
-        private static Login        from;
-        private static Principal    instance;
-        private String userName = "";
+        private static Login      from;
+        private static Principal  instance;
+        private String userName                 = "";
 
 
 
@@ -142,11 +148,17 @@ public class Principal extends JFrame{
         this.UPDATE_TIME
                 .scheduleWithFixedDelay(this.DATE_CONTROLLER,
                         0,1, TimeUnit.SECONDS);
+
+        this.UPDATE_TIME_SALIDA.scheduleWithFixedDelay(this.DATE_CONTROLLER_SALIDA,
+                0,1, TimeUnit.SECONDS);
     }
 
     public void stopTimer(){
         if(!this.UPDATE_TIME.isShutdown())
             this.UPDATE_TIME.shutdown();
+
+        if(!this.UPDATE_TIME_SALIDA.isShutdown())
+            this.UPDATE_TIME_SALIDA.shutdown();
     }
 
      // -- GET'S Y SET`S

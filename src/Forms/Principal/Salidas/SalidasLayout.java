@@ -1,10 +1,10 @@
-package Forms.Principal.Layouts;
+package Forms.Principal.Salidas;
 
-import Forms.Principal.Panels.PanelSalidas;
+import Forms.Principal.Layouts;
 
 import javax.swing.*;
 
-public class SalidasLayout extends GroupLayout implements Layouts{
+public class SalidasLayout extends GroupLayout implements Layouts {
 
     private GroupLayout.SequentialGroup Horizontal;
     private GroupLayout.SequentialGroup Vertical;
@@ -31,6 +31,15 @@ public class SalidasLayout extends GroupLayout implements Layouts{
                                 .addComponent(host.getCANT_PALLET_LB())
                                 .addComponent(host.getCANT_PALLET_TXT(),size_x_min,size_x_mid,size_x_max)
                         )
+                        .addGap( 100 )
+                        .addGroup(this.createParallelGroup()
+                                .addComponent(host.getFECHA_SALIDA_LB(),size_x_min,size_x_mid,size_x_max)
+                        )
+                        .addGap(padding_x - 400)
+                )
+
+                .addGroup(this.createSequentialGroup()
+                        .addGap(padding_x - 400)
                         .addGroup(this.createParallelGroup()
                                 .addComponent(host.getCANT_POR_PALETT_LB())
                                 .addComponent(host.getCANT_POR_PALETT_TXT(),size_x_min,size_x_mid,size_x_max)
@@ -39,11 +48,6 @@ public class SalidasLayout extends GroupLayout implements Layouts{
                                 .addComponent(host.getTOTAL_UNIDADES_LB())
                                 .addComponent(host.getTOTAL_UNIDADES_TXT(),size_x_min,size_x_mid,size_x_max)
                         )
-                        .addGap(padding_x - 400)
-                )
-
-                .addGroup(this.createSequentialGroup()
-                        .addGap(padding_x - 400)
                         .addGroup(this.createParallelGroup()
                                 .addComponent(host.getFECHA_ENTREGA_LB())
                                 .addComponent(host.getFECHA_ENTREGA_TXT(),size_x_min,size_x_mid,size_x_max)
@@ -52,6 +56,12 @@ public class SalidasLayout extends GroupLayout implements Layouts{
                                 .addComponent(host.getCHOFER_LB())
                                 .addComponent(host.getCHOFER_TXT(),size_x_min,size_x_mid,size_x_max)
                         )
+                        .addGap(padding_x - 400)
+                )
+
+                .addGroup(this.createSequentialGroup()
+                        .addGap(padding_x - 400)
+
                         .addGroup(this.createParallelGroup()
                                 .addComponent(host.getEMPRESA_LB())
                                 .addComponent(host.getEMPRESA_TXT(),size_x_min,size_x_mid,size_x_max)
@@ -103,6 +113,15 @@ public class SalidasLayout extends GroupLayout implements Layouts{
                         )
                         .addGroup(this.createSequentialGroup()
                                 .addGap(padding_y - 180)
+                                .addComponent(host.getFECHA_SALIDA_LB())
+                                .addGap(padding_y - 180)
+                        )
+
+                )
+
+                .addGroup(this.createParallelGroup()
+                        .addGroup(this.createSequentialGroup()
+                                .addGap(padding_y - 180)
                                 .addComponent(host.getCANT_POR_PALETT_LB())
                                 .addComponent(host.getCANT_POR_PALETT_TXT(),size_y_min,size_y_mid,size_y_max)
                                 .addGap(padding_y - 180)
@@ -113,9 +132,6 @@ public class SalidasLayout extends GroupLayout implements Layouts{
                                 .addComponent(host.getTOTAL_UNIDADES_TXT(),size_y_min,size_y_mid,size_y_max)
                                 .addGap(padding_y - 180)
                         )
-                )
-
-                .addGroup(this.createParallelGroup()
                         .addGroup(this.createSequentialGroup()
                                 .addGap(padding_y - 180)
                                 .addComponent(host.getFECHA_ENTREGA_LB())
@@ -128,6 +144,11 @@ public class SalidasLayout extends GroupLayout implements Layouts{
                                 .addComponent(host.getCHOFER_TXT(),size_y_min,size_y_mid,size_y_max)
                                 .addGap(padding_y - 180)
                         )
+                )
+
+
+                .addGroup(this.createParallelGroup()
+
                         .addGroup(this.createSequentialGroup()
                                 .addGap(padding_y - 180)
                                 .addComponent(host.getEMPRESA_LB())

@@ -72,9 +72,10 @@ public class PanelLogin extends JPanel {
 
         //configurando actionListener:
         IconFontSwing.register(FontAwesome.getIconFont());
-        Icon icon = IconFontSwing.buildIcon(FontAwesome.SIGN_IN, 28);
+        //Icon icon = IconFontSwing.buildIcon(FontAwesome.SIGN_IN, 28);
         this.getINICIAR_SESION_BTN().addActionListener(ac);
-        this.getINICIAR_SESION_BTN().setIcon(icon);
+
+        //this.getINICIAR_SESION_BTN().setIcon(icon);
 
         //estableciendo imagenes en su contenedor(JLabel):
         this.getICONO_IMG().setImage(this.getICONO_IMG().getImage().getScaledInstance(400, 400,  java.awt.Image.SCALE_SMOOTH));

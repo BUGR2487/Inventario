@@ -1,10 +1,10 @@
-package Forms.Principal.Layouts;
+package Forms.Principal.Usuario;
 
-import Forms.Principal.Panels.PanelUsuarios;
+import Forms.Principal.Layouts;
 
 import javax.swing.*;
 
-public class UsuariosLayout extends GroupLayout implements  Layouts{
+public class UsuariosLayout extends GroupLayout implements Layouts {
 
 
     private GroupLayout.SequentialGroup Horizontal;

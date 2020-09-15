@@ -1,10 +1,10 @@
-package Forms.Principal.Layouts;
+package Forms.Principal.Transporte;
 
-import Forms.Principal.Panels.PanelTransportes;
+import Forms.Principal.Layouts;
 
 import javax.swing.*;
 
-public class TransportesLayout extends GroupLayout implements  Layouts{
+public class TransportesLayout extends GroupLayout implements Layouts {
 
     private GroupLayout.SequentialGroup Horizontal;
     private GroupLayout.SequentialGroup Vertical;

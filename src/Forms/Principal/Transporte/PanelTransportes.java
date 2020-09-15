@@ -1,6 +1,6 @@
-package Forms.Principal.Panels;
+package Forms.Principal.Transporte;
 
-import Forms.Principal.Layouts.TransportesLayout;
+import Forms.Principal.Panel;
 import Tools.Config;
 import Tools.DataBase.Transporte;
 
@@ -13,7 +13,7 @@ import java.awt.event.KeyListener;
 import java.awt.geom.Point2D;
 import java.sql.SQLException;
 
-public class PanelTransportes extends JPanel implements ActionListener, KeyListener, Panel{
+public class PanelTransportes extends JPanel implements ActionListener, KeyListener, Panel {
 
     // -- VARIABLES:
     // -- etiquetas

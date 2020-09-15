@@ -1,10 +1,10 @@
-package Forms.Principal.Layouts;
+package Forms.Principal.Entradas;
 
-import Forms.Principal.Panels.PanelEntradas;
+import Forms.Principal.Layouts;
 
 import javax.swing.*;
 
-public class EntradasLayout extends GroupLayout implements Layouts{
+public class EntradasLayout extends GroupLayout implements Layouts {
 
     private SequentialGroup Horizontal;
     private SequentialGroup Vertical;
@@ -79,11 +79,6 @@ public class EntradasLayout extends GroupLayout implements Layouts{
                         .addGroup(this.createParallelGroup()
                                 .addComponent(host.getCANT_POR_PALETT_LB())
                                 .addComponent(host.getCANT_POR_PALETT_TXT(),size_x_min,size_x_mid,size_x_max)
-                        )
-                        .addGap(10)
-                        .addGroup(this.createParallelGroup()
-                                .addComponent(host.getTOTAL_UNIDADES_LB())
-                                .addComponent(host.getTOTAL_UNIDADES_TXT(),size_x_min,size_x_mid,size_x_max)
                         )
                         .addGap(10)
                         .addGroup(this.createParallelGroup()
@@ -209,11 +204,6 @@ public class EntradasLayout extends GroupLayout implements Layouts{
                         .addGroup(this.createSequentialGroup()
                                 .addComponent(host.getCANT_POR_PALETT_LB())
                                 .addComponent(host.getCANT_POR_PALETT_TXT(),size_y_min,size_y_mid,size_y_max)
-                        )
-                        .addGap(10)
-                        .addGroup(this.createSequentialGroup()
-                                .addComponent(host.getTOTAL_UNIDADES_LB())
-                                .addComponent(host.getTOTAL_UNIDADES_TXT(),size_y_min,size_y_mid,size_y_max)
                         )
                         .addGap(10)
                         .addGroup(this.createSequentialGroup()

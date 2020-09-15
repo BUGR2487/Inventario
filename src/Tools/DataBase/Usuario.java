@@ -13,18 +13,9 @@ public class Usuario
     private String Puesto = "";
     private String CorreoElectronico = "";
     private String Contrasena = "";
-    private String Contrasena2 = "";
-
-    private Conexion conn = Conexion.getInstance();
 
 
-    private static final String SQL_SELECT = "SELECT * FROM inventario.usuario;";
-    private static final String SQL_SELECT_ID = "SELECT IdUsuario FROM inventario.usuario WHERE CorreoElectronico = ?;";
-    private static final String SQL_INSERT = "INSERT INTO `inventario`.`usuario` (`Nombre`, `ApellidoPaterno`, `ApellidoMaterno`, `Puesto`, `CorreoElectronico`, `Contrasena`) VALUES (?, ?, ?, ?, ?, ?);";
-    private static final String SQL_UPDATE = "UPDATE `inventario`.`usuario` SET `Nombre` = ?, `ApellidoPaterno` = ?, `ApellidoMaterno` = ?, `Puesto` = ?, `CorreoElectronico` = ?, `Contrasena` = ? WHERE (`IdUsuario` = ?);";
-    private static final String SQL_DELETE = "DELETE FROM `inventario`.`usuario` WHERE (`CorreoElectronico` = ?);";
-
-    public Usuario() throws SQLException, Config.ReadException, Config.EmptyProperty {
+    public Usuario(){
     }
 
     public int getIdUsuario() { return idUsuario; }
@@ -91,9 +82,6 @@ public class Usuario
         Contrasena = contrasena;
     }
 
-    public String getContrasena2() { return Contrasena2; }
-
-    public void setContrasena2(String contrasena2) { Contrasena2 = contrasena2; }
 
     @Override
     public String toString() {
@@ -112,17 +100,32 @@ public class Usuario
 
     public int insertar()
     {
-        return this.conn.insertarUsuario(this);
+        try {
+            Conexion conn = Conexion.getInstance();
+            return conn.insertarUsuario(this);
+        } catch (SQLException |Config.ReadException|Config.EmptyProperty throwables) {
+            return -1;
+        }
     }
 
     public int actualizar()
     {
-        return this.conn.actualizarUsuario(this);
+        try {
+            Conexion conn = Conexion.getInstance();
+            return conn.actualizarUsuario(this);
+        }catch (SQLException |Config.ReadException|Config.EmptyProperty throwables) {
+            return -1;
+        }
     }
 
     public  int eliminarUsuario()
     {
-        return this.conn.eliminarUsuario(this.getCorreoElectronico());
+        try {
+            Conexion conn = Conexion.getInstance();
+            return conn.eliminarUsuario(this.getCorreoElectronico());
+        }catch (SQLException |Config.ReadException|Config.EmptyProperty throwables) {
+            return -1;
+        }
     }
 
 

@@ -1,6 +1,6 @@
-package Forms.Principal.Panels;
+package Forms.Principal.Usuario;
 
-import Forms.Principal.Layouts.UsuariosLayout;
+import Forms.Principal.Panel;
 import Tools.Config;
 import Tools.DataBase.Usuario;
 
@@ -13,7 +13,7 @@ import java.awt.event.KeyListener;
 import java.awt.geom.Point2D;
 import java.sql.SQLException;
 
-public class PanelUsuarios extends JPanel implements ActionListener, KeyListener,Panel{
+public class PanelUsuarios extends JPanel implements ActionListener, KeyListener, Panel {
 
     // -- VARIABLES:
 

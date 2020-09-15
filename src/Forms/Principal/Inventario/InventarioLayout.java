@@ -1,10 +1,10 @@
-package Forms.Principal.Layouts;
+package Forms.Principal.Inventario;
 
-import Forms.Principal.Panels.PanelInventario;
+import Forms.Principal.Layouts;
 
 import javax.swing.*;
 
-public class InventarioLayout extends  GroupLayout implements Layouts{
+public class InventarioLayout extends  GroupLayout implements Layouts {
 
     private GroupLayout.SequentialGroup Horizontal;
     private GroupLayout.SequentialGroup Vertical;
@@ -54,6 +54,14 @@ public class InventarioLayout extends  GroupLayout implements Layouts{
                         .addGroup(this.createParallelGroup()
                                 .addComponent(host.getCANTIDAD_PALLET_LB())
                                 .addComponent(host.getCANTIDAD_PALLET_TXT(),size_x_min,size_x_mid,size_x_max)
+                        )
+                        .addGap(this.padding_x)
+                )
+                .addGroup(this.createSequentialGroup()
+                        .addGap(this.padding_x + 50)
+                        .addGroup(this.createParallelGroup()
+                                .addComponent(host.getCANTIDAD_POR_PALLET_LB())
+                                .addComponent(host.getCANTIDAD_POR_PALLET_TXT(),size_x_min,size_x_mid,size_x_max)
                         )
                         .addGap(this.padding_x)
                 )
@@ -114,6 +122,14 @@ public class InventarioLayout extends  GroupLayout implements Layouts{
                         .addGroup(this.createSequentialGroup()
                                 .addComponent(host.getCANTIDAD_PALLET_LB())
                                 .addComponent(host.getCANTIDAD_PALLET_TXT(),size_y_min,size_y_mid,size_y_max)
+                        )
+
+                )
+                .addGroup(this.createParallelGroup()
+
+                        .addGroup(this.createSequentialGroup()
+                                .addComponent(host.getCANTIDAD_POR_PALLET_LB())
+                                .addComponent(host.getCANTIDAD_POR_PALLET_TXT(),size_y_min,size_y_mid,size_y_max)
                         )
 
                 )

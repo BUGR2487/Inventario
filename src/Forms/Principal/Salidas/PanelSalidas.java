@@ -1,8 +1,8 @@
-package Forms.Principal.Panels;
+package Forms.Principal.Salidas;
 
+import Forms.Components.Fecha_y_hora;
 import Forms.Components.Table;
-import Forms.Principal.Layouts.SalidasLayout;
-import Tools.Config;
+import Forms.Principal.Panel;
 import Tools.DataBase.Salidas;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -10,17 +10,16 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.*;
 import java.awt.Font;
 import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.sql.SQLException;
 
-public class PanelSalidas extends JPanel implements ActionListener, KeyListener, Panel{
+public class PanelSalidas extends JPanel implements ActionListener, KeyListener, Panel {
 
     // -- VARIABLES:
     // -- etiquetas:
@@ -39,6 +38,8 @@ public class PanelSalidas extends JPanel implements ActionListener, KeyListener,
 
     private final JLabel PLACAS_LB              = new JLabel("Placas");
     private final JLabel TRACTO_LB              = new JLabel("Tracto camion");
+
+    private JLabel FECHA_SALIDA_LB             = null;
 
     // -- listas:
 
@@ -75,15 +76,22 @@ public class PanelSalidas extends JPanel implements ActionListener, KeyListener,
     private final JScrollPane PANE = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
             ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-    private final Salidas SALIDAS = new Salidas();
+
+
+    // -- Runnable que actualiza la hora y fecha:
+
+    private Fecha_y_hora DATE_CONTROLLER = null;
 
     // -- CONSTRUCTOR:
 
-    public PanelSalidas() throws Config.EmptyProperty, SQLException, Config.ReadException {
-
+    public PanelSalidas(JLabel lb , Fecha_y_hora controller){
+        this.setFECHA_SALIDA_LB( lb );
+        this.DATE_CONTROLLER = controller;
         this.prepareAll();
         this.setLayout(new SalidasLayout(this));
         this.PANE.getViewport().add(this);
+
+        System.out.println( this.getFECHA_SALIDA_LB().getText() );
     }
 
     // -- METODOS DE LA CLASE:
@@ -108,6 +116,7 @@ public class PanelSalidas extends JPanel implements ActionListener, KeyListener,
         this.EMPRESA_LB             .setFont(this.FUENTE_GENERAL_LB);
         this.PLACAS_LB              .setFont(this.FUENTE_GENERAL_LB);
         this.TRACTO_LB              .setFont(this.FUENTE_GENERAL_LB);
+        this.FECHA_SALIDA_LB        .setFont(this.FUENTE_GENERAL_LB);
 
         //campos de texto:
 
@@ -207,18 +216,19 @@ public class PanelSalidas extends JPanel implements ActionListener, KeyListener,
 
             String nPedido = this.getN_PEDIDO_CMB().getSelectedItem().toString();
 
-            this.SALIDAS.setNumPedido(nPedido);
-            this.SALIDAS.setSellos(this.getSELLOS_TXT().getText());
-            this.SALIDAS.setCantidadPallet(Integer.parseInt(this.getCANT_PALLET_TXT().getText()));
-            this.SALIDAS.setCantidadPorPallet(Integer.parseInt(this.getCANT_POR_PALETT_TXT().getText()));
-            this.SALIDAS.setTotalUnidades(Integer.parseInt(this.getTOTAL_UNIDADES_TXT().getText()));
-            this.SALIDAS.setFechaEntrega(this.getFECHA_ENTREGA_TXT().getText());
-            this.SALIDAS.setChofer(this.getCHOFER_TXT().getText());
-            this.SALIDAS.setEmpresa(this.getEMPRESA_TXT().getText());
-            this.SALIDAS.setPlacas(this.getPLACAS_TXT().getText());
-            this.SALIDAS.setTractoCamion(this.getTRACTO_TXT().getText());
+            Salidas salida = new Salidas();
 
-            this.SALIDAS.insertarSalidas();
+            salida.setNumPedido(nPedido);
+            salida.setSellos(Integer.parseInt(this.getSELLOS_TXT().getText()));
+            salida.setCantidadPallet(Integer.parseInt(this.getCANT_PALLET_TXT().getText()));
+            salida.setCantidadPorPallet(Integer.parseInt(this.getCANT_POR_PALETT_TXT().getText()));
+            salida.setTotalUnidades(Integer.parseInt(this.getTOTAL_UNIDADES_TXT().getText()));
+            salida.setFechaSalida(this.DATE_CONTROLLER.getFecha());
+            salida.setHoraSalida(this.DATE_CONTROLLER.getHora());
+            salida.setTransporte(this.getCHOFER_TXT().getText());
+            //salida.
+
+            salida.insertarSalidas();
 
             this.vaciarTextos();
 
@@ -274,16 +284,26 @@ public class PanelSalidas extends JPanel implements ActionListener, KeyListener,
     }
 
     public void actionOnItemChange(){
-        SALIDAS.setNumPedido(getN_PEDIDO_CMB().getSelectedItem().toString());
-        SALIDAS.busquedaNumPedido(this);
+        String value = (String) this.getN_PEDIDO_CMB().getSelectedItem();
+        if( !value.isEmpty() )
+        Salidas.busquedaNumPedido(this);
     }
 
     public void cargaComboBox(){
         this.getN_PEDIDO_CMB().removeAllItems();
-        this.getN_PEDIDO_CMB().setModel(this.SALIDAS.obtenerPedidos());
+        this.getN_PEDIDO_CMB().setModel(Salidas.obtenerPedidos());
     }
 
     // -- GET'S Y SET'S:
+
+
+    public JLabel getFECHA_SALIDA_LB() {
+        return FECHA_SALIDA_LB;
+    }
+
+    public void setFECHA_SALIDA_LB(JLabel FECHA_SALIDA_LB) {
+        this.FECHA_SALIDA_LB = FECHA_SALIDA_LB;
+    }
 
     public Table getTABLA_SALIDAS() {
         return TABLA_SALIDAS;
@@ -407,7 +427,7 @@ public class PanelSalidas extends JPanel implements ActionListener, KeyListener,
 
     @Override
     public void keyTyped(KeyEvent e) {
-        if(this.getSELLOS_TXT().isFocusOwner())
+        /*if(this.getSELLOS_TXT().isFocusOwner())
         {
             if (!Character.isLetter(e.getKeyChar()) &&
                     !(e.getKeyChar() == KeyEvent.VK_SPACE) &&
@@ -415,7 +435,7 @@ public class PanelSalidas extends JPanel implements ActionListener, KeyListener,
             {
                 e.consume();
             }
-        }
+        }*/
     }
 
     @Override

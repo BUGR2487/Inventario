@@ -1,4 +1,4 @@
-package Forms.Principal.Layouts;
+package Forms.Principal;
 
 public interface Layouts {
 

@@ -1,121 +1,155 @@
 package Tools.DataBase;
 
-import Forms.Principal.Panels.PanelSalidas;
+import Forms.Principal.Salidas.PanelSalidas;
 import Tools.Config;
+import Tools.Fecha;
+import Tools.Hora;
 
 import javax.swing.*;
 import java.sql.SQLException;
 
 public class Salidas
 {
-    private String NumPedido = "";
-    private String Sellos = "";
-    private int CantidadPallet = 0;
-    private int CantidadPorPallet = 0;
-    private int TotalUnidades = 0;
-    private String FechaEntrega = "";
-    private String Chofer = "";
-    private String Empresa = "";
-    private String Placas = "";
-    private String TractoCamion = "";
-    private Conexion conn = Conexion.getInstance();
+    private int id = 0;
+    private String numPedido = "";
 
-    public Salidas() throws SQLException, Config.ReadException, Config.EmptyProperty {
+    private int sellos = 0;
+    private int cantidadPallet = 0;
+    private int cantidadPorPallet = 0;
+    private int totalUnidades = 0;
+
+    private Fecha fechaSalida = null;
+    private Hora  horaSalida = null;
+
+    private String observaciones = "";
+    private String condicion = "";
+
+    private Transporte transporte = null;
+
+    public Salidas(){
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNumPedido() {
-        return NumPedido;
+        return numPedido;
     }
 
     public void setNumPedido(String numPedido) {
-        NumPedido = numPedido;
+        this.numPedido = numPedido;
     }
 
-    public String getSellos() {
-        return Sellos;
+    public int getSellos() {
+        return sellos;
     }
 
-    public void setSellos(String sellos) {
-        Sellos = sellos;
+    public void setSellos(int sellos) {
+        this.sellos = sellos;
     }
 
     public int getCantidadPallet() {
-        return CantidadPallet;
+        return cantidadPallet;
     }
 
     public void setCantidadPallet(int cantidadPallet) {
-        CantidadPallet = cantidadPallet;
+        this.cantidadPallet = cantidadPallet;
     }
 
     public int getCantidadPorPallet() {
-        return CantidadPorPallet;
+        return cantidadPorPallet;
     }
 
     public void setCantidadPorPallet(int cantidadPorPallet) {
-        CantidadPorPallet = cantidadPorPallet;
+        this.cantidadPorPallet = cantidadPorPallet;
     }
 
     public int getTotalUnidades() {
-        return TotalUnidades;
+        return totalUnidades;
     }
 
     public void setTotalUnidades(int totalUnidades) {
-        TotalUnidades = totalUnidades;
+        this.totalUnidades = totalUnidades;
     }
 
-    public String getFechaEntrega() {
-        return FechaEntrega;
+    public Fecha getFechaSalida() {
+        return fechaSalida;
     }
 
-    public void setFechaEntrega(String fechaEntrega) {
-        FechaEntrega = fechaEntrega;
+    public void setFechaSalida(Fecha fechaSalida) {
+        this.fechaSalida = fechaSalida;
     }
 
-    public String getChofer() {
-        return Chofer;
+    public Hora getHoraSalida() {
+        return horaSalida;
     }
 
-    public void setChofer(String chofer) {
-        Chofer = chofer;
+    public void setHoraSalida(Hora horaSalida) {
+        this.horaSalida = horaSalida;
     }
 
-    public String getEmpresa() {
-        return Empresa;
+    public String getObservaciones() {
+        return observaciones;
     }
 
-    public void setEmpresa(String empresa) {
-        Empresa = empresa;
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
     }
 
-    public String getPlacas() {
-        return Placas;
+    public String getCondicion() {
+        return condicion;
     }
 
-    public void setPlacas(String placas) {
-        Placas = placas;
+    public void setCondicion(String condicion) {
+        this.condicion = condicion;
     }
 
-    public String getTractoCamion() {
-        return TractoCamion;
+    public Transporte getTransporte() {
+        return transporte;
     }
 
-    public void setTractoCamion(String tractoCamion) {
-        TractoCamion = tractoCamion;
+    public void setTransporte(Transporte transporte) {
+        this.transporte = transporte;
+    }
+
+    public void setTransporte(String id) {
+        this.transporte = Transporte.getTransporteByID( id );
     }
 
     public int insertarSalidas()
     {
-        return this.conn.insertarSalidas(this);
+        try {
+            Conexion conn = Conexion.getInstance();
+            return conn.insertarSalidas(this);
+        } catch (SQLException |Config.ReadException|Config.EmptyProperty throwables) {
+            return -1;
+        }
     }
 
-    public DefaultComboBoxModel obtenerPedidos()
+
+    public static DefaultComboBoxModel obtenerPedidos()
     {
-        return this.conn.obtenerPedidos();
+        try{
+            Conexion conn = Conexion.getInstance();
+            return conn.obtenerPedidos();
+        } catch (SQLException |Config.ReadException|Config.EmptyProperty throwables) {
+            return null;
+        }
     }
 
-    public void busquedaNumPedido(PanelSalidas frmSalidas)
+    public static void busquedaNumPedido(PanelSalidas frmSalidas)
     {
-        this.conn.busquedaNumPedido(frmSalidas, this.getNumPedido());
+        try{
+            Conexion conn = Conexion.getInstance();
+            conn.busquedaNumPedido(frmSalidas, (String)frmSalidas.getN_PEDIDO_CMB().getSelectedItem());
+        } catch (SQLException |Config.ReadException|Config.EmptyProperty throwables) {
+            return;
+        }
     }
 
 

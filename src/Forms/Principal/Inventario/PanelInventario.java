@@ -1,6 +1,6 @@
-package Forms.Principal.Panels;
+package Forms.Principal.Inventario;
 
-import Forms.Principal.Layouts.InventarioLayout;
+import Forms.Principal.Panel;
 import Tools.Config;
 import Tools.DataBase.Inventario;
 
@@ -13,7 +13,7 @@ import java.awt.event.KeyListener;
 import java.awt.geom.Point2D;
 import java.sql.SQLException;
 
-public class PanelInventario extends JPanel implements ActionListener, KeyListener, Panel{
+public class PanelInventario extends JPanel implements ActionListener, KeyListener, Panel {
 
 
     //etiquetas:
@@ -23,7 +23,8 @@ public class PanelInventario extends JPanel implements ActionListener, KeyListen
     private final JLabel CODIGO_INTERNO_LB     = new JLabel("C\u00f3digo interno");
 
     private final JLabel CLIENTE_LB            = new JLabel("Cliente");
-    private final JLabel CANTIDAD_PALLET_LB    = new JLabel("Cantidad por pallet");
+    private final JLabel CANTIDAD_PALLET_LB    = new JLabel("Cantidad de pallet");
+    private final JLabel CANTIDAD_POR_PALLET_LB    = new JLabel("Cantidad por pallet");
     private final JLabel PRODUCTO_LB           = new JLabel("Producto");
 
     //campos de textos:
@@ -34,6 +35,7 @@ public class PanelInventario extends JPanel implements ActionListener, KeyListen
 
     private final JTextField CLIENTE_TXT            = new JTextField();
     private final JTextField CANTIDAD_PALLET_TXT    = new JTextField();
+    private final JTextField CANTIDAD_POR_PALLET_TXT    = new JTextField();
     private final JTextField PRODUCTO_TXT           = new JTextField();
 
     // botones:
@@ -44,7 +46,7 @@ public class PanelInventario extends JPanel implements ActionListener, KeyListen
     private final JScrollPane PANE = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
             ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-    private final Inventario INVENTARIO = new Inventario();
+
 
 
     // -- CONTRUCTOR:
@@ -71,6 +73,7 @@ public class PanelInventario extends JPanel implements ActionListener, KeyListen
 
         this.CLIENTE_LB.setFont(this.FUENTE_GENERAL_LB);
         this.CANTIDAD_PALLET_LB.setFont(this.FUENTE_GENERAL_LB);
+        this.CANTIDAD_POR_PALLET_LB.setFont(this.FUENTE_GENERAL_LB);
         this.PRODUCTO_LB.setFont(this.FUENTE_GENERAL_LB);
 
 
@@ -122,6 +125,15 @@ public class PanelInventario extends JPanel implements ActionListener, KeyListen
     }
 
     // -- GET'S Y SET'S
+
+
+    public JTextField getCANTIDAD_POR_PALLET_TXT() {
+        return CANTIDAD_POR_PALLET_TXT;
+    }
+
+    public JLabel getCANTIDAD_POR_PALLET_LB() {
+        return CANTIDAD_POR_PALLET_LB;
+    }
 
     public JLabel getCODIGO_BARRAS_LB() {
         return CODIGO_BARRAS_LB;
@@ -203,14 +215,16 @@ public class PanelInventario extends JPanel implements ActionListener, KeyListen
         {
             if(!this.camposVacios())
             {
-                this.INVENTARIO.setCodigoBarras(this.getCODIGO_BARRAS_TXT().getText());
-                this.INVENTARIO.setDiseno(this.getDISENO_TXT().getText());
-                this.INVENTARIO.setCodigoInterno(this.getCODIGO_INTERNO_TXT().getText());
-                this.INVENTARIO.setCliente(this.getCLIENTE_TXT().getText());
-                this.INVENTARIO.setProducto(this.getPRODUCTO_TXT().getText());
-                this.INVENTARIO.setStockPallets(Integer.parseInt(this.getCANTIDAD_PALLET_TXT().getText()));
+               Inventario inventario = new Inventario();
+                inventario.setCodigoBarras(this.getCODIGO_BARRAS_TXT().getText());
+                inventario.setDiseno(this.getDISENO_TXT().getText());
+                inventario.setCodigoInterno(this.getCODIGO_INTERNO_TXT().getText());
+                inventario.setCliente(this.getCLIENTE_TXT().getText());
+                inventario.setProducto(this.getPRODUCTO_TXT().getText());
+                inventario.setStockPallets(Integer.parseInt(this.getCANTIDAD_PALLET_TXT().getText()));
+                inventario.setStockPiezas(Integer.parseInt(this.getCANTIDAD_POR_PALLET_TXT().getText()));
 
-                this.INVENTARIO.insertarInventario();
+                inventario.insertarInventario();
 
                 vaciarTextos();
 

@@ -25,8 +25,8 @@ public class Layout extends GroupLayout {
                                 .addComponent(host.getPASSWORD_TXT(),229 , 430,450)
                                 .addGap(30)
                                 .addGroup(this.createSequentialGroup()
-                                        .addGap(130)
-                                        .addComponent(host.getINICIAR_SESION_BTN(),129 , 135,135)
+                                        .addGap(80)
+                                        .addComponent(host.getINICIAR_SESION_BTN(),129 , 235,235)
 
                                 )
                                 .addGap(30)

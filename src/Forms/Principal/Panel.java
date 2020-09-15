@@ -1,4 +1,4 @@
-package Forms.Principal.Panels;
+package Forms.Principal;
 
 import java.awt.*;
 

@@ -77,4 +77,16 @@ public class Transporte
         }
 
     }
+
+    public static Transporte getTransporteByIDTransporte(String id)
+    {
+        try {
+            Conexion conn = Conexion.getInstance();
+            Transporte result = conn.busquedaChoferById(id);
+            return result;
+        } catch (SQLException |Config.ReadException|Config.EmptyProperty throwables) {
+            return null;
+        }
+
+    }
 }

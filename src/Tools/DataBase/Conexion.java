@@ -1,11 +1,12 @@
 package Tools.DataBase;
 
-import Forms.Principal.Panels.PanelSalidas;
+import Forms.Principal.Salidas.PanelSalidas;
 import Tools.Config;
 
 import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.TimeZone;
 
 /***
  * Clase encargada de realizar la conexion a la base de datos en mysql.
@@ -22,35 +23,132 @@ public class Conexion
 
         // -- entradas:
 
-        private static final String SQL_INSERT_ENTRADAS = "INSERT INTO `inventario`.`entradas` (`NoOrden`, `NoPedido`, `FechaEntrada`, `HoraEntrada`, `CodigoBarras`, `Diseno`, `CodigoInterno`, `Cliente`, `Folio`, `Producto`, `CantidadPallet`, `CantidadPorPallet`, `TotalUnidades`, `Condicion`, `Observaciones`, `Chofer`, `Empresa`, `Placas`, `TractoCamion`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        private static final String SQL_INSERT_ENTRADAS =
+                        "INSERT INTO `inventario`.`entradas` (" +
+                                "`IdEntradas`, " +
+                                "`NoOrden`, " +
+                                "`NoPedido`, " +
+                                "`FechaEntrada`, " +
+                                "`HoraEntrada`, " +
+                                "`CodigoBarras`, " +
+                                "`Diseno`, " +
+                                "`CodigoInterno`, " +
+                                "`Cliente`, " +
+                                "`Producto`, " +
+                                "`CantidadPallet`, " +
+                                "`CantidadPorPallet`, " +
+                                "`TotalUnidades`, " +
+                                "`Condicion`, " +
+                                "`Observaciones`, " +
+                                "`idTransporte` )" +
+                        "VALUES (null,?," +
+                                "?,?,?," +
+                                "?,?,?," +
+                                "?,?,?," +
+                                "?,?,?," +
+                                "?,?);";
+
         private static final String SQL_SELECT_CODIGOBARRAS = "SELECT CodigoBarras FROM inventario.inventario;";
+
         private static final String SQL_SELECT_CHOFER = "SELECT Chofer FROM inventario.transporte;";
-        private static final String SQL_SELECT_BUSQUEDACHOFER = "SELECT * FROM inventario.transporte WHERE Chofer=?;";
+
+        private static final String SQL_SELECT_BUSQUEDACHOFER =
+                "SELECT * FROM inventario.transporte WHERE Chofer=?;";
+
+        private static final String SQL_SELECT_BUSQUEDACHOFERID =
+                "SELECT * FROM inventario.transporte WHERE IdTransporte=?;";
 
         // -- login:
 
-        private static final String SQL_SELECT_LOGIN = "SELECT * FROM inventario.usuario WHERE CorreoElectronico=? AND Contrasena=?;";
+        private static final String SQL_SELECT_LOGIN =
+                        "SELECT * FROM inventario.usuario " +
+                        "WHERE CorreoElectronico=? AND Contrasena=?;";
 
         // -- inventario:
 
-        private static final String SQL_SELECT_BUSQUEDACODIGOBARRAS = "SELECT * FROM inventario.inventario WHERE CodigoBarras=?;";
-        private static final String SQL_INSERT_INVENTARIO = "INSERT INTO `inventario`(`IdInventario`, `CodigoBarras`, `Diseno`, `CodigoInterno`, `Cliente`, `StockPallets`, `StockPiezas`, `Producto`) VALUES  (null, ?, ?, ?, ?, ?, ?, ?, ?);";
+        private static final String SQL_SELECT_BUSQUEDACODIGOBARRAS = "SELECT * FROM inventario.inventario " +
+                "WHERE CodigoBarras=?;";
+
+        private static final String SQL_INSERT_INVENTARIO =
+                "INSERT INTO `inventario`(" +
+                        "`IdInventario`, " +
+                        "`CodigoBarras`, " +
+                        "`Diseno`, " +
+                        "`CodigoInterno`, " +
+                        "`Cliente`, " +
+                        "`StockPallets`, " +
+                        "`StockPiezas`, " +
+                        "`Producto`) " +
+                        "VALUES  (null, ?, ?, ?, ?, ?, ?, ?);";
 
         // -- salidas:
 
-        private static final String SQL_INSERT_SALIDAS = "INSERT INTO `inventario`.`salidas` (`NoPedido`, `Sellos`, `CantidadPallet`, `CantidadPorPallet`, `TotalUnidades`, `FechaEntrega`, `Chofer`, `Empresa`, `Placas`, `TractoCamion`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        private static final String SQL_INSERT_SALIDAS =
+                "INSERT INTO `inventario`.`salidas` " +
+                        "(`IdSalidas`, " +
+                        "`NoPedido`, " +
+                        "`Sellos`, " +
+                        "`CantidadPallet`, " +
+                        "`CantidadPorPallet`, " +
+                        "`TotalUnidades`, " +
+                        "`FechaSalida`, " +
+                        "`HoraSalida`, " +
+                        "`observaciones`, " +
+                        "`condicion`, " +
+                        "`idTransporte`)  " +
+                        "VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?,?);";
+
         private static final String SQL_SELECT_NOPEDIDO = "SELECT NoPedido FROM inventario.entradas;";
-        private static final String SQL_SELECT_BUSQUEDANOPEDIDO = "SELECT CantidadPallet, CantidadPorPallet, TotalUnidades, Chofer, Empresa, Placas, TractoCamion FROM inventario.entradas WHERE NoPedido=?;";
+
+        private static final String SQL_SELECT_BUSQUEDANOPEDIDO =
+                        "SELECT CantidadPallet,CantidadPorPallet,\n" +
+                                "                                TotalUnidades, \n" +
+                                "                                idTransporte\n" +
+                                "                                FROM entradas \n" +
+                                "                                WHERE NoPedido = ? limit 1";
 
         // -- transporte:
-        private static final String SQL_INSERT_TRANSPORT = "INSERT INTO `inventario`.`transporte` (`Chofer`, `Empresa`, `Placas`, `TractoCamion`) VALUES (?, ?, ?, ?);";
+        private static final String SQL_INSERT_TRANSPORT =
+                        "INSERT INTO `inventario`.`transporte` (" +
+                                "`Chofer`, " +
+                                "`Empresa`, " +
+                                "`Placas`, " +
+                                "`TractoCamion`" +
+                                ") " +
+                        "VALUES (?, ?, ?, ?);";
 
         // -- usuario:
-        private static final String SQL_SELECT_USUARIO = "SELECT * FROM inventario.usuario WHERE CorreoElectronico = ?;";
-        private static final String SQL_SELECT_ID_USUARIO = "SELECT IdUsuario FROM inventario.usuario WHERE CorreoElectronico = ?;";
-        private static final String SQL_INSERT_USUARIO = "INSERT INTO `inventario`.`usuario` (`Nombre`, `ApellidoPaterno`, `ApellidoMaterno`, `Puesto`, `CorreoElectronico`, `Contrasena`) VALUES (?, ?, ?, ?, ?, ?);";
-        private static final String SQL_UPDATE_USUARIO = "UPDATE `inventario`.`usuario` SET `Nombre` = ?, `ApellidoPaterno` = ?, `ApellidoMaterno` = ?, `Puesto` = ?, `CorreoElectronico` = ?, `Contrasena` = ? WHERE (`IdUsuario` = ?);";
-        private static final String SQL_DELETE_USUARIO = "DELETE FROM `inventario`.`usuario` WHERE (`CorreoElectronico` = ?);";
+        private static final String SQL_SELECT_USUARIO =
+                "SELECT * FROM inventario.usuario " +
+                "WHERE CorreoElectronico = ?;";
+
+        private static final String SQL_SELECT_ID_USUARIO =
+                "SELECT IdUsuario FROM inventario.usuario " +
+                "WHERE CorreoElectronico = ?;";
+
+        private static final String SQL_INSERT_USUARIO =
+                "INSERT INTO `inventario`.`usuario` (" +
+                        "`Nombre`, " +
+                        "`ApellidoPaterno`, " +
+                        "`ApellidoMaterno`, " +
+                        "`Puesto`, " +
+                        "`CorreoElectronico`, " +
+                        "`Contrasena`" +
+                        ") " +
+                        "VALUES (?, ?, ?, ?, ?, ?);";
+
+        private static final String SQL_UPDATE_USUARIO =
+                "UPDATE `inventario`.`usuario` SET " +
+                        "`Nombre` = ?, " +
+                        "`ApellidoPaterno` = ?, " +
+                        "`ApellidoMaterno` = ?, " +
+                        "`Puesto` = ?, " +
+                        "`CorreoElectronico` = ?, " +
+                        "`Contrasena` = ? " +
+                        "WHERE (`IdUsuario` = ?);";
+
+        private static final String SQL_DELETE_USUARIO =
+                "DELETE FROM `inventario`.`usuario` WHERE (`CorreoElectronico` = ?);";
 
 
     //variables privadas de la clase:
@@ -58,14 +156,16 @@ public class Conexion
 
     private Conexion() throws SQLException, Config.ReadException, Config.EmptyProperty {
         Config cnf = Config.getInstance();
+
         String url = cnf.getProperty(Config.JDBC_URL);
+
+        url = url + "&serverTimezone=" + TimeZone.getDefault().getID();
+
         String user = cnf.getProperty(Config.MYSQL_USER);
         String pass = cnf.getProperty(Config.MYSQL_PASS);
 
         if(url.isEmpty())
             throw new Config.EmptyProperty("URL vacío");
-
-        System.out.println(url);
 
         this.conn = DriverManager.getConnection(url, user, pass);
     }
@@ -78,7 +178,8 @@ public class Conexion
         }
 
         // -- Usuarios:
-        public static Usuario seleccionarIdUsuario(String mail) throws SQLException, Config.ReadException, Config.EmptyProperty {
+        public static Usuario seleccionarIdUsuario(String mail)
+                throws SQLException, Config.ReadException, Config.EmptyProperty {
             return getInstance().getUsuario(mail);
         }
 
@@ -99,7 +200,11 @@ public class Conexion
             preparedStatement.setString(2, iniciarSesion.getPassword());
             resultSet = preparedStatement.executeQuery();
             if(resultSet.next())
-                return resultSet.getString("Nombre") + " " + resultSet.getString("ApellidoPaterno") + " " + resultSet.getString("ApellidoMaterno");
+                return resultSet.getString("Nombre")
+                        + " "
+                        + resultSet.getString("ApellidoPaterno")
+                        + " "
+                        + resultSet.getString("ApellidoMaterno");
             else
                 return "";
         }
@@ -121,23 +226,53 @@ public class Conexion
         int rows = 0;
         try
         {
+            /*
+
+            "INSERT INTO `inventario`.`entradas` " +
+                                "`IdEntradas`, " +
+                                "`NoOrden`, " +
+                                "`NoPedido`, " +
+                                "`FechaEntrada`, " +    //3
+                                "`HoraEntrada`, " +
+                                "`CodigoBarras`, " +
+                                "`Diseno`, " +          //6
+                                "`CodigoInterno`, " +
+                                "`Cliente`, " +
+                                "`Producto`, " +
+                                "`CantidadPallet`, " +
+                                "`CantidadPorPallet`, " +//12
+                                "`TotalUnidades`, " +
+                                "`Condicion`, " +
+                                "`Observaciones`, " +   //15
+                                "`idTransporte` " +     //6
+                        "VALUES (null,?," +
+                                "?,?,?," +
+                                "?,?,?," +
+                                "?,?,?," +
+                                "?,?,?," +
+                                "?,?);";
+             */
             preparedStatement = conn.prepareStatement(SQL_INSERT_ENTRADAS);
             preparedStatement.setInt(1, entradas.getNumOrden());
             preparedStatement.setInt(2, entradas.getNumPedido());
             preparedStatement.setDate(3, entradas.getFechaEntrada());
-            preparedStatement.setTime(4, entradas.getHoraEntrada());
+
+            preparedStatement.setTime(4, Time.valueOf(entradas.getHoraEntrada().toLocalTime()));
             preparedStatement.setString(5, entradas.getCodigoBarras());
             preparedStatement.setString(6, entradas.getDiseno());
+
             preparedStatement.setString(7, entradas.getCodigoInterno());
             preparedStatement.setString(8, entradas.getCliente());
-            preparedStatement.setInt(9, entradas.getFolio());
-            preparedStatement.setString(10, entradas.getProducto());
-            preparedStatement.setInt(11, entradas.getCantidadPallet());
-            preparedStatement.setInt(12, entradas.getCantidadPorPallet());
-            preparedStatement.setInt(13, entradas.getTotalUnidades());
-            preparedStatement.setString(14, entradas.getCondicion());
-            preparedStatement.setString(15, entradas.getObservaciones());
-            preparedStatement.setString(16, "");
+
+            preparedStatement.setString(9, entradas.getProducto());
+            preparedStatement.setInt(10, entradas.getCantidadPallet());
+            preparedStatement.setInt(11, entradas.getCantidadPorPallet());
+
+            preparedStatement.setInt(12, entradas.getTotalUnidades());
+            preparedStatement.setString(13, entradas.getCondicion());
+            preparedStatement.setString(14, entradas.getObservaciones());
+
+            preparedStatement.setInt(15, entradas.getTransporte().getId());
 
             rows = preparedStatement.executeUpdate();
             return rows;
@@ -282,6 +417,40 @@ public class Conexion
         }
     }
 
+    public Transporte busquedaChoferById(String id)
+    {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Transporte choferBuscado = null;
+        try
+        {
+            preparedStatement = conn.prepareStatement(SQL_SELECT_BUSQUEDACHOFERID);
+            preparedStatement.setString(1, id);
+            resultSet = preparedStatement.executeQuery();
+
+            if(resultSet.next())
+            {
+                choferBuscado = new Transporte();
+
+                choferBuscado.setId( resultSet.getInt("IdTransporte"));
+                choferBuscado.setEmpresa(resultSet.getString("Empresa"));
+                choferBuscado.setPlacas(resultSet.getString("Placas"));
+                choferBuscado.setTractoCamion(resultSet.getString("TractoCamion"));
+                choferBuscado.setChofer(resultSet.getString("Chofer"));
+
+            }
+
+            return choferBuscado;
+        }
+        catch (SQLException sqlException)
+        {
+            return null;
+        }finally {
+            if(preparedStatement != null){try{preparedStatement.close();}catch (Exception e){}}
+            if(resultSet != null){try{resultSet.close();}catch (Exception e1){}}
+        }
+    }
+
     // -- Inventario:
 
     public Inventario getInventario(String codigoBarras)
@@ -330,7 +499,7 @@ public class Conexion
 
         try
         {
-            //(`IdInventario`, `CodigoBarras`, `Diseno`, `CodigoInterno`, `Cliente`, `StockPallets`, `StockPiezas`, `Producto`)
+
             //(null, ?, ?, ?, ?, ?, ?, ?, ?)
             preparedStatement = conn.prepareStatement(SQL_INSERT_INVENTARIO);
             preparedStatement.setString(1, inventario.getCodigoBarras());
@@ -367,17 +536,38 @@ public class Conexion
 
         try
         {
+
+            /*
+            "INSERT INTO `inventario`.`salidas` " +
+                                "(`IdSalidas`, " +
+                                "`NoPedido`, " +
+                                "`Sellos`, " +
+                                "`CantidadPallet`, " +
+                                "`CantidadPorPallet`, " +
+                                "`TotalUnidades`, " +
+                                "`FechaSalida`, " +
+                                "`HoraSalida`, " +
+                                "`observaciones`, " +
+                                "`condicion`, " +
+                                "`idTransporte`)  " +
+                        "VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?,?);";
+            */
             preparedStatement = conn.prepareStatement(SQL_INSERT_SALIDAS);
+
             preparedStatement.setString(1, salidas.getNumPedido());
-            preparedStatement.setString(2, salidas.getSellos());
+
+            preparedStatement.setInt(2, salidas.getSellos());
             preparedStatement.setInt(3, salidas.getCantidadPallet());
             preparedStatement.setInt(4, salidas.getCantidadPorPallet());
             preparedStatement.setInt(5, salidas.getTotalUnidades());
-            preparedStatement.setString(6, salidas.getFechaEntrega());
-            preparedStatement.setString(7, salidas.getChofer());
-            preparedStatement.setString(8, salidas.getEmpresa());
-            preparedStatement.setString(9, salidas.getPlacas());
-            preparedStatement.setString(10, salidas.getTractoCamion());
+
+            preparedStatement.setDate(6, salidas.getFechaSalida());
+            preparedStatement.setTime(7, salidas.getHoraSalida());
+
+            preparedStatement.setString(8, salidas.getObservaciones());
+            preparedStatement.setString(9, salidas.getCondicion());
+
+            preparedStatement.setInt(10, salidas.getTransporte().getId());
 
             System.out.println("Ejecutanto query " + SQL_INSERT_SALIDAS);
             rows = preparedStatement.executeUpdate();
@@ -450,7 +640,7 @@ public class Conexion
         try
         {
             preparedStatement = conn.prepareStatement(SQL_SELECT_BUSQUEDANOPEDIDO);
-            preparedStatement.setString(1, nPedido);
+            preparedStatement.setInt(1, Integer.valueOf( nPedido ));
             resultSet = preparedStatement.executeQuery();
 
             while(resultSet.next())
@@ -458,10 +648,24 @@ public class Conexion
                 frmSalidas.getCANT_PALLET_TXT().setText(resultSet.getString("CantidadPallet"));
                 frmSalidas.getCANT_POR_PALETT_TXT().setText(resultSet.getString("CantidadPorPallet"));
                 frmSalidas.getTOTAL_UNIDADES_TXT().setText(resultSet.getString("TotalUnidades"));
-                frmSalidas.getCHOFER_TXT().setText(resultSet.getString("Chofer"));
-                frmSalidas.getEMPRESA_TXT().setText(resultSet.getString("Empresa"));
-                frmSalidas.getPLACAS_TXT().setText(resultSet.getString("Placas"));
-                frmSalidas.getTRACTO_TXT().setText(resultSet.getString("TractoCamion"));
+
+                String idTransporte = resultSet.getString("idTransporte");
+
+                Transporte transporte = Transporte.getTransporteByIDTransporte( idTransporte );
+
+                if (transporte == null)
+                {
+                    frmSalidas.getCHOFER_TXT().setText("");
+                    frmSalidas.getEMPRESA_TXT().setText("");
+                    frmSalidas.getPLACAS_TXT().setText("");
+                    frmSalidas.getTRACTO_TXT().setText("");
+                }
+                else {
+                    frmSalidas.getCHOFER_TXT().setText( transporte.getChofer() );
+                    frmSalidas.getEMPRESA_TXT().setText( transporte.getEmpresa() );
+                    frmSalidas.getPLACAS_TXT().setText( transporte.getPlacas() );
+                    frmSalidas.getTRACTO_TXT().setText( transporte.getTractoCamion() );
+                }
             }
 
         }
@@ -613,21 +817,26 @@ public class Conexion
         {
             preparedStatement = conn.prepareStatement(SQL_SELECT_USUARIO);
             preparedStatement.setString(1, mail);
-            System.out.println("Ejecutanto query " + SQL_SELECT_USUARIO);
             resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                int idUsuario = resultSet.getInt("id_Usuario");
-                System.out.println("ID recibido: " + idUsuario);
                 usuario = new Usuario();
-                usuario.setIdUsuario(idUsuario);
+
+                usuario.setIdUsuario(resultSet.getInt("id_Usuario"));
+                usuario.setNombre(resultSet.getString("Nombre"));
+                usuario.setApellidoPaterno(resultSet.getString("ApellidoPaterno"));
+                usuario.setApellidoMaterno(resultSet.getString("ApellidoMaterno"));
+                usuario.setPuesto(resultSet.getString("Puesto"));
+                usuario.setCorreoElectronico(resultSet.getString("CorreoElectronico"));
+                usuario.setContrasena(resultSet.getString("Contrasena"));
+
 
                 return usuario;
             }
 
             return null;
         }
-        catch (SQLException | Config.ReadException | Config.EmptyProperty throwables)
+        catch (SQLException throwables)
         {
             throwables.printStackTrace(System.out);
             return null;

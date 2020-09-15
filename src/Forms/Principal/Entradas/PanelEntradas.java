@@ -1,8 +1,8 @@
-package Forms.Principal.Panels;
+package Forms.Principal.Entradas;
 
 import Forms.Components.Fecha_y_hora;
 import Forms.Components.Table;
-import Forms.Principal.Layouts.EntradasLayout;
+import Forms.Principal.Panel;
 import Tools.DataBase.Entradas;
 
 import javax.swing.*;
@@ -104,11 +104,14 @@ public class PanelEntradas extends JPanel
 
     public PanelEntradas( JLabel dateTime, Fecha_y_hora dateController ){
 
-        this.FECHA_ENTRADA_LB = dateTime;
-        this.DATE_CONTROLLER = dateController;
+        this.setFECHA_ENTRADA_LB( dateTime );
+        this.setDATE_CONTROLLER( dateController );
         this.prepareAll();
         this.setLayout(new EntradasLayout(this));
         this.PANE.getViewport().add(this);
+
+
+
 
     }
 
@@ -116,8 +119,10 @@ public class PanelEntradas extends JPanel
 
     public Component getview()
     {
+        System.out.println( this.getFECHA_ENTRADA_LB().getText() );
         return this.PANE;
     }
+
     private void prepareAll(){
 
         this.cargaComboBoxs();
@@ -245,13 +250,16 @@ public class PanelEntradas extends JPanel
 
 
     }
+
     protected void completarInfoCB(String id) {
 
         Entradas.busquedaCodigoBarras(this, id);
     }
+
     protected void completarInfoChofer(String id){
         Entradas.busquedaChofer(this, id);
     }
+
     public void cargaComboBoxs() {
 
         this.CONDICION_CMB.removeAllItems();
@@ -272,6 +280,7 @@ public class PanelEntradas extends JPanel
         this.CODIGO_DE_BARRAS_CMB.setModel(Entradas.obtenerCodigoBarras());
 
     }
+
     public boolean camposVacios(){
         return  this.N_ORDEN_TXT.getText().isEmpty() ||
                 this.N_PEDIDO_TXT.getText().isEmpty() ||
@@ -290,36 +299,82 @@ public class PanelEntradas extends JPanel
                 this.TRACTO_TXT .getText().isEmpty() ||
                 this.CANTIDAD_FOLIOS_TXT.getText().isEmpty();
     }
-    private void guardarEntrada( int row ){
+
+    private void guardarEntrada(){
 
         Entradas nuevaEntrada = new Entradas();
 
-        nuevaEntrada.setFechaEntrada(this.DATE_CONTROLLER.getFecha());
-        nuevaEntrada.setHoraEntrada(this.DATE_CONTROLLER.getHora());
-        nuevaEntrada.setCodigoBarras((String) this.getTABLA_DE_ENTRADAS().getValueAt(row, 2));
+        nuevaEntrada.setFechaEntrada( this.DATE_CONTROLLER.getFecha() );
+        nuevaEntrada.setHoraEntrada( this.DATE_CONTROLLER.getHora() );
+        nuevaEntrada.setCodigoBarras( (String) this.getCODIGO_DE_BARRAS_CMB().getSelectedItem() );
 
-        nuevaEntrada.setDiseno((String)this.getTABLA_DE_ENTRADAS().getValueAt(row, 3));
-        nuevaEntrada.setCliente(this.getCLIENTE_TXT().getText());
-        nuevaEntrada.setProducto((String) this.getTABLA_DE_ENTRADAS().getValueAt(row, 4));
+        nuevaEntrada.setDiseno( this.getDISENO_TXT().getText() );
+        nuevaEntrada.setCliente( this.getCLIENTE_TXT().getText() );
+        nuevaEntrada.setProducto( this.getPRODUCTO_TXT().getText() );
 
-        nuevaEntrada.setCantidadPallet(Integer.parseInt(this.getCANT_PALLET_TXT().getText()));
-        nuevaEntrada.setCantidadPorPallet(Integer.parseInt((String)
-                this.getTABLA_DE_ENTRADAS().getValueAt(row, 5)));
-        nuevaEntrada.setCodigoInterno(this.getCODIGO_INTERNO_TXT().getText());
+        nuevaEntrada.setCantidadPallet( Integer.parseInt( this.getCANT_PALLET_TXT().getText() ) );
+        nuevaEntrada.setCantidadPorPallet( Integer.parseInt( this.getCANT_POR_PALETT_TXT().getText() ) );
+        nuevaEntrada.setCodigoInterno( this.getCODIGO_INTERNO_TXT().getText() );
 
-        nuevaEntrada.setTotalUnidades(Integer.parseInt(this.getTOTAL_UNIDADES_TXT().getText()));
-        nuevaEntrada.setNumOrden(Integer.parseInt(this.getN_ORDEN_TXT().getText()));
-        nuevaEntrada.setNumPedido(Integer.parseInt(this.getN_PEDIDO_TXT().getText()));
+        nuevaEntrada.setTotalUnidades( nuevaEntrada.getCantidadPallet() * nuevaEntrada.getCantidadPorPallet() );
+        nuevaEntrada.setNumOrden( Integer.parseInt( this.getN_ORDEN_TXT().getText() ) );
+        nuevaEntrada.setNumPedido( Integer.parseInt( this.getN_PEDIDO_TXT().getText() ) );
 
-        nuevaEntrada.setCondicion(this.getCONDICION_CMB().getSelectedItem().toString());
-        nuevaEntrada.setObservaciones(this.getOBSERVACIONES_TXT().getText());
-        //nuevaEntrada.setFolio(Integer.parseInt((String) TblENTRADAS_MDL.getValueAt(i, 1)));
-        nuevaEntrada.setFolio(0);
+        nuevaEntrada.setCondicion( this.getCONDICION_CMB().getSelectedItem().toString() );
+        nuevaEntrada.setObservaciones( this.getOBSERVACIONES_TXT().getText() );
 
-        nuevaEntrada.setTransporte((String) this.getCHOFER_CMB().getSelectedItem());
+        nuevaEntrada.setTransporte( (String) this.getCHOFER_CMB().getSelectedItem() );
 
         nuevaEntrada.insertarEntrada();
+
+        Entradas[] entradas =  this.getEntradas( nuevaEntrada );
+
+
+        //aquí guarda tu en el pdf. Usa un foreach de ser necesario para que captures
+        //todas las entradas.
+
     }
+
+    private Entradas[] getEntradas(Entradas generalData){
+
+        int nEntradas = this.TABLA_DE_ENTRADAS.getRowCount();
+
+        Entradas[] arr = new Entradas[ nEntradas ];
+
+        for (int i = 0; i < this.TABLA_DE_ENTRADAS.getRowCount(); i++){
+
+            Entradas nuevaEntrada = new Entradas();
+
+            nuevaEntrada.setFechaEntrada( generalData.getFechaEntrada() );
+            nuevaEntrada.setHoraEntrada( generalData.getHoraEntrada() );
+            nuevaEntrada.setCodigoBarras( generalData.getCodigoBarras() );
+
+            nuevaEntrada.setDiseno( generalData.getDiseno() );
+            nuevaEntrada.setCliente( generalData.getCliente() );
+            nuevaEntrada.setProducto( generalData.getProducto() );
+
+            int canrPorPallet = Integer.valueOf( (String)this.getTABLA_DE_ENTRADAS().getValueAt(i, 5) );
+
+            nuevaEntrada.setCantidadPallet( 1 );
+            nuevaEntrada.setCantidadPorPallet( canrPorPallet );
+            nuevaEntrada.setCodigoInterno( generalData.getCodigoInterno() );
+
+            nuevaEntrada.setTotalUnidades( nuevaEntrada.getCantidadPallet() * nuevaEntrada.getCantidadPorPallet() );
+            nuevaEntrada.setNumOrden( generalData.getNumOrden() );
+            nuevaEntrada.setNumPedido( generalData.getNumPedido() );
+
+            nuevaEntrada.setCondicion( generalData.getCondicion() );
+            nuevaEntrada.setObservaciones( generalData.getObservaciones() );
+
+            nuevaEntrada.setTransporte( generalData.getTransporte() );
+
+            arr[ i ] = nuevaEntrada;
+        }
+
+        return arr;
+
+    }
+
     public void vaciarTextos() {
         this.N_ORDEN_TXT.setText("");
         this.N_PEDIDO_TXT.setText("");
@@ -352,6 +407,14 @@ public class PanelEntradas extends JPanel
     // -- GET'S Y SET'S
 
 
+    public Fecha_y_hora getDATE_CONTROLLER() {
+        return DATE_CONTROLLER;
+    }
+
+    public void setDATE_CONTROLLER(Fecha_y_hora DATE_CONTROLLER) {
+        this.DATE_CONTROLLER = DATE_CONTROLLER;
+    }
+
     public JButton getELIMINAR() {
         return ELIMINAR;
     }
@@ -382,6 +445,10 @@ public class PanelEntradas extends JPanel
 
     public JLabel getFECHA_ENTRADA_LB() {
         return FECHA_ENTRADA_LB;
+    }
+
+    public void setFECHA_ENTRADA_LB(JLabel FECHA_ENTRADA_LB) {
+        this.FECHA_ENTRADA_LB = FECHA_ENTRADA_LB;
     }
 
     public JLabel getCODIGO_DE_BARRAS_LB() {
@@ -452,14 +519,6 @@ public class PanelEntradas extends JPanel
         return N_PEDIDO_TXT;
     }
 
-    public JTextField getFECHA_ENTRADA_TXT() {
-        return FECHA_ENTRADA_TXT;
-    }
-
-    public JTextField getHORA_ENTRADA_TXT() {
-        return HORA_ENTRADA_TXT;
-    }
-
     public JTextField getDISENO_TXT() {
         return DISENO_TXT;
     }
@@ -482,10 +541,6 @@ public class PanelEntradas extends JPanel
 
     public JTextField getCANT_PALLET_TXT() {
         return CANT_PALLET_TXT;
-    }
-
-    public JTextField getTOTAL_UNIDADES_TXT() {
-        return TOTAL_UNIDADES_TXT;
     }
 
     public JTextField getCANT_POR_PALETT_TXT() {
@@ -567,7 +622,12 @@ public class PanelEntradas extends JPanel
             }
             else
             {
-                int  count = Integer.parseInt(this.getTOTAL_UNIDADES_TXT().getText());
+
+                int cantidadPorPallet = Integer.valueOf( this.getCANT_POR_PALETT_TXT().getText() );
+                int catidadPallet = Integer.valueOf( this.getCANT_PALLET_TXT().getText() );
+
+                int  count = cantidadPorPallet * catidadPallet;
+
                 if(this.getTABLA_DE_ENTRADAS().sumatoriaCantidadUnidad() == count)
                 {
                     this.getGUARDAR().setEnabled(false);
@@ -575,7 +635,9 @@ public class PanelEntradas extends JPanel
                     this.getELIMINAR().setEnabled(false);
                     this.getLIMPIAR_TABLA().setEnabled(false);
 
-                    for (int i = 0; i < this.TABLA_DE_ENTRADAS.getRowCount(); i++){ this.guardarEntrada(i);}
+
+                    this.guardarEntrada();
+
                     JOptionPane.showMessageDialog(this,
                                                     "Entradas registradas con exito.",
                                                         "Registro de entrada",
@@ -648,16 +710,31 @@ public class PanelEntradas extends JPanel
                 int total = (nRows > 0)?Integer.parseInt(this.getCANTIDAD_FOLIOS_TXT().getText())+nRows
                             :Integer.parseInt(this.getCANTIDAD_FOLIOS_TXT().getText());
 
-                for(int i = (nRows > 0)?nRows+1:1; i <= total; i++)
+                int cantidadPallet = Integer.valueOf( this.getCANT_PALLET_TXT().getText() );
+                int cantidadPorPallet = Integer.valueOf( this.getCANT_POR_PALETT_TXT().getText() );
+
+                int totalUnidades = cantidadPallet * cantidadPorPallet;
+
+                int porcionAprox = totalUnidades / total;
+
+                int totalUnidadesAprox = (total - 1) * porcionAprox;
+
+                for(int i = (nRows > 0)?nRows-1:0; i < total; i++)
                 {
                     String [] fila = new String[7];
-                    fila[0] = String.valueOf(i);
+
+                    int cantidad = ( i == total-1 )?
+                            (totalUnidades == totalUnidadesAprox)?
+                                    porcionAprox
+                                    :(totalUnidades - totalUnidadesAprox)
+                            :porcionAprox;
+
+                    fila[0] = String.valueOf(i + 1);
                     fila[1] = "0";
                     fila[2] = this.getCODIGO_DE_BARRAS_CMB().getSelectedItem().toString();
                     fila[3] = this.getDISENO_TXT().getText();
                     fila[4] = this.getPRODUCTO_TXT().getText();
-                    fila[5] = String.valueOf((Integer.parseInt(this.getCANT_POR_PALETT_TXT().getText())%2 == 0)?
-                            Integer.parseInt(this.getCANT_POR_PALETT_TXT().getText()) / 2 : 1);
+                    fila[5] = String.valueOf( cantidad );
                     fila[6] = String.valueOf(valor);
 
                     this.getTABLA_DE_ENTRADAS().addRow(fila);

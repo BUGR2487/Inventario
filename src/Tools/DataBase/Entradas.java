@@ -1,6 +1,6 @@
 package Tools.DataBase;
 
-import Forms.Principal.Panels.PanelEntradas;
+import Forms.Principal.Entradas.PanelEntradas;
 import Tools.Config;
 import Tools.Fecha;
 import Tools.Hora;
