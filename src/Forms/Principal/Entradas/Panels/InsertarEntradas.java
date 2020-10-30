@@ -3,7 +3,7 @@ package Forms.Principal.Entradas.Panels;
 import Forms.Components.Fecha_y_hora;
 import Forms.Components.Table;
 import Forms.Principal.Entradas.Layouts.InsertarEntradasLayout;
-import Forms.Principal.Panel;
+import Forms.Panel;
 import Tools.DataBase.Entradas;
 
 import javax.swing.*;
@@ -16,30 +16,30 @@ public class InsertarEntradas extends JPanel
 
     // -- Etiquetas:
 
-    private final JLabel N_ORDEN_LB             = new JLabel("No. Orden");
-    private final JLabel N_PEDIDO_LB            = new JLabel("No. Pedido");
+    private final JLabel N_ORDEN_LB                  = new JLabel("No. Orden");
+    private final JLabel N_PEDIDO_LB                 = new JLabel("No. Pedido");
 
-    private JLabel FECHA_ENTRADA_LB             = null;
+    private JLabel FECHA_ENTRADA_LB                  = null;
 
-    private final JLabel CODIGO_DE_BARRAS_LB    = new JLabel("C\u00f3digo de barras");
-    private final JLabel DISENO_LB              = new JLabel("Dise\u00f1o");
-    private final JLabel CODIGO_INTERNO_LB      = new JLabel("C\u00f3digo interno");
+    private final JLabel CODIGO_DE_BARRAS_LB         = new JLabel("C\u00f3digo de barras");
+    private final JLabel DISENO_LB                   = new JLabel("Dise\u00f1o");
+    private final JLabel CODIGO_INTERNO_LB           = new JLabel("C\u00f3digo interno");
 
-    private final JLabel CLIENTE_LB             = new JLabel("Cliente");
-    private final JLabel PRODUCTO_LB            = new JLabel("Producto");
-    private final JLabel CANT_PALLET_LB         = new JLabel("Cantidad pallet");
+    private final JLabel CLIENTE_LB                  = new JLabel("Cliente");
+    private final JLabel PRODUCTO_LB                 = new JLabel("Producto");
+    private final JLabel CANT_PALLET_LB              = new JLabel("Cantidad pallet");
 
-    private final JLabel TOTAL_UNIDADES_LB      = new JLabel("Total de unidades");
-    private final JLabel CANT_POR_PALETT_LB     = new JLabel("Cantidad por pallet");
-    private final JLabel CONDICION_LB           = new JLabel("Condici\u00f3n");
+    private final JLabel TOTAL_UNIDADES_LB           = new JLabel("Total de unidades");
+    private final JLabel CANT_POR_PALETT_LB          = new JLabel("Cantidad por pallet");
+    private final JLabel CONDICION_LB                = new JLabel("Condici\u00f3n");
 
-    private final JLabel OBSERVACIONES_LB       = new JLabel("Observaciones");
-    private final JLabel CHOFER_LB              = new JLabel("Chofer");
-    private final JLabel EMPRESA_LB             = new JLabel("Empresa");
+    private final JLabel OBSERVACIONES_LB            = new JLabel("Observaciones");
+    private final JLabel CHOFER_LB                   = new JLabel("Chofer");
+    private final JLabel EMPRESA_LB                  = new JLabel("Empresa");
 
-    private final JLabel PLACAS_LB              = new JLabel("Placas");
-    private final JLabel TRACTO_LB              = new JLabel("Tracto camion");
-    private final JLabel CANTIDAD_FOLIOS_LB     = new JLabel("Cantidad de folios");
+    private final JLabel PLACAS_LB                   = new JLabel("Placas");
+    private final JLabel TRACTO_LB                   = new JLabel("Tracto camion");
+    private final JLabel CANTIDAD_FOLIOS_LB          = new JLabel("Cantidad de folios");
 
 
     // -- Campos de texto:
@@ -73,29 +73,29 @@ public class InsertarEntradas extends JPanel
     private final JComboBox CHOFER_CMB              = new JComboBox();
 
     // -- botones:
-    private final JButton AGREGAR       = new JButton("Agregar a la tabla.");
-    private final JButton GUARDAR       = new JButton("Guardar.");
-    private final JButton ELIMINAR      = new JButton("Eliminar fila(s).");
-    private final JButton LIMPIAR_TABLA = new JButton("Limpiar tabla.");
+    private final JButton AGREGAR                   = new JButton("Agregar a la tabla.");
+    private final JButton GUARDAR                   = new JButton("Guardar.");
+    private final JButton ELIMINAR                  = new JButton("Eliminar fila(s).");
+    private final JButton LIMPIAR_TABLA             = new JButton("Limpiar tabla.");
 
     // -- Runnable que actualiza la hora y fecha:
 
-    private Fecha_y_hora DATE_CONTROLLER = null;
+    private Fecha_y_hora DATE_CONTROLLER            = null;
 
     // -- scroll de la vista:
-    private final JScrollPane PANE = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
-            ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+    private final JScrollPane PANE                  = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+                                                                      ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 
 
     // -- Tabla de entradas:
-    private final Table TABLA_DE_ENTRADAS = new Table(true, new String[] {
-                                                                                    "#",
-                                                                                    "Código de barras",
-                                                                                    "Diseño",
-                                                                                    "Producto",
-                                                                                    "Cantidad/Unidad",
-                                                                                    "color"
-                                                                                    });
+    private final Table TABLA_DE_ENTRADAS           = new Table(true, new String[] {
+                                                                                              "#",
+                                                                                              "Código de barras",
+                                                                                              "Diseño",
+                                                                                              "Producto",
+                                                                                              "Cantidad/Unidad",
+                                                                                              "color"
+                                                                                              }, false);
 
     // -- Variables de la sesion:
     private String user;
@@ -110,16 +110,12 @@ public class InsertarEntradas extends JPanel
         this.setLayout(new InsertarEntradasLayout(this));
         this.PANE.getViewport().add(this);
 
-
-
-
     }
 
     // -- METODOS DE LA CLASE:
 
     public Component getview()
     {
-        System.out.println( this.getFECHA_ENTRADA_LB().getText() );
         return this.PANE;
     }
 
@@ -730,12 +726,11 @@ public class InsertarEntradas extends JPanel
                             :porcionAprox;
 
                     fila[0] = String.valueOf(i + 1);
-                    fila[1] = "0";
-                    fila[2] = this.getCODIGO_DE_BARRAS_CMB().getSelectedItem().toString();
-                    fila[3] = this.getDISENO_TXT().getText();
-                    fila[4] = this.getPRODUCTO_TXT().getText();
-                    fila[5] = String.valueOf( cantidad );
-                    fila[6] = String.valueOf(valor);
+                    fila[1] = this.getCODIGO_DE_BARRAS_CMB().getSelectedItem().toString();
+                    fila[2] = this.getDISENO_TXT().getText();
+                    fila[3] = this.getPRODUCTO_TXT().getText();
+                    fila[4] = String.valueOf( cantidad );
+                    fila[5] = String.valueOf(valor);
 
                     this.getTABLA_DE_ENTRADAS().addRow(fila);
 

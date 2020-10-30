@@ -1,6 +1,6 @@
 package Forms.Principal.Transporte;
 
-import Forms.Principal.Panel;
+import Forms.Panel;
 import Tools.Config;
 import Tools.DataBase.Transporte;
 

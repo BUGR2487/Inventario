@@ -1,7 +1,8 @@
 package Tools.DataBase;
 
-import Forms.Principal.Salidas.PanelSalidas;
+import Forms.Principal.Salidas.Panels.InsertarSalidasPanel;
 import Tools.Config;
+import Tools.Hora;
 
 import javax.swing.*;
 import java.sql.*;
@@ -93,10 +94,9 @@ public class Conexion
                         "`TotalUnidades`, " +
                         "`FechaSalida`, " +
                         "`HoraSalida`, " +
-                        "`observaciones`, " +
-                        "`condicion`, " +
+                        "`fechaEntrega`, " +
                         "`idTransporte`)  " +
-                        "VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?,?);";
+                        "VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
         private static final String SQL_SELECT_NOPEDIDO = "SELECT NoPedido FROM inventario.entradas;";
 
@@ -106,6 +106,9 @@ public class Conexion
                                 "                                idTransporte\n" +
                                 "                                FROM entradas \n" +
                                 "                                WHERE NoPedido = ? limit 1";
+
+        private static final String SQL_SELECT_FIND_BY_RANGE_DATE = "SELECT * FROM `salidas` WHERE " +
+                "`fechaEntrega` BETWEEN ? AND ? ORDER BY `FechaSalida` DESC";
 
         // -- transporte:
         private static final String SQL_INSERT_TRANSPORT =
@@ -226,32 +229,7 @@ public class Conexion
         int rows = 0;
         try
         {
-            /*
 
-            "INSERT INTO `inventario`.`entradas` " +
-                                "`IdEntradas`, " +
-                                "`NoOrden`, " +
-                                "`NoPedido`, " +
-                                "`FechaEntrada`, " +    //3
-                                "`HoraEntrada`, " +
-                                "`CodigoBarras`, " +
-                                "`Diseno`, " +          //6
-                                "`CodigoInterno`, " +
-                                "`Cliente`, " +
-                                "`Producto`, " +
-                                "`CantidadPallet`, " +
-                                "`CantidadPorPallet`, " +//12
-                                "`TotalUnidades`, " +
-                                "`Condicion`, " +
-                                "`Observaciones`, " +   //15
-                                "`idTransporte` " +     //6
-                        "VALUES (null,?," +
-                                "?,?,?," +
-                                "?,?,?," +
-                                "?,?,?," +
-                                "?,?,?," +
-                                "?,?);";
-             */
             preparedStatement = conn.prepareStatement(SQL_INSERT_ENTRADAS);
             preparedStatement.setInt(1, entradas.getNumOrden());
             preparedStatement.setInt(2, entradas.getNumPedido());
@@ -563,15 +541,13 @@ public class Conexion
 
             preparedStatement.setDate(6, salidas.getFechaSalida());
             preparedStatement.setTime(7, salidas.getHoraSalida());
+            preparedStatement.setDate(8, salidas.getFechaEntrega());
 
-            preparedStatement.setString(8, salidas.getObservaciones());
-            preparedStatement.setString(9, salidas.getCondicion());
+            preparedStatement.setInt(9, salidas.getTransporte().getId());
 
-            preparedStatement.setInt(10, salidas.getTransporte().getId());
-
-            System.out.println("Ejecutanto query " + SQL_INSERT_SALIDAS);
+            //System.out.println("Ejecutanto query " + SQL_INSERT_SALIDAS);
             rows = preparedStatement.executeUpdate();
-            System.out.println("Registros afectados: " + rows);
+            //System.out.println("Registros afectados: " + rows);
 
             return rows;
         }
@@ -632,7 +608,7 @@ public class Conexion
         return  ListaModelo;
     }
 
-    public void busquedaNumPedido(PanelSalidas frmSalidas, String nPedido)
+    public void busquedaNumPedido(InsertarSalidasPanel frmSalidas, String nPedido)
     {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -674,6 +650,56 @@ public class Conexion
             sqlException.printStackTrace();
         }
         finally {
+            if(preparedStatement != null){try{preparedStatement.close();}catch (Exception e){}}
+            if(resultSet != null){try{resultSet.close();}catch (Exception e1){}}
+        }
+
+    }
+
+    public Salidas[] getSalidasByRange(Date from, Date to){
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            preparedStatement = conn.prepareStatement(SQL_SELECT_FIND_BY_RANGE_DATE);
+            preparedStatement.setDate(1, from);
+            preparedStatement.setDate(2, to);
+
+            System.out.println(preparedStatement);
+
+            resultSet = preparedStatement.executeQuery();
+
+            ArrayList<Salidas> arr = new ArrayList<>();
+
+                while(resultSet.next()) {
+                    Salidas instacia = new Salidas();
+
+                    instacia.setId( resultSet.getInt("IdSalidas") );
+                    instacia.setNumPedido( resultSet.getString( "NoPedido") );
+                    instacia.setSellos( resultSet.getInt("Sellos") );
+                    instacia.setCantidadPallet( resultSet.getInt("CantidadPallet") );
+                    instacia.setCantidadPorPallet( resultSet.getInt("CantidadPorPallet") );
+                    instacia.setTotalUnidades( resultSet.getInt("TotalUnidades") );
+                    instacia.setFechaEntrega( resultSet.getDate("FechaSalida") );
+                    instacia.setHoraSalida(new Hora(  resultSet.getTime("HoraSalida").getTime() ));
+                    instacia.setFechaEntrega( resultSet.getDate("fechaEntrega") );
+                    instacia.setTransporte(Transporte.getTransporteByIDTransporte(
+                            String.valueOf(resultSet.getInt("idTransporte"))
+                    ));
+
+                    arr.add( instacia );
+
+                }
+
+                return arr.toArray( new Salidas[ arr.size() ]);
+        }
+        catch (SQLException sqlException)
+        {
+            sqlException.printStackTrace();
+            return null;
+        }
+        finally
+        {
             if(preparedStatement != null){try{preparedStatement.close();}catch (Exception e){}}
             if(resultSet != null){try{resultSet.close();}catch (Exception e1){}}
         }

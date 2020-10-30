@@ -1,7 +1,9 @@
 package Forms.Principal;
 
 import Forms.Components.Fecha_y_hora;
+import Forms.Components.Tabs;
 import Forms.Login.Login;
+import Forms.Panel;
 import Forms.Principal.Entradas.PanelEntradas;
 import Forms.Principal.Inventario.PanelInventario;
 import Forms.Principal.Salidas.PanelSalidas;
@@ -40,11 +42,11 @@ public class Principal extends JFrame{
 
         // -- todas las vistas del usuario:
         //private final InsertarEntradas entradas      = new InsertarEntradas( FECHA_ENTRADA_LB, DATE_CONTROLLER );
-        private final PanelEntradas entradas      = new PanelEntradas( FECHA_ENTRADA_LB, DATE_CONTROLLER );
+        private final PanelEntradas entradas        = new PanelEntradas( FECHA_ENTRADA_LB, DATE_CONTROLLER );
         private final PanelInventario inventario    = new PanelInventario();
-        private final PanelSalidas salidas       = new PanelSalidas( FECHA_SALIDA_LB, DATE_CONTROLLER_SALIDA );
-        private final PanelTransportes transportes   = new PanelTransportes();
-        private final PanelUsuarios usuarios      = new PanelUsuarios();
+        private final PanelSalidas salidas          = new PanelSalidas( FECHA_SALIDA_LB, DATE_CONTROLLER_SALIDA );
+        private final PanelTransportes transportes  = new PanelTransportes();
+        private final PanelUsuarios usuarios        = new PanelUsuarios();
 
         // -- iconos de pestaña:
 
@@ -61,7 +63,40 @@ public class Principal extends JFrame{
         private final Icon usuario_icon         = IconFontSwing.buildIcon(USERS	, 28, Color.red);
 
         //panel con pestañas:
-        private JTabbedPane tabbedPane          = null;
+        private final Tabs TABBEDPANE          = new Tabs(false);
+
+
+        private final Tabs.Tab TAB_ENTRADAS     =
+                new Tabs.Tab("Entradas.",
+                entradas_icon ,
+                this.entradas.getview(), "" +
+                "Haz click aqui para registrar una entrada");
+
+        private final Tabs.Tab TAB_INVENTARIO   =
+                new Tabs.Tab("Inventario.",
+                inventario_icon ,
+                this.inventario.getview(),
+                "Haz click aqui para registrar en el inventario.");
+
+        private final Tabs.Tab TAB_SALIDAS      =
+                new Tabs.Tab("Salidas.",
+                salidas_icon,
+                this.salidas.getview(),
+                "Haz click aqui para registrar salidas del almacen.");
+
+        private final Tabs.Tab TAB_TRANSPORTES  =
+                new Tabs.Tab("Transportes.",
+                transporte_icon,
+                this.transportes,
+                "Haz click aqui para administrar informacion del transporte.");
+
+        private final Tabs.Tab TAB_USUARIOS     =
+                new Tabs.Tab("Usuarios.",
+                usuario_icon,
+                this.usuarios,
+                "Haz click aqui para administrar la informacion de los usuarios");
+
+
 
         //variables de interfaz de uaurio
         private static Login      from;
@@ -82,13 +117,13 @@ public class Principal extends JFrame{
          this.startTimer();
          this.prepareTabs();
 
-         this.add(this.tabbedPane);
+         this.add(this.TABBEDPANE);
          this.setVisible(true);
          this.setResizable(false);
          this.setLocationRelativeTo(null);
          this.getContentPane().setBackground(Color.WHITE);
          setIconImage(new ImageIcon("./Data/Imagenes/IconoTprlogistics.png").getImage());
-         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+         this.setBounds( Panel.bounds );
          this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
          this.addWindowListener(new WindowAdapterImplement(fromJFrame, this));
      }
@@ -96,17 +131,14 @@ public class Principal extends JFrame{
      // -- METODOS DE LA CLASE:
 
     private void prepareTabs(){
-        tabbedPane = new JTabbedPane();
-        tabbedPane.setBackground(Color.gray);
-        tabbedPane.addTab("Entradas.", entradas_icon , this.entradas.getview(), "Haz click aqui para registrar una entrada");
-        tabbedPane.addTab("Inventario.", inventario_icon ,this.inventario.getview(), "Haz click aqui para registrar en el inventario.");
-        tabbedPane.addTab("Salidas.", salidas_icon ,this.salidas.getview(), "Haz click aqui para registrar salidas del almacen.");
-        tabbedPane.addTab("Transportes.", transporte_icon ,this.transportes, "Haz click aqui para administrar informacion del transporte.");
-        tabbedPane.addTab("Usuarios.", usuario_icon ,this.usuarios, "Haz click aqui para administrar la informacion de los usuarios");
+        TABBEDPANE.setBackground(Color.gray);
+        TABBEDPANE.addTab(TAB_ENTRADAS);
+        TABBEDPANE.addTab(TAB_INVENTARIO);
+        TABBEDPANE.addTab(TAB_SALIDAS);
+        TABBEDPANE.addTab(TAB_TRANSPORTES);
+        TABBEDPANE.addTab(TAB_USUARIOS);
 
-        tabbedPane.setFont(Panel.FUENTE_GENERAL_TXT);
-
-        tabbedPane.addChangeListener(new ChangeListener() {
+        TABBEDPANE.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
                 JTabbedPane tabbedPane = (JTabbedPane) e.getSource();
@@ -126,8 +158,8 @@ public class Principal extends JFrame{
                     break;
                     case 2:
                     {
-                        salidas.cargaComboBox();
-                        salidas.vaciarTextos();
+                        salidas.getRegistro().cargaComboBox();
+                        salidas.getRegistro().vaciarTextos();
                     }
                     break;
                     case 3:
@@ -141,6 +173,8 @@ public class Principal extends JFrame{
                     }
                     break;
                 }
+                entradas.getConsultarEntrada().hideDatePickers();
+                salidas.getConsultar().hideDatePickers();
             }
         });
     }
@@ -203,8 +237,8 @@ public class Principal extends JFrame{
         return usuario_icon;
     }
 
-    public JTabbedPane getTabbedPane() {
-        return tabbedPane;
+    public Tabs getTabbedPane() {
+        return TABBEDPANE;
     }
 
     public String getUserName() {

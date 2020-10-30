@@ -1,7 +1,5 @@
 package Forms.Components;
 
-import Tools.RenderTable;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -19,20 +17,26 @@ public class Table extends JTable {
 
     private TableColumnModel modeloDeColumna;
     private JScrollPane scrollDeTabla;
-    private TableCellRenderer tableCellRenderer;
+    private TextAreaRenderer tableCellRenderer;
     private DefaultTableModel defaultTableModel;
     private DefaultTableCellRenderer defaultTableCellRenderer;
     
     private boolean useScroll = true; 
 
+    private int size = 0;
     // -- CONSTRUCTOR:
 
-    public Table(boolean useScrollbar, String[] headers){
+    public Table(boolean useScrollbar, String[] headers, boolean sort){
         // -- primero capturo variables:
         this.useScroll = useScrollbar;
-        
+        this.setBackground(Color.DARK_GRAY);
+        this.setRowHeight(40);
+        this.setAutoCreateRowSorter(sort);
+
+        this.size = headers.length;
+
         // -- despues comiezo a fabricar la tabla:
-        this.tableCellRenderer = new RenderTable();
+        this.tableCellRenderer = new TextAreaRenderer();
         this.defaultTableModel = new DefaultTableModel();
         this.defaultTableCellRenderer = new DefaultTableCellRenderer();
         this.columnModel = this.getColumnModel();
@@ -51,9 +55,10 @@ public class Table extends JTable {
         this.setModel(defaultTableModel);
         this.setPreferredScrollableViewportSize(Toolkit.getDefaultToolkit().getScreenSize());
         this.setFillsViewportHeight(true);
-        this.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        this.setAutoResizeMode( JTable.AUTO_RESIZE_OFF );
 
         defaultTableModel.setColumnIdentifiers(headers);
+
 
         
         this.defaultTableCellRenderer.setHorizontalAlignment(SwingConstants.CENTER);
@@ -62,10 +67,18 @@ public class Table extends JTable {
 
             this.getColumnModel().getColumn(i).setCellRenderer(defaultTableCellRenderer);
 
-            if(i == 0)
-                this.columnModel.getColumn(i).setPreferredWidth(52);
-            else if(i < (headers.length - 1) )
-                this.columnModel.getColumn(i).setPreferredWidth(221);
+            if(i == 0) {
+                this.columnModel.getColumn(i).setMaxWidth(headers[i].length() * 30);
+                this.columnModel.getColumn(i).setMinWidth(headers[i].length() * 30);
+                this.columnModel.getColumn(i).setPreferredWidth(headers[i].length() * 30);
+                this.columnModel.getColumn(i).setResizable( false );
+            }
+            else if(i < (headers.length - 1) ) {
+                this.columnModel.getColumn(i).setMaxWidth(headers[i].length() * 30);
+                this.columnModel.getColumn(i).setMinWidth(headers[i].length() * 30);
+                this.columnModel.getColumn(i).setPreferredWidth(headers[i].length() * 30);
+                this.columnModel.getColumn(i).setResizable( false );
+            }
             else if( i == (headers.length - 1) )
             {
                 this.columnModel.getColumn(i).setMaxWidth(0);
@@ -75,7 +88,7 @@ public class Table extends JTable {
 
         }
 
-        this.setAutoResizeMode( JTable.AUTO_RESIZE_ALL_COLUMNS );
+
 
     }
 
@@ -180,11 +193,11 @@ public class Table extends JTable {
         this.scrollDeTabla = scrollDeTabla;
     }
 
-    public TableCellRenderer getTableCellRenderer() {
+    public TextAreaRenderer getTableCellRenderer() {
         return tableCellRenderer;
     }
 
-    public void setTableCellRenderer(TableCellRenderer tableCellRenderer) {
+    public void setTableCellRenderer(TextAreaRenderer tableCellRenderer) {
         this.tableCellRenderer = tableCellRenderer;
     }
 
@@ -220,7 +233,10 @@ public class Table extends JTable {
         Component comp = super.prepareRenderer(renderer, row, column);
 
         if(!comp.getBackground().equals(getSelectionBackground())) {
-            int indexColor = Integer.valueOf((String) this.getModel().getValueAt(row, 6));
+            int indexColor = Integer.valueOf((String) this.getModel().getValueAt(row, (this.size - 1) ));
+
+
+
             comp.setBackground(rowColors[indexColor]);
         }
 
@@ -228,5 +244,21 @@ public class Table extends JTable {
     }
 
 
+
+    public static class TextAreaRenderer extends JTextArea
+            implements TableCellRenderer {
+
+        public TextAreaRenderer() {
+            setLineWrap(true);
+            setWrapStyleWord(true);
+        }
+
+        public Component getTableCellRendererComponent(JTable jTable,
+                                                       Object obj, boolean isSelected, boolean hasFocus, int row,
+                                                       int column) {
+            setText((String)obj);
+            return this;
+        }
+    }
 
 }

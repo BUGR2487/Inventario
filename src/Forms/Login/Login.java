@@ -49,6 +49,7 @@ public class Login extends JFrame implements ActionListener, KeyListener{
                 if(this.panelUser == null) {
                     try {
                         this.panelUser = new Principal(this.panel.getUsuario(), this);
+
                     } catch (SQLException throwables) {
                         showDialogError("Ocurrio un error al conectar con la base de datos, verifique el error y vuelva a intentarlo.",
                                 "MY_SQL_ERROR_CONNECTION");
@@ -69,6 +70,7 @@ public class Login extends JFrame implements ActionListener, KeyListener{
 
                 this.setVisible(false);
                 this.panelUser.setVisible(true);
+                System.out.println( this.panelUser.getSize().getHeight() +" / "+ this.panelUser.getSize().getWidth() );
             }
 
         }

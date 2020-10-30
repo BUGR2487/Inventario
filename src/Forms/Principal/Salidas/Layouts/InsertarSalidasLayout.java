@@ -1,17 +1,17 @@
-package Forms.Principal.Salidas;
+package Forms.Principal.Salidas.Layouts;
 
-import Forms.Principal.Layouts;
+import Forms.Layouts;
+import Forms.Principal.Salidas.Panels.InsertarSalidasPanel;
 
 import javax.swing.*;
 
-public class SalidasLayout extends GroupLayout implements Layouts {
+public class InsertarSalidasLayout extends GroupLayout implements Layouts {
 
-    private GroupLayout.SequentialGroup Horizontal;
-    private GroupLayout.SequentialGroup Vertical;
+    private SequentialGroup Horizontal;
+    private SequentialGroup Vertical;
 
-    public SalidasLayout(PanelSalidas host) {
+    public InsertarSalidasLayout(InsertarSalidasPanel host) {
         super(host);
-
         this.Horizontal = this.createSequentialGroup();
         this.Vertical = this.createSequentialGroup();
 
@@ -50,7 +50,7 @@ public class SalidasLayout extends GroupLayout implements Layouts {
                         )
                         .addGroup(this.createParallelGroup()
                                 .addComponent(host.getFECHA_ENTREGA_LB())
-                                .addComponent(host.getFECHA_ENTREGA_TXT(),size_x_min,size_x_mid,size_x_max)
+                                .addComponent(host.getFECHA_ENTREGA(),size_x_min,size_x_mid,size_x_max)
                         )
                         .addGroup(this.createParallelGroup()
                                 .addComponent(host.getCHOFER_LB())
@@ -135,7 +135,7 @@ public class SalidasLayout extends GroupLayout implements Layouts {
                         .addGroup(this.createSequentialGroup()
                                 .addGap(padding_y - 180)
                                 .addComponent(host.getFECHA_ENTREGA_LB())
-                                .addComponent(host.getFECHA_ENTREGA_TXT(),size_y_min,size_y_mid,size_y_max)
+                                .addComponent(host.getFECHA_ENTREGA(),size_y_min,size_y_mid,size_y_max)
                                 .addGap(padding_y - 180)
                         )
                         .addGroup(this.createSequentialGroup()
@@ -183,7 +183,5 @@ public class SalidasLayout extends GroupLayout implements Layouts {
 
         this.setVerticalGroup(this.Vertical);
         this.setHorizontalGroup(this.Horizontal);
-
-
     }
 }

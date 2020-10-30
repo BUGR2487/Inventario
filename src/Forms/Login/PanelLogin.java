@@ -78,7 +78,7 @@ public class PanelLogin extends JPanel {
         //this.getINICIAR_SESION_BTN().setIcon(icon);
 
         //estableciendo imagenes en su contenedor(JLabel):
-        this.getICONO_IMG().setImage(this.getICONO_IMG().getImage().getScaledInstance(400, 400,  java.awt.Image.SCALE_SMOOTH));
+        this.getICONO_IMG().setImage(this.getICONO_IMG().getImage().getScaledInstance(400, 250,  java.awt.Image.SCALE_SMOOTH));
         this.getCONTENEDOR_ICONO_LB().setIcon(this.getICONO_IMG());
         this.getCONTENEDOR_MOSTRAR_PASS_LB().setIcon(this.getImageHiddeOrShowPass());
         //AbstractBorder brdrLeft = new TextBubbleBorder(Color.BLACK,2,16,16);

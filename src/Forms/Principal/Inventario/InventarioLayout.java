@@ -1,6 +1,6 @@
 package Forms.Principal.Inventario;
 
-import Forms.Principal.Layouts;
+import Forms.Layouts;
 
 import javax.swing.*;
 

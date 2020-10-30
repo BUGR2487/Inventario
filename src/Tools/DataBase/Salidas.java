@@ -1,12 +1,14 @@
 package Tools.DataBase;
 
-import Forms.Principal.Salidas.PanelSalidas;
+import Forms.Principal.Salidas.Panels.InsertarSalidasPanel;
 import Tools.Config;
 import Tools.Fecha;
 import Tools.Hora;
 
 import javax.swing.*;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Salidas
 {
@@ -21,12 +23,19 @@ public class Salidas
     private Fecha fechaSalida = null;
     private Hora  horaSalida = null;
 
-    private String observaciones = "";
-    private String condicion = "";
+    private Date fechaEntrega = null;
 
     private Transporte transporte = null;
 
     public Salidas(){
+    }
+
+    public Date getFechaEntrega() {
+        return fechaEntrega;
+    }
+
+    public void setFechaEntrega(Date fechaEntrega) {
+        this.fechaEntrega = fechaEntrega;
     }
 
     public int getId() {
@@ -93,22 +102,6 @@ public class Salidas
         this.horaSalida = horaSalida;
     }
 
-    public String getObservaciones() {
-        return observaciones;
-    }
-
-    public void setObservaciones(String observaciones) {
-        this.observaciones = observaciones;
-    }
-
-    public String getCondicion() {
-        return condicion;
-    }
-
-    public void setCondicion(String condicion) {
-        this.condicion = condicion;
-    }
-
     public Transporte getTransporte() {
         return transporte;
     }
@@ -131,6 +124,28 @@ public class Salidas
         }
     }
 
+    public static ArrayList<Salidas> getRangoDeSalidasPorFecha(Date from, Date to)
+    {
+        try {
+            Conexion conn = Conexion.getInstance();
+            Salidas[] result = conn.getSalidasByRange(from, to);
+
+            if(result != null)
+            {
+                ArrayList<Salidas> list = new ArrayList<Salidas>();
+
+                for (Salidas s : result)
+                {
+                    list.add( s );
+                }
+
+                return list;
+            }
+            return null;
+        } catch (SQLException | Config.ReadException | Config.EmptyProperty throwables) {
+            return null;
+        }
+    }
 
     public static DefaultComboBoxModel obtenerPedidos()
     {
@@ -142,7 +157,7 @@ public class Salidas
         }
     }
 
-    public static void busquedaNumPedido(PanelSalidas frmSalidas)
+    public static void busquedaNumPedido(InsertarSalidasPanel frmSalidas)
     {
         try{
             Conexion conn = Conexion.getInstance();
