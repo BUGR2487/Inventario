@@ -108,7 +108,7 @@ public class Table extends JTable {
 
         for (i = 0; i < fila; i++)
         {
-            String valor = (String) this.getValueAt(i, 5);
+            String valor = (String) this.getValueAt(i, ( this.size - 2 ));
             sumatoria += Integer.parseInt(valor);
             valores.append(valor);
 

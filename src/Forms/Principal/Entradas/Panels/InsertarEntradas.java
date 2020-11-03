@@ -288,7 +288,7 @@ public class InsertarEntradas extends JPanel
                 this.CLIENTE_TXT.getText().isEmpty() ||
                 this.PRODUCTO_TXT.getText().isEmpty() ||
                 this.CANT_PALLET_TXT  .getText().isEmpty() ||
-                this.TOTAL_UNIDADES_TXT.getText().isEmpty() ||
+                //this.TOTAL_UNIDADES_TXT.getText().isEmpty() ||
                 this.CANT_POR_PALETT_TXT.getText().isEmpty() ||
                 this.EMPRESA_TXT.getText().isEmpty() ||
                 this.PLACAS_TXT .getText().isEmpty() ||

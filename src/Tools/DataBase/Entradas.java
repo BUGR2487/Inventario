@@ -6,11 +6,13 @@ import Tools.Fecha;
 import Tools.Hora;
 
 import javax.swing.*;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Entradas
 {
-
+    private int id = 0;
     private Fecha FechaEntrada = null;
     private Hora HoraEntrada = null;
 
@@ -41,6 +43,14 @@ public class Entradas
 
     // -- GET'S Y SET'S:
 
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Fecha getFechaEntrada() {
         return FechaEntrada;
@@ -200,6 +210,20 @@ public class Entradas
             return -1;
         }
     }
+
+
+    public static ArrayList<Entradas> getEntradasPorRango(Date from, Date to)
+    {
+        try {
+            Conexion conn = Conexion.getInstance();
+            ArrayList<Entradas> list = conn.getEntradasByRangeDate(from, to);
+            return list;
+        } catch (Config.ReadException | Config.EmptyProperty | SQLException throwables) {
+            return null;
+        }
+
+    }
+
 
     public static DefaultComboBoxModel obtenerCodigoBarras()
     {

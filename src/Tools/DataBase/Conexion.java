@@ -2,6 +2,7 @@ package Tools.DataBase;
 
 import Forms.Principal.Salidas.Panels.InsertarSalidasPanel;
 import Tools.Config;
+import Tools.Fecha;
 import Tools.Hora;
 
 import javax.swing.*;
@@ -48,6 +49,9 @@ public class Conexion
                                 "?,?,?," +
                                 "?,?,?," +
                                 "?,?);";
+
+        private static final String SQL_SELECT_ENTRADAS_POR_RANGOS_DE_FECHA = "SELECT * FROM `entradas` " +
+                "WHERE `FechaEntrada` BETWEEN ? AND ? ORDER BY `FechaEntrada` DESC";
 
         private static final String SQL_SELECT_CODIGOBARRAS = "SELECT CodigoBarras FROM inventario.inventario;";
 
@@ -313,6 +317,78 @@ public class Conexion
         return  ListaModelo;
     }
 
+    public ArrayList<Entradas> getEntradasByRangeDate(Date from, Date to){
+
+        //SQL_SELECT_ENTRADAS_POR_RANGOS_DE_FECHA
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        ArrayList<Entradas> list = new ArrayList<>();
+
+        try
+        {
+            preparedStatement = conn.prepareStatement(SQL_SELECT_ENTRADAS_POR_RANGOS_DE_FECHA);
+            preparedStatement.setDate(1, from);
+            preparedStatement.setDate(2, to);
+            resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next())
+            {
+                Entradas entrada = new Entradas();
+                /*
+
+                `IdEntradas`
+                `NoOrden`
+                `NoPedido`
+                `FechaEntrada`
+                `HoraEntrada`
+                `CodigoBarras`
+                `Diseno`
+                `CodigoInterno`
+                `Cliente`
+                `Producto`
+                `CantidadPallet`
+                `CantidadPorPallet`
+                `TotalUnidades`
+                `Condicion`
+                `Observaciones`
+                `idTransporte`
+
+                */
+                entrada.setId( resultSet.getInt("IdEntradas") );
+                entrada.setNumOrden( resultSet.getInt("NoOrden") );
+                entrada.setNumPedido( resultSet.getInt("NoPedido") );
+                entrada.setFechaEntrada( new Fecha(resultSet.getDate("FechaEntrada").getTime()) );
+                entrada.setHoraEntrada( new Hora(resultSet.getTime("HoraEntrada").getTime()) );
+                entrada.setCodigoBarras( resultSet.getString("CodigoBarras") );
+                entrada.setDiseno( resultSet.getString("Diseno") );
+                entrada.setCodigoInterno( resultSet.getString("CodigoInterno") );
+                entrada.setCliente( resultSet.getString("Cliente") );
+                entrada.setProducto( resultSet.getString("Producto") );
+
+                entrada.setCantidadPallet( resultSet.getInt("CantidadPallet") );
+                entrada.setCantidadPorPallet( resultSet.getInt("CantidadPorPallet") );
+                entrada.setTotalUnidades( resultSet.getInt("TotalUnidades") );
+                entrada.setCondicion( resultSet.getString("Condicion") );
+                entrada.setObservaciones( resultSet.getString("Observaciones") );
+                entrada.setTransporte( Transporte.getTransporteByIDTransporte(
+                        String.valueOf(resultSet.getInt("idTransporte"))
+                ) );
+
+
+                list.add(entrada);
+            }
+
+            return list;
+        }
+        catch (SQLException sqlException)
+        {
+            sqlException.printStackTrace();
+            return null;
+        }
+        finally {
+            if (resultSet != null){try{resultSet.close();}catch(Exception e){}}
+        }
+    }
 
     private ArrayList<String> __consultaChofer()
     {
