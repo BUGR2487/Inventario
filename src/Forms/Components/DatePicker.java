@@ -35,6 +35,7 @@ public class DatePicker extends JPanel implements JDatePicker {
     private InternalEventHandler internalEventHandler;
     private Icon icon_show;
     private Icon icon_hide;
+    private boolean isTo = false;
 
     public Date getDateAsDate(){
         return (Date) this.getModel().getValue();
@@ -69,10 +70,11 @@ public class DatePicker extends JPanel implements JDatePicker {
         p.put("text.month", "Month");
         p.put("text.year", "Year");
         JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
-        return new DatePicker(datePanel, new DateLabelFormatter());
+        return new DatePicker(datePanel, new DateLabelFormatter(), isTo);
     }
 
-    public DatePicker(JDatePanelImpl datePanel, JFormattedTextField.AbstractFormatter formatter) {
+    public DatePicker(JDatePanelImpl datePanel, JFormattedTextField.AbstractFormatter formatter, boolean isTo) {
+        this.isTo = isTo;
         this.datePanel = datePanel;
         this.popup = null;
         datePanel.setBorder(BorderFactory.createLineBorder(Color.white));
@@ -157,6 +159,22 @@ public class DatePicker extends JPanel implements JDatePicker {
         return this.formattedTextField;
     }
 
+
+    public void resetCalendar(){
+        if(this.isTo) {
+            Date dt = new Date();
+            ((UtilDateModel)this.getModel()).setValue( dt );
+        }
+        else
+        {
+            Calendar aCalendar = Calendar.getInstance();
+            aCalendar.add(Calendar.MONTH, -1);
+            aCalendar.set(Calendar.DATE, 1);
+
+            Date previousDate = aCalendar.getTime();
+            ((UtilDateModel)this.getModel()).setValue( previousDate );
+        }
+    }
 
     public void showPopup() {
         if (this.popup == null) {

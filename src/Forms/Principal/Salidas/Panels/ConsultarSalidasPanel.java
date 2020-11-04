@@ -124,6 +124,8 @@ public class ConsultarSalidasPanel extends JPanel implements Panel, ActionListen
 
     }
 
+
+
     @Override
     public boolean camposVacios() {
         return false;
@@ -131,7 +133,8 @@ public class ConsultarSalidasPanel extends JPanel implements Panel, ActionListen
 
     @Override
     public void vaciarTextos() {
-
+        this.hideDatePickers();
+        this.TABLA_BUSQUEDA_SALIDAS.vaciarTabla();
     }
 
     @Override

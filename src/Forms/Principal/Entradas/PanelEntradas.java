@@ -58,6 +58,21 @@ public class PanelEntradas extends JPanel {
         this.getTABBEDPANE().addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
+                JTabbedPane tabbedPane = (JTabbedPane) e.getSource();
+                int selectedIndex = tabbedPane.getSelectedIndex();
+                switch (selectedIndex)
+                {
+                        case 0:
+                        {
+                            resetConsultarEntradas();
+                        }
+                        break;
+                        case 1:
+                        {
+                            resetRegistros();
+                        }
+                        break;
+                }
                 consultar.hideDatePickers();
             }
         });
@@ -67,4 +82,17 @@ public class PanelEntradas extends JPanel {
     public ConsultarEntradas getConsultarEntrada(){
         return this.consultar;
     }
+
+
+    public void resetRegistros(){
+        this.registro.cargaComboBoxs();
+        this.registro.vaciarTextos();
+    }
+
+    public void resetConsultarEntradas(){
+        this.consultar.vaciarTextos();
+        this.consultar.hideDatePickers();
+    }
+
+
 }

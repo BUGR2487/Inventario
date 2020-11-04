@@ -145,12 +145,12 @@ public class Principal extends JFrame{
                 int selectedIndex = tabbedPane.getSelectedIndex();
                 switch (selectedIndex)
                 {
-                    /*case 0:
+                    case 0:
                     {
-                        entradas.cargaComboBoxs();
-                        entradas.vaciarTextos();
+                        entradas.resetRegistros();
+                        entradas.resetConsultarEntradas();
                     }
-                    break;*/
+                    break;
                     case 1:
                     {
                         inventario.vaciarTextos();
@@ -158,8 +158,8 @@ public class Principal extends JFrame{
                     break;
                     case 2:
                     {
-                        salidas.getRegistro().cargaComboBox();
-                        salidas.getRegistro().vaciarTextos();
+                        salidas.resetRegistros();
+                        salidas.resetConsultarSalidas();
                     }
                     break;
                     case 3:
@@ -173,7 +173,7 @@ public class Principal extends JFrame{
                     }
                     break;
                 }
-                entradas.getConsultarEntrada().hideDatePickers();
+
                 salidas.getConsultar().hideDatePickers();
             }
         });

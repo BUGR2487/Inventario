@@ -142,7 +142,9 @@ public class ConsultarEntradas extends JPanel implements Panel, ActionListener {
 
     @Override
     public void vaciarTextos() {
-
+        this.getTABLA_BUSQUEDA_ENTRADAS().vaciarTabla();
+        this.getDATEPICKER_FROM().resetCalendar();
+        this.getDATEPICKER_TO().resetCalendar();
     }
 
     @Override

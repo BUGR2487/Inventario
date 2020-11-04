@@ -303,6 +303,7 @@ public class InsertarSalidasPanel extends JPanel implements ActionListener, KeyL
         this.getN_PEDIDO_CMB().setModel(Salidas.obtenerPedidos());
     }
 
+
     // -- GET'S Y SET'S:
 
 
@@ -385,10 +386,6 @@ public class InsertarSalidasPanel extends JPanel implements ActionListener, KeyL
     public DatePicker getFECHA_ENTREGA() {
         return FECHA_ENTREGA;
     }
-
-    /*public JTextField getFECHA_ENTREGA_TXT() {
-        return FECHA_ENTREGA_TXT;
-    }*/
 
     public JTextField getCHOFER_TXT() {
         return CHOFER_TXT;

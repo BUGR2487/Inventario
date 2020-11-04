@@ -61,10 +61,37 @@ public class PanelSalidas extends JPanel {
         this.getTABBEDPANE().addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
+
+                JTabbedPane tabbedPane = (JTabbedPane) e.getSource();
+                int selectedIndex = tabbedPane.getSelectedIndex();
+                switch (selectedIndex)
+                {
+                    case 0:
+                    {
+                        resetConsultarSalidas();
+                    }
+                    break;
+                    case 1:
+                    {
+                        resetRegistros();
+                    }
+                    break;
+                }
                 consultar.hideDatePickers();
             }
         });
 
+    }
+
+
+    public void resetRegistros()
+    {
+        this.getRegistro().vaciarTextos();
+        this.getRegistro().cargaComboBox();
+    }
+
+    public void resetConsultarSalidas(){
+        this.getConsultar().vaciarTextos();
     }
 
     public ConsultarSalidasPanel getConsultarEntrada(){

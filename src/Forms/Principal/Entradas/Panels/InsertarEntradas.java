@@ -191,7 +191,10 @@ public class InsertarEntradas extends JPanel
             public void itemStateChanged(ItemEvent e) {
                 if(e.getStateChange() == ItemEvent.SELECTED)
                 {
-                    completarInfoChofer( (String)e.getItem() );
+                    String item = (String)e.getItem();
+
+                    if(item.matches("[a-zA-z\\s]+"))
+                        completarInfoChofer( (String)e.getItem() );
                 }
             }
         });
