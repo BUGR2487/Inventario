@@ -82,6 +82,7 @@ public class PanelInventario extends JPanel implements ActionListener, KeyListen
         this.CODIGO_INTERNO_TXT.setFont(this.FUENTE_GENERAL_TXT);
         this.CLIENTE_TXT.setFont(this.FUENTE_GENERAL_TXT);
         this.CANTIDAD_PALLET_TXT.setFont(this.FUENTE_GENERAL_TXT);
+        this.CANTIDAD_POR_PALLET_TXT.setFont(this.FUENTE_GENERAL_TXT);
         this.PRODUCTO_TXT.setFont(this.FUENTE_GENERAL_TXT);
 
         this.CODIGO_BARRAS_TXT.setHorizontalAlignment(JTextField.CENTER);
@@ -89,6 +90,7 @@ public class PanelInventario extends JPanel implements ActionListener, KeyListen
         this.CODIGO_INTERNO_TXT.setHorizontalAlignment(JTextField.CENTER);
         this.CLIENTE_TXT.setHorizontalAlignment(JTextField.CENTER);
         this.CANTIDAD_PALLET_TXT.setHorizontalAlignment(JTextField.CENTER);
+        this.CANTIDAD_POR_PALLET_TXT.setHorizontalAlignment(JTextField.CENTER);
         this.PRODUCTO_TXT.setHorizontalAlignment(JTextField.CENTER);
 
         this.REGISTRAR_ENTRADA.setFont(this.FUENTE_GENERAL_TXT);
