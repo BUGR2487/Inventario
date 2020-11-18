@@ -95,7 +95,7 @@ public class InsertarEntradas extends JPanel
                                                                                               "Producto",
                                                                                               "Cantidad/Unidad",
                                                                                               "color"
-                                                                                              }, false);
+                                                                                              }, false, 1);
 
     // -- Variables de la sesion:
     private String user;

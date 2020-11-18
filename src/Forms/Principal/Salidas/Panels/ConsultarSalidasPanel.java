@@ -41,7 +41,7 @@ public class ConsultarSalidasPanel extends JPanel implements Panel, ActionListen
                     "Tractocami\u00f3n",
                     "Color"
 
-            }, true);
+            }, true, 2);
 
 
     public ConsultarSalidasPanel() {

@@ -75,7 +75,7 @@ public class InsertarSalidasPanel extends JPanel implements ActionListener, KeyL
             "Placas",
             "Tracto camion",
             "color"
-    }, false);
+    }, false, 1);
 
     // -- botones:
 

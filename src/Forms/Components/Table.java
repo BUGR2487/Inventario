@@ -1,5 +1,7 @@
 package Forms.Components;
 
+import Forms.Layouts;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -17,28 +19,36 @@ public class Table extends JTable {
 
     private TableColumnModel modeloDeColumna;
     private JScrollPane scrollDeTabla;
-    private TextAreaRenderer tableCellRenderer;
+    private WordWrapCellRenderer tableCellRenderer;
     private DefaultTableModel defaultTableModel;
     private DefaultTableCellRenderer defaultTableCellRenderer;
     
     private boolean useScroll = true; 
 
     private int size = 0;
+    private int howManyCol = 0;
+    private int[] columnWidths = null;
+
     // -- CONSTRUCTOR:
 
-    public Table(boolean useScrollbar, String[] headers, boolean sort){
+    public Table(boolean useScrollbar, String[] headers, boolean sort, int multiplo){
         // -- primero capturo variables:
         this.useScroll = useScrollbar;
         this.setBackground(Color.DARK_GRAY);
         this.setRowHeight(40);
         this.setAutoCreateRowSorter(sort);
 
-        this.size = headers.length;
-
+        this.howManyCol = headers.length;
+        this.setSize(Layouts.size_x_max_tabla * multiplo, Layouts.size_y_max_tabla);
+        this.size = this.getWidth();
+        System.out.println( "El tamaño de la tabla: " + this.size );
         // -- despues comiezo a fabricar la tabla:
-        this.tableCellRenderer = new TextAreaRenderer();
+        this.tableCellRenderer = new WordWrapCellRenderer();
         this.defaultTableModel = new DefaultTableModel();
         this.defaultTableCellRenderer = new DefaultTableCellRenderer();
+        this.defaultTableCellRenderer.setHorizontalAlignment( JLabel.CENTER );
+        this.defaultTableCellRenderer.setVerticalAlignment( JLabel.CENTER );
+
         this.columnModel = this.getColumnModel();
 
         if(useScrollbar){
@@ -49,8 +59,8 @@ public class Table extends JTable {
 
             this.scrollDeTabla.setBounds(50, 570, 1160, 300);
         }
-        
-        this.setDefaultRenderer(Object.class, this.tableCellRenderer);
+
+        this.setDefaultRenderer(Object.class, defaultTableCellRenderer);
         
         this.setModel(defaultTableModel);
         this.setPreferredScrollableViewportSize(Toolkit.getDefaultToolkit().getScreenSize());
@@ -60,10 +70,16 @@ public class Table extends JTable {
         defaultTableModel.setColumnIdentifiers(headers);
 
 
-        
-        this.defaultTableCellRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 
-        for(int i = 0; i < headers.length; i++) {
+        int[] widths = new int[headers.length];
+
+        for (int i = 0; i < widths.length; i++)
+        {
+            widths[ i ] = headers[ i ].length();
+        }
+
+        this.setColumnWidths( widths );
+        /*for(int i = 0; i < headers.length; i++) {
 
             this.getColumnModel().getColumn(i).setCellRenderer(defaultTableCellRenderer);
 
@@ -86,7 +102,7 @@ public class Table extends JTable {
                 this.columnModel.getColumn(i).setPreferredWidth(0);
             }
 
-        }
+        }*/
 
 
 
@@ -94,6 +110,54 @@ public class Table extends JTable {
 
 
     // -- METODOS DEL COMPONENTE:
+
+    public void setColumnWidths(int[] widths){
+        int nrCols = this.howManyCol;
+        if(nrCols==0||widths==null){
+            return;
+        }
+
+        this.columnWidths = widths.clone();
+        int totalWidth = this.size;
+
+        int totalWidthRequested = 0;
+        int nrRequestedWidths = columnWidths.length;
+        int defaultWidth = ( int ) Math.floor( ( double ) totalWidth / ( double ) nrCols);
+
+        for(int col=0;col<nrCols;col++){
+            int width = 0
+                    ;
+            if(columnWidths.length>col){
+                width = columnWidths[col];
+            }
+
+            totalWidthRequested += width;
+        }
+
+        //Note: for the not defined columns: use the defaultWidth
+        if(nrRequestedWidths<nrCols){
+            System.out.println("Setting column widths: nr of columns do not match column widths requested");
+            totalWidthRequested += ( ( nrCols - nrRequestedWidths ) * defaultWidth );
+        }
+        //calculate the scale for the column width
+        double factor = ( double ) totalWidth / ( double ) totalWidthRequested;
+
+        for(int col = 0; col < nrCols; col++){
+            int width = defaultWidth;
+            if( columnWidths.length > col ){
+                //scale the requested width to the current table width
+                width = ( int ) Math.floor( factor * ( double ) columnWidths[ col ] );
+            }
+
+
+                this.getColumnModel().getColumn(col).setMaxWidth(width);
+                this.getColumnModel().getColumn(col).setPreferredWidth(width);
+                this.getColumnModel().getColumn(col).setWidth(width);
+
+        }
+        this.removeColumn(this.getColumnModel().getColumn(this.howManyCol - 1));
+
+    }
 
     public Component getView(){
         return (this.isUseScroll())? this.scrollDeTabla : this;
@@ -108,7 +172,7 @@ public class Table extends JTable {
 
         for (i = 0; i < fila; i++)
         {
-            String valor = (String) this.getValueAt(i, ( this.size - 2 ));
+            String valor = (String) this.getValueAt(i, ( this.howManyCol - 2 ));
             sumatoria += Integer.parseInt(valor);
             valores.append(valor);
 
@@ -193,11 +257,11 @@ public class Table extends JTable {
         this.scrollDeTabla = scrollDeTabla;
     }
 
-    public TextAreaRenderer getTableCellRenderer() {
+    public WordWrapCellRenderer getTableCellRenderer() {
         return tableCellRenderer;
     }
 
-    public void setTableCellRenderer(TextAreaRenderer tableCellRenderer) {
+    public void setTableCellRenderer(WordWrapCellRenderer tableCellRenderer) {
         this.tableCellRenderer = tableCellRenderer;
     }
 
@@ -233,7 +297,7 @@ public class Table extends JTable {
         Component comp = super.prepareRenderer(renderer, row, column);
 
         if(!comp.getBackground().equals(getSelectionBackground())) {
-            int indexColor = Integer.valueOf((String) this.getModel().getValueAt(row, (this.size - 1) ));
+            int indexColor = Integer.valueOf((String) this.getModel().getValueAt(row, (this.howManyCol - 1) ));
 
 
 
@@ -245,18 +309,18 @@ public class Table extends JTable {
 
 
 
-    public static class TextAreaRenderer extends JTextArea
-            implements TableCellRenderer {
-
-        public TextAreaRenderer() {
+    static class WordWrapCellRenderer extends JTextArea implements TableCellRenderer {
+        WordWrapCellRenderer() {
             setLineWrap(true);
             setWrapStyleWord(true);
         }
 
-        public Component getTableCellRendererComponent(JTable jTable,
-                                                       Object obj, boolean isSelected, boolean hasFocus, int row,
-                                                       int column) {
-            setText((String)obj);
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            setText(value.toString());
+            setSize(table.getColumnModel().getColumn(column).getWidth(), getPreferredSize().height);
+            if (table.getRowHeight(row) != getPreferredSize().height) {
+                table.setRowHeight(row, getPreferredSize().height);
+            }
             return this;
         }
     }

@@ -45,7 +45,7 @@ public class ConsultarEntradas extends JPanel implements Panel, ActionListener {
                                                                     "Placas",
                                                                     "Tractocami\u00f3n",
                                                                     "Color"
-                                                                    }, true);
+                                                                    }, true, 2);
 
     public ConsultarEntradas() {
 
