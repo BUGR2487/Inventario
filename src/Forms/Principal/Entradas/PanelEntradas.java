@@ -87,11 +87,13 @@ public class PanelEntradas extends JPanel {
     public void resetRegistros(){
         this.registro.cargaComboBoxs();
         this.registro.vaciarTextos();
+        this.registro.getTABLA_DE_ENTRADAS().vaciarTabla();
     }
 
     public void resetConsultarEntradas(){
         this.consultar.vaciarTextos();
         this.consultar.hideDatePickers();
+        this.consultar.getTABLA_BUSQUEDA_ENTRADAS().vaciarTabla();
     }
 
 

@@ -131,7 +131,6 @@ public class Principal extends JFrame{
      // -- METODOS DE LA CLASE:
 
     private void prepareTabs(){
-        TABBEDPANE.setBackground(Color.gray);
         TABBEDPANE.addTab(TAB_ENTRADAS);
         TABBEDPANE.addTab(TAB_INVENTARIO);
         TABBEDPANE.addTab(TAB_SALIDAS);

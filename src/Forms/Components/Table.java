@@ -112,7 +112,7 @@ public class Table extends JTable {
     // -- METODOS DEL COMPONENTE:
 
     public void setColumnWidths(int[] widths){
-        int nrCols = this.howManyCol;
+        int nrCols = this.howManyCol-1;
         if(nrCols==0||widths==null){
             return;
         }

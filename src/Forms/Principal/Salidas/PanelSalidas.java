@@ -88,10 +88,12 @@ public class PanelSalidas extends JPanel {
     {
         this.getRegistro().vaciarTextos();
         this.getRegistro().cargaComboBox();
+        this.getRegistro().getTABLA_SALIDAS().vaciarTabla();
     }
 
     public void resetConsultarSalidas(){
         this.getConsultar().vaciarTextos();
+        this.getConsultar().getTABLA_BUSQUEDA_SALIDAS().vaciarTabla();
     }
 
     public ConsultarSalidasPanel getConsultarEntrada(){
