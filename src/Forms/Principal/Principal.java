@@ -174,6 +174,7 @@ public class Principal extends JFrame{
                 }
 
                 salidas.getConsultar().hideDatePickers();
+                entradas.getConsultarEntrada().hideDatePickers();
             }
         });
     }
