@@ -6,6 +6,9 @@ import Forms.Components.Table;
 import Forms.Panel;
 import Forms.Principal.Salidas.Layouts.InsertarSalidasLayout;
 import Tools.DataBase.Salidas;
+import Tools.DataBase.Transporte;
+import Tools.Fecha;
+import Tools.Hora;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -20,6 +23,8 @@ import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.sql.Date;
+import java.util.ArrayList;
 
 public class InsertarSalidasPanel extends JPanel implements ActionListener, KeyListener, Panel {
 
@@ -67,24 +72,32 @@ public class InsertarSalidasPanel extends JPanel implements ActionListener, KeyL
             "N. Pedido",
             "Sellos",
             "Cantidad Pallet",
+
             "Cantidad por pallet",
             "Total de unidades",
             "Fecha de entrega",
+
             "Chofer",
             "Empresa",
             "Placas",
             "Tracto camion",
+
             "color"
     }, false, 1);
 
     // -- botones:
 
-    private final JButton REGISTRAR_SALIDA = new JButton("Registrar salida.");
+    private final JButton REGISTRAR_SALIDA_BTN = new JButton("Registrar salida.");
+    private final JButton AGREGAR_A_LA_TABLA_BTN = new JButton("Agregar a la tabla.");
+    private final JButton LIMPIAR_LA_TABLA_BTN = new JButton("Limpiar la tabla.");
+    private final JButton ELIMINAR_DE_LA_TABLA_BTN = new JButton("Eliminar fila(s).");
 
     // -- scroll de la vista:
     private final JScrollPane PANE = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
             ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
+
+    private int indexRow = 0;
 
 
     // -- Runnable que actualiza la hora y fecha:
@@ -140,7 +153,20 @@ public class InsertarSalidasPanel extends JPanel implements ActionListener, KeyL
 
         this.N_PEDIDO_CMB           .setFont(this.FUENTE_GENERAL_TXT);
 
-        this.REGISTRAR_SALIDA       .setFont(this.FUENTE_GENERAL_TXT);
+        this.REGISTRAR_SALIDA_BTN       .setFont(this.FUENTE_GENERAL_TXT);
+        this.AGREGAR_A_LA_TABLA_BTN     .setFont(this.FUENTE_GENERAL_TXT);
+        this.LIMPIAR_LA_TABLA_BTN       .setFont(this.FUENTE_GENERAL_TXT);
+        this.ELIMINAR_DE_LA_TABLA_BTN   .setFont(this.FUENTE_GENERAL_TXT);
+
+        this.REGISTRAR_SALIDA_BTN       .setToolTipText("Presione para registrar el listado" +
+                                                        " agregado a la tabla. Nota: Si no " +
+                                                        "registros en la tabla no se guardará " +
+                                                        "nada.");
+        this.AGREGAR_A_LA_TABLA_BTN     .setToolTipText("Presione para agregar un registro de salida a" +
+                                                        " la tabla.");
+        this.LIMPIAR_LA_TABLA_BTN       .setToolTipText("Presione para limpiar de registros la tabla.");
+        this.ELIMINAR_DE_LA_TABLA_BTN   .setToolTipText("Presione para eliminar el registro o registros " +
+                                                        "seleccionados.");
 
         this.SELLOS_TXT             .setHorizontalAlignment(JTextField.CENTER);
         this.CANT_PALLET_TXT        .setHorizontalAlignment(JTextField.CENTER);
@@ -170,7 +196,7 @@ public class InsertarSalidasPanel extends JPanel implements ActionListener, KeyL
         this.cargaComboBox();
 
         // - action:
-        this.REGISTRAR_SALIDA       .addActionListener( this );
+        this.REGISTRAR_SALIDA_BTN       .addActionListener( this );
 
         //item change:
         this.N_PEDIDO_CMB.addItemListener(new ItemListener() {
@@ -208,43 +234,124 @@ public class InsertarSalidasPanel extends JPanel implements ActionListener, KeyL
         this.N_PEDIDO_CMB           .setSelectedIndex(0);
     }
 
-    private void guardaSalida() {
+    private void guardarSalidas(){
+
+            /*
+            "#",
+            "N. Pedido",
+            "Sellos",
+            "Cantidad Pallet",
+            "Cantidad por pallet",
+            "Total de unidades",
+
+            "Fecha de entrega",
+
+            "Chofer",
+            "Empresa",
+            "Placas",
+            "Tracto camion",
+            */
+        ArrayList<ArrayList<String>> rows = this.getTABLA_SALIDAS().getRows();
+
+        ArrayList<Salidas> salidas = new ArrayList<Salidas>();
+
+        for(ArrayList<String> row : rows)
+        {
+            Salidas salida = new Salidas();
+            salida.setNumPedido( row.get( 1 ) );
+            salida.setSellos( Integer.valueOf( row.get( 2 ) ) );
+            salida.setCantidadPallet( Integer.valueOf( row.get( 3 ) ) );
+            salida.setCantidadPorPallet( Integer.valueOf( row.get( 4 ) ) );
+            salida.setTotalUnidades( Integer.valueOf( row.get( 5 ) ) );
+            salida.setFechaEntrega( new Date( DatePicker.getTimeFromStringDate( row.get( 6 ) ) ));
+            Transporte tr = Transporte.getTransporteByID( row.get( 7 ) );
+            salida.setTransporte( tr );
+
+            salidas.add( salida );
+            salida.insertarSalidas();
+            //this.crearPDF();
+        }
+
+        JOptionPane.showMessageDialog(this,
+                "El registro de las salidas se a completado correctamente.",
+                "Registro completado.",
+                JOptionPane.INFORMATION_MESSAGE);
+
+        this.getTABLA_SALIDAS().vaciarTabla();
+
+    }
+
+    private void agregar_a_la_tabla() {
         if(this.camposVacios())
         {
             JOptionPane.showMessageDialog(this,
                     "Falta llenar campos",
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
+            return;
         }
         else
         {
 
             String nPedido = this.getN_PEDIDO_CMB().getSelectedItem().toString();
+            int Sellos = Integer.parseInt(this.getSELLOS_TXT().getText());
+            int CantidadPallet = Integer.parseInt(this.getCANT_PALLET_TXT().getText());
+            int CantidadPorPallet = Integer.parseInt(this.getCANT_POR_PALETT_TXT().getText());
+            int TotalUnidades = Integer.parseInt(this.getTOTAL_UNIDADES_TXT().getText());
+            Fecha fsalida = this.DATE_CONTROLLER.getFecha();
+            Hora dsalida = this.DATE_CONTROLLER.getHora();
+            Date dateEntrega = this.getFECHA_ENTREGA().getDateAsSqlDate();
+            String idChofer = this.getCHOFER_TXT().getText();
+            this.indexRow++;
+
 
             Salidas salida = new Salidas();
 
-            salida.setNumPedido(nPedido);
-            salida.setSellos(Integer.parseInt(this.getSELLOS_TXT().getText()));
+            salida.setNumPedido( nPedido );
+            salida.setSellos( Sellos );
+            salida.setCantidadPallet( CantidadPallet );
+            salida.setCantidadPorPallet( CantidadPorPallet );
+            salida.setTotalUnidades( TotalUnidades );
+            salida.setFechaSalida( fsalida );
+            salida.setHoraSalida( dsalida );
+            salida.setFechaEntrega( dateEntrega );
+            salida.setTransporte( idChofer );
 
-            salida.setCantidadPallet(Integer.parseInt(this.getCANT_PALLET_TXT().getText()));
-            salida.setCantidadPorPallet(Integer.parseInt(this.getCANT_POR_PALETT_TXT().getText()));
-            salida.setTotalUnidades(Integer.parseInt(this.getTOTAL_UNIDADES_TXT().getText()));
+            ArrayList<String> row = new ArrayList<String>();
+            /*
+                "#",
+                "N. Pedido",
+                "Sellos",
+                "Cantidad Pallet",
+                "Cantidad por pallet",
+                "Total de unidades",
 
-            salida.setFechaSalida(this.DATE_CONTROLLER.getFecha());
-            salida.setHoraSalida(this.DATE_CONTROLLER.getHora());
-            salida.setTransporte(this.getCHOFER_TXT().getText());
-            salida.setFechaEntrega(this.getFECHA_ENTREGA().getDateAsSqlDate());
+                "Fecha de entrega",
 
-            salida.insertarSalidas();
+                "Chofer",
+                "Empresa",
+                "Placas",
+                "Tracto camion",
+            */
+
+            row.add( String.valueOf( this.indexRow ) );
+            row.add( String.valueOf( salida.getNumPedido() ) );
+            row.add( String.valueOf( salida.getSellos() ) );
+            row.add( String.valueOf( salida.getCantidadPallet() ) );
+            row.add( String.valueOf( salida.getCantidadPorPallet() ) );
+            row.add( String.valueOf( salida.getTotalUnidades() ) );
+            row.add( String.valueOf( salida.getFechaSalida() ) );
+            row.add( String.valueOf( salida.getHoraSalida() ) );
+            row.add( String.valueOf( salida.getFechaEntrega() ) );
+            row.add( String.valueOf( salida.getTransporte().getChofer() ) );
+            row.add( String.valueOf( salida.getTransporte().getEmpresa() ) );
+            row.add( String.valueOf( salida.getTransporte().getPlacas() ) );
+            row.add( String.valueOf( salida.getTransporte().getTractoCamion() ) );
+
+            this.getTABLA_SALIDAS().addRow( row.toArray( new String[row.size()] ) );
 
             this.vaciarTextos();
 
-            //this.crearPDF();
-
-            JOptionPane.showMessageDialog(this,
-                    "Salida registrada",
-                    "Registro de salidas",
-                    JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -307,6 +414,18 @@ public class InsertarSalidasPanel extends JPanel implements ActionListener, KeyL
     // -- GET'S Y SET'S:
 
 
+    public JButton getLIMPIAR_LA_TABLA_BTN() {
+        return LIMPIAR_LA_TABLA_BTN;
+    }
+
+    public JButton getELIMINAR_DE_LA_TABLA_BTN() {
+        return ELIMINAR_DE_LA_TABLA_BTN;
+    }
+
+    public JButton getAGREGAR_A_LA_TABLA_BTN() {
+        return AGREGAR_A_LA_TABLA_BTN;
+    }
+
     public JLabel getFECHA_SALIDA_LB() {
         return FECHA_SALIDA_LB;
     }
@@ -319,8 +438,8 @@ public class InsertarSalidasPanel extends JPanel implements ActionListener, KeyL
         return TABLA_SALIDAS;
     }
 
-    public JButton getREGISTRAR_SALIDA() {
-        return REGISTRAR_SALIDA;
+    public JButton getREGISTRAR_SALIDA_BTN() {
+        return REGISTRAR_SALIDA_BTN;
     }
 
     public JLabel getN_PEDIDO_LB() {
@@ -429,10 +548,25 @@ public class InsertarSalidasPanel extends JPanel implements ActionListener, KeyL
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        if(e.getSource() == this.REGISTRAR_SALIDA)
+        if(e.getSource() == this.REGISTRAR_SALIDA_BTN)
         {
-            this.guardaSalida();
+            if(!this.getTABLA_SALIDAS().isEmpty()) {
+                this.guardarSalidas();
+            }
+            else {
+                JOptionPane.showMessageDialog(this,
+                        "La tabla de salidas se encuentra vacía.",
+                        "Error al registrar las salidas.",
+                        JOptionPane.WARNING_MESSAGE);
+            }
+
         }
+
+        if( e.getSource() == this.AGREGAR_A_LA_TABLA_BTN)
+        {
+            this.agregar_a_la_tabla();
+        }
+
     }
 
     @Override
@@ -457,7 +591,7 @@ public class InsertarSalidasPanel extends JPanel implements ActionListener, KeyL
 
         if(e.getKeyCode() == KeyEvent.VK_ENTER)
         {
-            this.getREGISTRAR_SALIDA().doClick();
+            this.getREGISTRAR_SALIDA_BTN().doClick();
         }
     }
 

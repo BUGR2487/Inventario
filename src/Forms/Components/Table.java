@@ -8,6 +8,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Table extends JTable {
 
@@ -110,6 +111,10 @@ public class Table extends JTable {
 
 
     // -- METODOS DEL COMPONENTE:
+
+    public boolean isEmpty(){
+        return this.getRowCount() == 0;
+    }
 
     public void setColumnWidths(int[] widths){
         int nrCols = this.howManyCol-1;
@@ -288,6 +293,30 @@ public class Table extends JTable {
     public void setUseScroll(boolean useScroll) {
         this.useScroll = useScroll;
     }
+
+    public ArrayList<ArrayList<String>> getRows(){
+
+        ArrayList<ArrayList<String>> lists = new ArrayList<ArrayList<String>>();
+
+        for (int fila = 0; fila < this.getRowCount(); fila++)
+        {
+            ArrayList<String> list = new ArrayList<String>();
+
+            for (int columna = 0; columna < this.getRowCount(); columna++)
+            {
+                String value = String.valueOf( this.getValueAt(fila, columna) );
+                list.add( value );
+                System.out.println(value);
+            }
+            System.out.println();
+
+            lists.add(list);
+        }
+
+
+        return lists;
+    }
+
 
 
     // -- METODOS OVERRIDE:

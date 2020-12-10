@@ -66,9 +66,9 @@ public class DatePicker extends JPanel implements JDatePicker {
             model.setValue( previousDate );
         }
         Properties p = new Properties();
-        p.put("text.today", "Today");
-        p.put("text.month", "Month");
-        p.put("text.year", "Year");
+        p.put("text.today", "Hoy");
+        p.put("text.month", "Mes");
+        p.put("text.year", "Año");
         JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
         return new DatePicker(datePanel, new DateLabelFormatter(), isTo);
     }
@@ -102,6 +102,7 @@ public class DatePicker extends JPanel implements JDatePicker {
         this.button = new JButton();
         this.button.setFocusable(true);
         this.button.setIcon( this.icon_show );
+        this.button.setToolTipText("Presione para desplegar un calendario y seleccione una fecha deseada.");
         this.add(this.button);
 
         layout.putConstraint("West", this.button, 1, "East", this.formattedTextField);
@@ -159,6 +160,16 @@ public class DatePicker extends JPanel implements JDatePicker {
         return this.formattedTextField;
     }
 
+    public static long getTimeFromStringDate(String dateString){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = sdf.parse(dateString);
+            return date.getTime();
+        } catch (ParseException e) {
+            return Calendar.getInstance().getTimeInMillis();
+        }
+    }
 
     public void resetCalendar(){
         if(this.isTo) {
@@ -213,7 +224,8 @@ public class DatePicker extends JPanel implements JDatePicker {
         this.datePanel.setShowYearButtons(showYearButtons);
     }
 
-    private void setTextFieldValue(JFormattedTextField textField, int year, int month, int day, boolean isSelected) {
+    private void setTextFieldValue(JFormattedTextField textField, int year, int month, int day, boolean isSelected)
+    {
         if (!isSelected) {
             textField.setValue((Object)null);
         } else {
@@ -227,7 +239,8 @@ public class DatePicker extends JPanel implements JDatePicker {
 
     private class InternalEventHandler implements
             ActionListener, HierarchyBoundsListener, ChangeListener,
-            PropertyChangeListener {
+            PropertyChangeListener
+    {
         private InternalEventHandler() {
         }
 
