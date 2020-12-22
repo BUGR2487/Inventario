@@ -160,8 +160,19 @@ public class DatePicker extends JPanel implements JDatePicker {
         return this.formattedTextField;
     }
 
-    public static long getTimeFromStringDate(String dateString){
+    public static long getDateFromStringDate(String dateString){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = sdf.parse(dateString);
+            return date.getTime();
+        } catch (ParseException e) {
+            return Calendar.getInstance().getTimeInMillis();
+        }
+    }
+
+    public static long getTimeFromStringDate(String dateString){
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss aa");
         Date date = null;
         try {
             date = sdf.parse(dateString);

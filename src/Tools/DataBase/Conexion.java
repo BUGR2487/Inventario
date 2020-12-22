@@ -619,7 +619,10 @@ public class Conexion
             preparedStatement.setTime(7, salidas.getHoraSalida());
             preparedStatement.setDate(8, salidas.getFechaEntrega());
 
-            preparedStatement.setInt(9, salidas.getTransporte().getId());
+
+
+            Transporte transporte  = salidas.getTransporte();
+            preparedStatement.setInt(9, transporte.getId());
 
             //System.out.println("Ejecutanto query " + SQL_INSERT_SALIDAS);
             rows = preparedStatement.executeUpdate();

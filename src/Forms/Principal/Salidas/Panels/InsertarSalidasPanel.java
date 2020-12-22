@@ -72,16 +72,15 @@ public class InsertarSalidasPanel extends JPanel implements ActionListener, KeyL
             "N. Pedido",
             "Sellos",
             "Cantidad Pallet",
-
             "Cantidad por pallet",
             "Total de unidades",
+            "Fecha de salida",
+            "Hora de salida",
             "Fecha de entrega",
-
             "Chofer",
             "Empresa",
             "Placas",
             "Tracto camion",
-
             "color"
     }, false, 1);
 
@@ -97,8 +96,7 @@ public class InsertarSalidasPanel extends JPanel implements ActionListener, KeyL
             ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
 
-    private int indexRow = 0;
-
+    private int indexRow = 0, colorRow = 0, veces = 0;
 
     // -- Runnable que actualiza la hora y fecha:
 
@@ -196,7 +194,10 @@ public class InsertarSalidasPanel extends JPanel implements ActionListener, KeyL
         this.cargaComboBox();
 
         // - action:
-        this.REGISTRAR_SALIDA_BTN       .addActionListener( this );
+        this.REGISTRAR_SALIDA_BTN           .addActionListener( this );
+        this.AGREGAR_A_LA_TABLA_BTN         .addActionListener( this );
+        this.LIMPIAR_LA_TABLA_BTN           .addActionListener( this );
+        this.ELIMINAR_DE_LA_TABLA_BTN       .addActionListener( this );
 
         //item change:
         this.N_PEDIDO_CMB.addItemListener(new ItemListener() {
@@ -237,19 +238,20 @@ public class InsertarSalidasPanel extends JPanel implements ActionListener, KeyL
     private void guardarSalidas(){
 
             /*
-            "#",
-            "N. Pedido",
-            "Sellos",
-            "Cantidad Pallet",
-            "Cantidad por pallet",
-            "Total de unidades",
-
-            "Fecha de entrega",
-
-            "Chofer",
-            "Empresa",
-            "Placas",
-            "Tracto camion",
+            [ 0 ] —> "#",
+            [ 1 ] —> "N. Pedido",
+            [ 2 ] —> "Sellos",
+            [ 3 ] —> "Cantidad Pallet",
+            [ 4 ] —> "Cantidad por pallet",
+            [ 5 ] —> "Total de unidades",
+            [ 6 ] —> "Fecha de salida",
+            [ 7 ] —> "Hora de salida",
+            [ 8 ] —> "Fecha de entrega",
+            [ 9 ] —> "Chofer",
+            [ 10 ] —> "Empresa",
+            [ 11 ] —> "Placas",
+            [ 12 ] —> "Tracto camion",
+            [ 13 ] —> "color"
             */
         ArrayList<ArrayList<String>> rows = this.getTABLA_SALIDAS().getRows();
 
@@ -263,12 +265,13 @@ public class InsertarSalidasPanel extends JPanel implements ActionListener, KeyL
             salida.setCantidadPallet( Integer.valueOf( row.get( 3 ) ) );
             salida.setCantidadPorPallet( Integer.valueOf( row.get( 4 ) ) );
             salida.setTotalUnidades( Integer.valueOf( row.get( 5 ) ) );
-            salida.setFechaEntrega( new Date( DatePicker.getTimeFromStringDate( row.get( 6 ) ) ));
-            Transporte tr = Transporte.getTransporteByID( row.get( 7 ) );
-            salida.setTransporte( tr );
+            salida.setFechaSalida( new Fecha( DatePicker.getDateFromStringDate( row.get( 6 ) ) ));
+            salida.setHoraSalida( new Hora( DatePicker.getTimeFromStringDate( row.get( 7 ) ) ));
+            salida.setFechaEntrega( new Date( DatePicker.getDateFromStringDate( row.get( 8 ) ) ));
+            salida.setTransporte( row.get( 9 ) );
+            salida.insertarSalidas();
 
             salidas.add( salida );
-            salida.insertarSalidas();
             //this.crearPDF();
         }
 
@@ -293,64 +296,80 @@ public class InsertarSalidasPanel extends JPanel implements ActionListener, KeyL
         else
         {
 
-            String nPedido = this.getN_PEDIDO_CMB().getSelectedItem().toString();
-            int Sellos = Integer.parseInt(this.getSELLOS_TXT().getText());
-            int CantidadPallet = Integer.parseInt(this.getCANT_PALLET_TXT().getText());
-            int CantidadPorPallet = Integer.parseInt(this.getCANT_POR_PALETT_TXT().getText());
-            int TotalUnidades = Integer.parseInt(this.getTOTAL_UNIDADES_TXT().getText());
-            Fecha fsalida = this.DATE_CONTROLLER.getFecha();
-            Hora dsalida = this.DATE_CONTROLLER.getHora();
-            Date dateEntrega = this.getFECHA_ENTREGA().getDateAsSqlDate();
-            String idChofer = this.getCHOFER_TXT().getText();
+            String      nPedido = this.getN_PEDIDO_CMB().getSelectedItem().toString();
+            int         Sellos = Integer.parseInt(this.getSELLOS_TXT().getText());
+            int         CantidadPallet = Integer.parseInt(this.getCANT_PALLET_TXT().getText());
+            int         CantidadPorPallet = Integer.parseInt(this.getCANT_POR_PALETT_TXT().getText());
+            int         TotalUnidades = Integer.parseInt(this.getTOTAL_UNIDADES_TXT().getText());
+            Fecha       fsalida = this.DATE_CONTROLLER.getFecha();
+            Hora        dsalida = this.DATE_CONTROLLER.getHora();
+            Date        dateEntrega = this.getFECHA_ENTREGA().getDateAsSqlDate();
+            String      idChofer = this.getCHOFER_TXT().getText();
+            Transporte  chofer = Transporte.getTransporteByID( idChofer );
             this.indexRow++;
 
 
-            Salidas salida = new Salidas();
-
-            salida.setNumPedido( nPedido );
-            salida.setSellos( Sellos );
-            salida.setCantidadPallet( CantidadPallet );
-            salida.setCantidadPorPallet( CantidadPorPallet );
-            salida.setTotalUnidades( TotalUnidades );
-            salida.setFechaSalida( fsalida );
-            salida.setHoraSalida( dsalida );
-            salida.setFechaEntrega( dateEntrega );
-            salida.setTransporte( idChofer );
-
             ArrayList<String> row = new ArrayList<String>();
             /*
-                "#",
-                "N. Pedido",
-                "Sellos",
-                "Cantidad Pallet",
-                "Cantidad por pallet",
-                "Total de unidades",
-
-                "Fecha de entrega",
-
-                "Chofer",
-                "Empresa",
-                "Placas",
-                "Tracto camion",
+               [ 0 ] -> "#",
+               [ 1 ] -> "N. Pedido",
+               [ 2 ] -> "Sellos",
+               [ 3 ] -> "Cantidad Pallet",
+               [ 4 ] -> "Cantidad por pallet",
+               [ 5 ] -> "Total de unidades",
+               [ 6 ] -> "Fecha de salida",
+               [ 7 ] -> "Hora de salida",
+               [ 8 ] -> "Fecha de entrega",
+               [ 9 ] -> "Chofer",
+               [ 10 ] -> "Empresa",
+               [ 11 ] -> "Placas",
+               [ 12 ] -> "Tracto camion",
+               [ 13 ] -> "color"
             */
 
+            // [ 0 ]
             row.add( String.valueOf( this.indexRow ) );
-            row.add( String.valueOf( salida.getNumPedido() ) );
-            row.add( String.valueOf( salida.getSellos() ) );
-            row.add( String.valueOf( salida.getCantidadPallet() ) );
-            row.add( String.valueOf( salida.getCantidadPorPallet() ) );
-            row.add( String.valueOf( salida.getTotalUnidades() ) );
-            row.add( String.valueOf( salida.getFechaSalida() ) );
-            row.add( String.valueOf( salida.getHoraSalida() ) );
-            row.add( String.valueOf( salida.getFechaEntrega() ) );
-            row.add( String.valueOf( salida.getTransporte().getChofer() ) );
-            row.add( String.valueOf( salida.getTransporte().getEmpresa() ) );
-            row.add( String.valueOf( salida.getTransporte().getPlacas() ) );
-            row.add( String.valueOf( salida.getTransporte().getTractoCamion() ) );
+            // [ 1 ]
+            row.add( String.valueOf( nPedido ) );
+            // [ 2 ]
+            row.add( String.valueOf( Sellos ) );
+
+            // [ 3 ]
+            row.add( String.valueOf( CantidadPallet ) );
+            // [ 4 ]
+            row.add( String.valueOf( CantidadPorPallet ) );
+            // [ 5 ]
+            row.add( String.valueOf( TotalUnidades ) );
+
+            // [ 6 ]
+            row.add( String.valueOf( fsalida ) );
+            // [ 7 ]
+            row.add( String.valueOf( dsalida ) );
+            // [ 8 ]
+            row.add( String.valueOf( dateEntrega ) );
+
+            // [ 9 ]
+            row.add( String.valueOf( chofer.getChofer() ) );
+            // [ 10 ]
+            row.add( String.valueOf( chofer.getEmpresa() ) );
+            // [ 11 ]
+            row.add( String.valueOf( chofer.getPlacas() ) );
+            // [ 12 ]
+            row.add( String.valueOf( chofer.getTractoCamion() ) );
+
+            // [ 13 ]
+            row.add( String.valueOf( this.colorRow ) );
 
             this.getTABLA_SALIDAS().addRow( row.toArray( new String[row.size()] ) );
 
             this.vaciarTextos();
+
+            if(this.veces == 1) {
+                this.veces = 0;
+                this.colorRow = (this.colorRow == 1) ? 0 : (this.colorRow + 1);
+                return;
+            }
+            this.veces++;
 
         }
     }

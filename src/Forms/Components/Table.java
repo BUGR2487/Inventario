@@ -29,7 +29,7 @@ public class Table extends JTable {
     private int size = 0;
     private int howManyCol = 0;
     private int[] columnWidths = null;
-
+    private String[] headers;
     // -- CONSTRUCTOR:
 
     public Table(boolean useScrollbar, String[] headers, boolean sort, int multiplo){
@@ -39,6 +39,7 @@ public class Table extends JTable {
         this.setRowHeight(40);
         this.setAutoCreateRowSorter(sort);
 
+        this.headers = headers;
         this.howManyCol = headers.length;
         this.setSize(Layouts.size_x_max_tabla * multiplo, Layouts.size_y_max_tabla);
         this.size = this.getWidth();
@@ -117,7 +118,7 @@ public class Table extends JTable {
     }
 
     public void setColumnWidths(int[] widths){
-        int nrCols = this.howManyCol-1;
+        int nrCols = this.howManyCol;
         if(nrCols==0||widths==null){
             return;
         }
@@ -154,10 +155,17 @@ public class Table extends JTable {
                 width = ( int ) Math.floor( factor * ( double ) columnWidths[ col ] );
             }
 
-
+            if(col == (this.howManyCol - 1))
+            {
+                this.getColumnModel().getColumn(col).setMaxWidth(0);
+                this.getColumnModel().getColumn(col).setPreferredWidth(0);
+                this.getColumnModel().getColumn(col).setWidth(0);
+            }
+            else {
                 this.getColumnModel().getColumn(col).setMaxWidth(width);
                 this.getColumnModel().getColumn(col).setPreferredWidth(width);
                 this.getColumnModel().getColumn(col).setWidth(width);
+            }
 
         }
         this.removeColumn(this.getColumnModel().getColumn(this.howManyCol - 1));
@@ -302,7 +310,7 @@ public class Table extends JTable {
         {
             ArrayList<String> list = new ArrayList<String>();
 
-            for (int columna = 0; columna < this.getRowCount(); columna++)
+            for (int columna = 0; columna < this.getColumnCount(); columna++)
             {
                 String value = String.valueOf( this.getValueAt(fila, columna) );
                 list.add( value );
@@ -325,10 +333,11 @@ public class Table extends JTable {
     public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
         Component comp = super.prepareRenderer(renderer, row, column);
 
+
         if(!comp.getBackground().equals(getSelectionBackground())) {
-            int indexColor = Integer.valueOf((String) this.getModel().getValueAt(row, (this.howManyCol - 1) ));
+            int indexColor = Integer.valueOf((String) this.getModel().getValueAt(row, (this.headers.length - 1) ));
 
-
+            System.out.println( indexColor );
 
             comp.setBackground(rowColors[indexColor]);
         }
