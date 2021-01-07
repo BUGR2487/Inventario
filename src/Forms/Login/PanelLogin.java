@@ -27,6 +27,7 @@ import jiconfont.swing.IconFontSwing;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 
 public class PanelLogin extends JPanel {
@@ -173,8 +174,7 @@ public class PanelLogin extends JPanel {
         return (this.mostrarPass)? this.getMOSTRAR_PASS_IMG() : this.getOLCULTAR_PASS_IMG();
     }
 
-    public boolean identificar()
-    {
+    public boolean identificar() throws UnsupportedEncodingException {
         String usuario = this.getUSUARIO_TXT().getText();
         String pass = this.getPASSWORD_TXT().getText();
 
@@ -193,7 +193,7 @@ public class PanelLogin extends JPanel {
         }
 
         this.getLogin().setUsername(usuario);
-        this.getLogin().setPassword(pass);
+        this.getLogin().setPassword(pass, true);
 
         this.getUSUARIO_TXT().setText("");
         this.getPASSWORD_TXT().setText("");

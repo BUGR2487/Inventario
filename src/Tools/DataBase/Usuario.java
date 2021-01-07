@@ -1,7 +1,9 @@
 package Tools.DataBase;
 
+import Tools.Auth;
 import Tools.Config;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 
 public class Usuario
@@ -72,14 +74,12 @@ public class Usuario
         CorreoElectronico = correoElectronico;
     }
 
-    public String getContrasena()
-    {
-        return Contrasena;
+    public String getContrasena(boolean encrypt) throws UnsupportedEncodingException {
+        return (encrypt)? Contrasena: Auth.desencriptar(Contrasena);
     }
 
-    public void setContrasena(String contrasena)
-    {
-        Contrasena = contrasena;
+    public void setContrasena(String contrasena, boolean encrypt) throws UnsupportedEncodingException {
+        Contrasena = (encrypt)? Auth.encriptar( contrasena ): contrasena;
     }
 
 

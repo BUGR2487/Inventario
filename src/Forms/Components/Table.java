@@ -43,7 +43,7 @@ public class Table extends JTable {
         this.howManyCol = headers.length;
         this.setSize(Layouts.size_x_max_tabla * multiplo, Layouts.size_y_max_tabla);
         this.size = this.getWidth();
-        System.out.println( "El tamaño de la tabla: " + this.size );
+        //System.out.println( "El tamaño de la tabla: " + this.size );
         // -- despues comiezo a fabricar la tabla:
         this.tableCellRenderer = new WordWrapCellRenderer();
         this.defaultTableModel = new DefaultTableModel();
@@ -337,7 +337,7 @@ public class Table extends JTable {
         if(!comp.getBackground().equals(getSelectionBackground())) {
             int indexColor = Integer.valueOf((String) this.getModel().getValueAt(row, (this.headers.length - 1) ));
 
-            System.out.println( indexColor );
+           // System.out.println( indexColor );
 
             comp.setBackground(rowColors[indexColor]);
         }

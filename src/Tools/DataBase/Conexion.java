@@ -6,6 +6,7 @@ import Tools.Fecha;
 import Tools.Hora;
 
 import javax.swing.*;
+import java.io.UnsupportedEncodingException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.TimeZone;
@@ -112,7 +113,7 @@ public class Conexion
                                 "                                WHERE NoPedido = ? limit 1";
 
         private static final String SQL_SELECT_FIND_BY_RANGE_DATE = "SELECT * FROM `salidas` WHERE " +
-                "`fechaEntrega` BETWEEN ? AND ? ORDER BY `FechaSalida` DESC";
+                "`FechaSalida` BETWEEN ? AND ? ORDER BY `FechaSalida` DESC";
 
         // -- transporte:
         private static final String SQL_INSERT_TRANSPORT =
@@ -204,7 +205,7 @@ public class Conexion
         {
             preparedStatement = conn.prepareStatement(SQL_SELECT_LOGIN);
             preparedStatement.setString(1, iniciarSesion.getUsername());
-            preparedStatement.setString(2, iniciarSesion.getPassword());
+            preparedStatement.setString(2, iniciarSesion.getPassword(true));
             resultSet = preparedStatement.executeQuery();
             if(resultSet.next())
                 return resultSet.getString("Nombre")
@@ -215,7 +216,7 @@ public class Conexion
             else
                 return "";
         }
-        catch (SQLException sqlException)
+        catch (SQLException | UnsupportedEncodingException sqlException)
         {
             sqlException.printStackTrace();
             return "";
@@ -564,9 +565,9 @@ public class Conexion
             preparedStatement.setInt(6, inventario.getStockPiezas());
             preparedStatement.setString(7, inventario.getProducto());
 
-            //System.out.println("Ejecutanto query " + SQL_INSERT);
+            ////System.out.println("Ejecutanto query " + SQL_INSERT);
             rows = preparedStatement.executeUpdate();
-            //System.out.println("Registros afectados: " + rows);
+            ////System.out.println("Registros afectados: " + rows);
 
             return rows;
         }
@@ -624,9 +625,9 @@ public class Conexion
             Transporte transporte  = salidas.getTransporte();
             preparedStatement.setInt(9, transporte.getId());
 
-            //System.out.println("Ejecutanto query " + SQL_INSERT_SALIDAS);
+            ////System.out.println("Ejecutanto query " + SQL_INSERT_SALIDAS);
             rows = preparedStatement.executeUpdate();
-            //System.out.println("Registros afectados: " + rows);
+            ////System.out.println("Registros afectados: " + rows);
 
             return rows;
         }
@@ -744,7 +745,7 @@ public class Conexion
             preparedStatement.setDate(1, from);
             preparedStatement.setDate(2, to);
 
-            System.out.println(preparedStatement);
+            //System.out.println(preparedStatement);
 
             resultSet = preparedStatement.executeQuery();
 
@@ -759,7 +760,7 @@ public class Conexion
                     instacia.setCantidadPallet( resultSet.getInt("CantidadPallet") );
                     instacia.setCantidadPorPallet( resultSet.getInt("CantidadPorPallet") );
                     instacia.setTotalUnidades( resultSet.getInt("TotalUnidades") );
-                    instacia.setFechaEntrega( resultSet.getDate("FechaSalida") );
+                    instacia.setFechaSalida( new Fecha(resultSet.getDate("FechaSalida").getTime() ) );
                     instacia.setHoraSalida(new Hora(  resultSet.getTime("HoraSalida").getTime() ));
                     instacia.setFechaEntrega( resultSet.getDate("fechaEntrega") );
                     instacia.setTransporte(Transporte.getTransporteByIDTransporte(
@@ -802,7 +803,7 @@ public class Conexion
 
             //("Ejecutanto query " + SQL_INSERT_TRANSPORT);
             rows = preparedStatement.executeUpdate();
-            //System.out.println("Registros afectados: " + rows);
+            ////System.out.println("Registros afectados: " + rows);
             return rows;
         }
         catch (SQLException throwables)
@@ -831,14 +832,14 @@ public class Conexion
             preparedStatement.setString(3, usuario.getApellidoMaterno());
             preparedStatement.setString(4, usuario.getPuesto());
             preparedStatement.setString(5, usuario.getCorreoElectronico());
-            preparedStatement.setString(6, usuario.getContrasena());
+            preparedStatement.setString(6, usuario.getContrasena(true));
 
-            System.out.println("Ejecutanto query " + SQL_INSERT_USUARIO);
+            //System.out.println("Ejecutanto query " + SQL_INSERT_USUARIO);
             rows = preparedStatement.executeUpdate();
-            System.out.println("Registros afectados: " + rows);
+            //System.out.println("Registros afectados: " + rows);
             return rows;
         }
-        catch (SQLException throwables)
+        catch (SQLException | UnsupportedEncodingException throwables)
         {
             throwables.printStackTrace(System.out);
             return -1;
@@ -857,21 +858,21 @@ public class Conexion
 
         try
         {
-            System.out.println("Ejecutando Query" + SQL_UPDATE_USUARIO);
+            //System.out.println("Ejecutando Query" + SQL_UPDATE_USUARIO);
             preparedStatement = conn.prepareStatement(SQL_UPDATE_USUARIO);
             preparedStatement.setString(1, usuario.getNombre());
             preparedStatement.setString(2, usuario.getApellidoPaterno());
             preparedStatement.setString(3, usuario.getApellidoMaterno());
             preparedStatement.setString(4, usuario.getPuesto());
             preparedStatement.setString(5, usuario.getCorreoElectronico());
-            preparedStatement.setString(6, usuario.getContrasena());
+            preparedStatement.setString(6, usuario.getContrasena(true));
             preparedStatement.setString(7, usuario.getCorreoElectronico());
 
             rows = preparedStatement.executeUpdate();
-            System.out.println("Registros actualizados: " + rows);
+            //System.out.println("Registros actualizados: " + rows);
             return rows;
         }
-        catch(SQLException sqlException)
+        catch(SQLException | UnsupportedEncodingException sqlException)
         {
             sqlException.printStackTrace(System.out);
 
@@ -892,13 +893,13 @@ public class Conexion
 
         try
         {
-            System.out.println("Ejecutando Query" + SQL_DELETE_USUARIO);
+            //System.out.println("Ejecutando Query" + SQL_DELETE_USUARIO);
             preparedStatement = conn.prepareStatement(SQL_DELETE_USUARIO);
 
             preparedStatement.setString(1, mail);
 
             rows = preparedStatement.executeUpdate();
-            System.out.println("Registros actualizados: " + rows);
+            //System.out.println("Registros actualizados: " + rows);
             return rows;
         }
         catch(SQLException sqlException)
@@ -933,7 +934,7 @@ public class Conexion
                 usuario.setApellidoMaterno(resultSet.getString("ApellidoMaterno"));
                 usuario.setPuesto(resultSet.getString("Puesto"));
                 usuario.setCorreoElectronico(resultSet.getString("CorreoElectronico"));
-                usuario.setContrasena(resultSet.getString("Contrasena"));
+                usuario.setContrasena(resultSet.getString("Contrasena"), false);
 
 
                 return usuario;
@@ -941,7 +942,7 @@ public class Conexion
 
             return null;
         }
-        catch (SQLException throwables)
+        catch (SQLException | UnsupportedEncodingException throwables)
         {
             throwables.printStackTrace(System.out);
             return null;

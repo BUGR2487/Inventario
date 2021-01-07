@@ -352,7 +352,7 @@ public class InsertarEntradas extends JPanel
             nuevaEntrada.setCliente( generalData.getCliente() );
             nuevaEntrada.setProducto( generalData.getProducto() );
 
-            int canrPorPallet = Integer.valueOf( (String)this.getTABLA_DE_ENTRADAS().getValueAt(i, 5) );
+            int canrPorPallet = Integer.valueOf( (String)this.getTABLA_DE_ENTRADAS().getValueAt(i, 4) );
 
             nuevaEntrada.setCantidadPallet( 1 );
             nuevaEntrada.setCantidadPorPallet( canrPorPallet );

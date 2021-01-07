@@ -586,6 +586,15 @@ public class InsertarSalidasPanel extends JPanel implements ActionListener, KeyL
             this.agregar_a_la_tabla();
         }
 
+        if( e.getSource() == this.LIMPIAR_LA_TABLA_BTN )
+        {
+            this.getTABLA_SALIDAS().vaciarTabla();
+        }
+
+        if( e.getSource() == this.ELIMINAR_DE_LA_TABLA_BTN )
+        {
+            this.getTABLA_SALIDAS().eliminarFila();
+        }
     }
 
     @Override

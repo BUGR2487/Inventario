@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.Point2D;
+import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 
 public class PanelUsuarios extends JPanel implements ActionListener, KeyListener, Panel {
@@ -230,7 +231,15 @@ public class PanelUsuarios extends JPanel implements ActionListener, KeyListener
                     this.USARIO.setApellidoMaterno(this.getAPELLIDO_M_TXT().getText());
                     this.USARIO.setPuesto(this.getPUESTO_TXT().getText());
                     this.USARIO.setCorreoElectronico(this.getCORREO_TXT().getText());
-                    this.USARIO.setContrasena(this.getPASS_TXT().getText());
+                    try {
+                        this.USARIO.setContrasena(this.getPASS_TXT().getText(), true);
+                    } catch (UnsupportedEncodingException unsupportedEncodingException) {
+                        JOptionPane.showMessageDialog(this,
+                                "Password invalido verifique que no tenga caracteres especiales.",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
 
                     this.USARIO.insertar();//REGRESA UN -1 EN CASO DE ERROR
 

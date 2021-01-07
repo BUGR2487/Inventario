@@ -56,6 +56,7 @@ public class PanelSalidas extends JPanel {
                         this.consultar.getview(),
                         "Haz click aqui para consultar las salidas dentro de un rango de fechas.");
 
+
         this.getTABBEDPANE().addTab( tab1 );
         this.getTABBEDPANE().addTab( tab2 );
         this.getTABBEDPANE().addChangeListener(new ChangeListener() {

@@ -10,9 +10,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.ArrayList;
 
-public class ConsultarSalidasPanel extends JPanel implements Panel, ActionListener {
+public class ConsultarSalidasPanel extends JPanel implements Panel, ActionListener{
 
     private final DatePicker DATEPICKER_TO      = DatePicker.buildDatePicker( true );
     private final DatePicker DATEPICKER_FROM    = DatePicker.buildDatePicker( false );
@@ -47,6 +49,7 @@ public class ConsultarSalidasPanel extends JPanel implements Panel, ActionListen
     public ConsultarSalidasPanel() {
         this.setLayout( new ConsultarSalidasLayout( this ));
         this.getBUSCAR_BTN().addActionListener( this );
+
     }
 
     public DatePicker getDATEPICKER_TO() {
@@ -100,7 +103,7 @@ public class ConsultarSalidasPanel extends JPanel implements Panel, ActionListen
             row[ 3 ] = String.valueOf( salida.getCantidadPallet() );
             row[ 4 ] = String.valueOf( salida.getCantidadPorPallet() );
             row[ 5 ] = String.valueOf( salida.getTotalUnidades() );
-            row[ 6 ] = String.valueOf( salida.getFechaEntrega().toString() );
+            row[ 6 ] = String.valueOf( salida.getFechaSalida().toString() );
             row[ 7 ] = String.valueOf( salida.getHoraSalida().toString() );
             row[ 8 ] = String.valueOf( salida.getTransporte().getChofer() );
             row[ 9 ] = String.valueOf( salida.getTransporte().getEmpresa() );
@@ -161,4 +164,6 @@ public class ConsultarSalidasPanel extends JPanel implements Panel, ActionListen
 
         }
     }
+
+
 }

@@ -18,12 +18,13 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.awt.event.FocusListener;
 import java.sql.SQLException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class Principal extends JFrame{
+public class Principal extends JFrame {
 
     // -- VARIABLES Y CONSTANTES:
 
@@ -249,6 +250,5 @@ public class Principal extends JFrame{
         this.userName = userName;
         this.setTitle("Control de inventario — Bienvenido " + this.userName);
     }
-
 
 }

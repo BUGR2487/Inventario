@@ -12,10 +12,7 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.HierarchyBoundsListener;
-import java.awt.event.HierarchyEvent;
+import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.ParseException;
@@ -24,7 +21,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
 
-public class DatePicker extends JPanel implements JDatePicker {
+public class DatePicker extends JPanel implements JDatePicker, FocusListener {
 
 
     private static final long serialVersionUID = 2814777654384974503L;
@@ -103,7 +100,9 @@ public class DatePicker extends JPanel implements JDatePicker {
         this.button.setFocusable(true);
         this.button.setIcon( this.icon_show );
         this.button.setToolTipText("Presione para desplegar un calendario y seleccione una fecha deseada.");
+        this.button.addFocusListener(this);
         this.add(this.button);
+
 
         layout.putConstraint("West", this.button, 1, "East", this.formattedTextField);
         layout.putConstraint("East", this, 0, "East", this.button);
@@ -246,6 +245,16 @@ public class DatePicker extends JPanel implements JDatePicker {
             textField.setValue(calendar);
         }
 
+    }
+
+    @Override
+    public void focusGained(FocusEvent e) {
+
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+        this.hidePopup();
     }
 
     private class InternalEventHandler implements
