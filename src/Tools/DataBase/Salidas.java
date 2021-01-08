@@ -13,12 +13,19 @@ import java.util.ArrayList;
 public class Salidas
 {
     private int id = 0;
-    private String numPedido = "";
-
     private int sellos = 0;
     private int cantidadPallet = 0;
     private int cantidadPorPallet = 0;
     private int totalUnidades = 0;
+    private int diseno = 0;
+    private int codigoInterno = 0;
+
+    private String numPedido = "";
+    private String codigoBarras = "";
+    private String producto = "";
+    private String condicion = "";
+    private String observaciones = "";
+    private String cliente = "";
 
     private Fecha fechaSalida = null;
     private Hora  horaSalida = null;
@@ -28,6 +35,62 @@ public class Salidas
     private Transporte transporte = null;
 
     public Salidas(){
+    }
+
+    public int getDiseno() {
+        return diseno;
+    }
+
+    public void setDiseno(int diseno) {
+        this.diseno = diseno;
+    }
+
+    public int getCodigoInterno() {
+        return codigoInterno;
+    }
+
+    public void setCodigoInterno(int codigoInterno) {
+        this.codigoInterno = codigoInterno;
+    }
+
+    public String getCodigoBarras() {
+        return codigoBarras;
+    }
+
+    public void setCodigoBarras(String codigoBarras) {
+        this.codigoBarras = codigoBarras;
+    }
+
+    public String getProducto() {
+        return producto;
+    }
+
+    public void setProducto(String producto) {
+        this.producto = producto;
+    }
+
+    public String getCondicion() {
+        return condicion;
+    }
+
+    public void setCondicion(String condicion) {
+        this.condicion = condicion;
+    }
+
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
+
+    public String getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(String cliente) {
+        this.cliente = cliente;
     }
 
     public Date getFechaEntrega() {
@@ -157,15 +220,7 @@ public class Salidas
         }
     }
 
-    public static void busquedaNumPedido(InsertarSalidasPanel frmSalidas)
-    {
-        try{
-            Conexion conn = Conexion.getInstance();
-            conn.busquedaNumPedido(frmSalidas, (String)frmSalidas.getN_PEDIDO_CMB().getSelectedItem());
-        } catch (SQLException |Config.ReadException|Config.EmptyProperty throwables) {
-            return;
-        }
-    }
+
 
 
 }

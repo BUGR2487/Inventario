@@ -29,21 +29,21 @@ public class Conexion
         private static final String SQL_INSERT_ENTRADAS =
                         "INSERT INTO `inventario`.`entradas` (" +
                                 "`IdEntradas`, " +
-                                "`NoOrden`, " +
-                                "`NoPedido`, " +
-                                "`FechaEntrada`, " +
-                                "`HoraEntrada`, " +
-                                "`CodigoBarras`, " +
-                                "`Diseno`, " +
-                                "`CodigoInterno`, " +
-                                "`Cliente`, " +
-                                "`Producto`, " +
-                                "`CantidadPallet`, " +
-                                "`CantidadPorPallet`, " +
-                                "`TotalUnidades`, " +
-                                "`Condicion`, " +
-                                "`Observaciones`, " +
-                                "`idTransporte` )" +
+                                "`noOrden`, " +
+                                "`noPedido`, " +
+                                "`fechaEntrada`, " +
+                                "`horaEntrada`, " +
+                                "`codigoBarras`, " +
+                                "`diseno`, " +
+                                "`codigoInterno`, " +
+                                "`cliente`, " +
+                                "`producto`, " +
+                                "`cantidadPallet`, " +
+                                "`cantidadPorPallet`, " +
+                                "`totalUnidades`, " +
+                                "`condicion`, " +
+                                "`observaciones`, " +
+                                "`idTransporte`)" +
                         "VALUES (null,?," +
                                 "?,?,?," +
                                 "?,?,?," +
@@ -54,15 +54,8 @@ public class Conexion
         private static final String SQL_SELECT_ENTRADAS_POR_RANGOS_DE_FECHA = "SELECT * FROM `entradas` " +
                 "WHERE `FechaEntrada` BETWEEN ? AND ? ORDER BY `FechaEntrada` DESC";
 
-        private static final String SQL_SELECT_CODIGOBARRAS = "SELECT CodigoBarras FROM inventario.inventario;";
 
-        private static final String SQL_SELECT_CHOFER = "SELECT Chofer FROM inventario.transporte;";
 
-        private static final String SQL_SELECT_BUSQUEDACHOFER =
-                "SELECT * FROM inventario.transporte WHERE Chofer=?;";
-
-        private static final String SQL_SELECT_BUSQUEDACHOFERID =
-                "SELECT * FROM inventario.transporte WHERE IdTransporte=?;";
 
         // -- login:
 
@@ -72,39 +65,57 @@ public class Conexion
 
         // -- inventario:
 
+        private static final String SQL_SELECT_CODIGOBARRAS = "SELECT codigoBarras FROM inventario.inventario;";
+
         private static final String SQL_SELECT_BUSQUEDACODIGOBARRAS = "SELECT * FROM inventario.inventario " +
                 "WHERE CodigoBarras=?;";
 
         private static final String SQL_INSERT_INVENTARIO =
                 "INSERT INTO `inventario`(" +
                         "`IdInventario`, " +
-                        "`CodigoBarras`, " +
-                        "`Diseno`, " +
-                        "`CodigoInterno`, " +
-                        "`Cliente`, " +
-                        "`StockPallets`, " +
-                        "`StockPiezas`, " +
-                        "`Producto`) " +
-                        "VALUES  (null, ?, ?, ?, ?, ?, ?, ?);";
+                        "`codigoBarras`, " +
+                        "`diseno`, " +
+                        "`codigoInterno`, " +
+                        "`cliente`, " +
+                        "`entradasPallets`, " +
+                        "`entradaPiezas`, " +
+                        "`salidaPallets`, " +
+                        "`salidaPiezas`, " +
+                        "`stockPallets`, " +
+                        "`stockPiezas`, " +
+                        "`producto`"+
+                        ") " +
+                        "VALUES  (null,?,?,?,?,?,?,?,?,?,?,?);";
 
         // -- salidas:
 
         private static final String SQL_INSERT_SALIDAS =
                 "INSERT INTO `inventario`.`salidas` " +
-                        "(`IdSalidas`, " +
-                        "`NoPedido`, " +
-                        "`Sellos`, " +
-                        "`CantidadPallet`, " +
-                        "`CantidadPorPallet`, " +
-                        "`TotalUnidades`, " +
-                        "`FechaSalida`, " +
-                        "`HoraSalida`, " +
+                        "(" +
+                        "`IdSalidas`, " +
+                        "`noPedido`, " +
+                        "`codigoBarras`, " +
+                        "`sellos`, " +
+                        "`cantidadPallet`, " +
+                        "`cantidadPorPallet`, " +
+                        "`totalUnidades`, " +
+                        "`fechaSalida`, " +
+                        "`horaSalida`, " +
                         "`fechaEntrega`, " +
-                        "`idTransporte`)  " +
-                        "VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                        "`diseno`, " +
+                        "`codigoInterno`, " +
+                        "`producto`, " +
+                        "`condicion`, " +
+                        "`observaciones`, " +
+                        "`cliente`, " +
+                        "`idTransporte`" +
+                        ")  " +
+                        "VALUES (null,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
-        private static final String SQL_SELECT_NOPEDIDO = "SELECT NoPedido FROM inventario.entradas;";
+        //eliminar
+        private static final String SQL_SELECT_NOPEDIDO = "SELECT noPedido FROM inventario.entradas;";
 
+        //eliminar
         private static final String SQL_SELECT_BUSQUEDANOPEDIDO =
                         "SELECT CantidadPallet,CantidadPorPallet,\n" +
                                 "                                TotalUnidades, \n" +
@@ -118,45 +129,53 @@ public class Conexion
         // -- transporte:
         private static final String SQL_INSERT_TRANSPORT =
                         "INSERT INTO `inventario`.`transporte` (" +
-                                "`Chofer`, " +
-                                "`Empresa`, " +
-                                "`Placas`, " +
-                                "`TractoCamion`" +
+                                "`chofer`, " +
+                                "`empresa`, " +
+                                "`placas`, " +
+                                "`tractoCamion`" +
                                 ") " +
                         "VALUES (?, ?, ?, ?);";
+
+        private static final String SQL_SELECT_CHOFER = "SELECT chofer FROM inventario.transporte;";
+
+        private static final String SQL_SELECT_BUSQUEDACHOFER =
+            "SELECT * FROM inventario.transporte WHERE chofer=?;";
+
+        private static final String SQL_SELECT_BUSQUEDACHOFERID =
+            "SELECT * FROM inventario.transporte WHERE IdTransporte=?;";
 
         // -- usuario:
         private static final String SQL_SELECT_USUARIO =
                 "SELECT * FROM inventario.usuario " +
-                "WHERE CorreoElectronico = ?;";
+                "WHERE correoElectronico = ?;";
 
         private static final String SQL_SELECT_ID_USUARIO =
                 "SELECT IdUsuario FROM inventario.usuario " +
-                "WHERE CorreoElectronico = ?;";
+                "WHERE correoElectronico = ?;";
 
         private static final String SQL_INSERT_USUARIO =
                 "INSERT INTO `inventario`.`usuario` (" +
-                        "`Nombre`, " +
-                        "`ApellidoPaterno`, " +
-                        "`ApellidoMaterno`, " +
-                        "`Puesto`, " +
-                        "`CorreoElectronico`, " +
-                        "`Contrasena`" +
+                        "`nombre`, " +
+                        "`apellidoPaterno`, " +
+                        "`apellidoMaterno`, " +
+                        "`puesto`, " +
+                        "`correoElectronico`, " +
+                        "`contrasena`" +
                         ") " +
                         "VALUES (?, ?, ?, ?, ?, ?);";
 
         private static final String SQL_UPDATE_USUARIO =
                 "UPDATE `inventario`.`usuario` SET " +
-                        "`Nombre` = ?, " +
-                        "`ApellidoPaterno` = ?, " +
-                        "`ApellidoMaterno` = ?, " +
-                        "`Puesto` = ?, " +
-                        "`CorreoElectronico` = ?, " +
-                        "`Contrasena` = ? " +
+                        "`nombre` = ?, " +
+                        "`apellidoPaterno` = ?, " +
+                        "`apellidoMaterno` = ?, " +
+                        "`puesto` = ?, " +
+                        "`correoElectronico` = ?, " +
+                        "`contrasena` = ? " +
                         "WHERE (`IdUsuario` = ?);";
 
         private static final String SQL_DELETE_USUARIO =
-                "DELETE FROM `inventario`.`usuario` WHERE (`CorreoElectronico` = ?);";
+                "DELETE FROM `inventario`.`usuario` WHERE (`correoElectronico` = ?);";
 
 
     //variables privadas de la clase:

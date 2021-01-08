@@ -9,18 +9,53 @@ public class Inventario
     private int id = 0;
     private int StockPallets = 0;
     private int StockPiezas = 0;
+    private int entradasPallets = 0;
+    private int entradaPiezas = 0;
+    private int salidaPallets = 0;
+    private int salidaPiezas = 0;
 
-    private String CodigoBarras = "";
-    private String Diseno = "";
-    private String CodigoInterno = "";
-    private String Cliente = "";
+    private String codigoBarras = "";
+    private String diseno = "";
+    private String codigoInterno = "";
+    private String cliente = "";
 
-    private String Producto = "";
+    private String producto = "";
 
 
     public Inventario(){
     }
 
+    public int getEntradasPallets() {
+        return entradasPallets;
+    }
+
+    public void setEntradasPallets(int entradasPallets) {
+        this.entradasPallets = entradasPallets;
+    }
+
+    public int getEntradaPiezas() {
+        return entradaPiezas;
+    }
+
+    public void setEntradaPiezas(int entradaPiezas) {
+        this.entradaPiezas = entradaPiezas;
+    }
+
+    public int getSalidaPallets() {
+        return salidaPallets;
+    }
+
+    public void setSalidaPallets(int salidaPallets) {
+        this.salidaPallets = salidaPallets;
+    }
+
+    public int getSalidaPiezas() {
+        return salidaPiezas;
+    }
+
+    public void setSalidaPiezas(int salidaPiezas) {
+        this.salidaPiezas = salidaPiezas;
+    }
 
     public int getId() {
         return id;
@@ -47,43 +82,43 @@ public class Inventario
     }
 
     public String getCodigoBarras() {
-        return CodigoBarras;
+        return codigoBarras;
     }
 
     public void setCodigoBarras(String codigoBarras) {
-        CodigoBarras = codigoBarras;
+        codigoBarras = codigoBarras;
     }
 
     public String getDiseno() {
-        return Diseno;
+        return diseno;
     }
 
     public void setDiseno(String diseno) {
-        Diseno = diseno;
+        this.diseno = diseno;
     }
 
     public String getCodigoInterno() {
-        return CodigoInterno;
+        return codigoInterno;
     }
 
     public void setCodigoInterno(String codigoInterno) {
-        CodigoInterno = codigoInterno;
+        this.codigoInterno = codigoInterno;
     }
 
     public String getCliente() {
-        return Cliente;
+        return cliente;
     }
 
     public void setCliente(String cliente) {
-        Cliente = cliente;
+        this.cliente = cliente;
     }
 
     public String getProducto() {
-        return Producto;
+        return producto;
     }
 
     public void setProducto(String producto) {
-        Producto = producto;
+        this.producto = producto;
     }
 
     public int insertarInventario()

@@ -5,6 +5,7 @@ import Forms.Components.Fecha_y_hora;
 import Forms.Components.Table;
 import Forms.Panel;
 import Forms.Principal.Salidas.Layouts.InsertarSalidasLayout;
+import Tools.DataBase.Inventario;
 import Tools.DataBase.Salidas;
 import Tools.DataBase.Transporte;
 import Tools.Fecha;
@@ -49,6 +50,14 @@ public class InsertarSalidasPanel extends JPanel implements ActionListener, KeyL
     private JLabel FECHA_SALIDA_LB             = null;
 
     // -- listas:
+    /*
+    - Diseño
+    - Codigo interno
+    - Cliente
+    - Producto
+    - Condicion
+    - Observaciones
+    * */
 
     private final JComboBox N_PEDIDO_CMB             = new JComboBox();
 
@@ -97,6 +106,7 @@ public class InsertarSalidasPanel extends JPanel implements ActionListener, KeyL
 
 
     private int indexRow = 0, colorRow = 0, veces = 0;
+    private Inventario product;
 
     // -- Runnable que actualiza la hora y fecha:
 
@@ -420,7 +430,7 @@ public class InsertarSalidasPanel extends JPanel implements ActionListener, KeyL
         String value = (String) this.getN_PEDIDO_CMB().getSelectedItem();
         if( !value.isEmpty() )
         {
-            Salidas.busquedaNumPedido(this);
+            this.product = Inventario.getInventario(value);
         }
     }
 

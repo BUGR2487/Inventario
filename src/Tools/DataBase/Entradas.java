@@ -13,24 +13,22 @@ import java.util.ArrayList;
 public class Entradas
 {
     private int id = 0;
-    private Fecha FechaEntrada = null;
-    private Hora HoraEntrada = null;
+    private int cantidadPallet = 0;
+    private int cantidadPorPallet = 0;
+    private int totalUnidades = 0;
+    private int numOrden = 0;
+    private int numPedido = 0;
 
-    private String Diseno = "";
-    private String CodigoBarras = "";
-    private String CodigoInterno = "";
-    private String Cliente = "";
-    private String Producto = "";
+    private Fecha   fechaEntrada = null;
+    private Hora    horaEntrada = null;
 
-    private int CantidadPallet = 0;
-    private int CantidadPorPallet = 0;
-    private int TotalUnidades = 0;
-    private int NumOrden = 0;
-    private int NumPedido = 0;
-    private int Folio = 0;
-
-    private String Condicion = "";
-    private String Observaciones = "";
+    private String diseno = "";
+    private String codigoBarras = "";
+    private String codigoInterno = "";
+    private String cliente = "";
+    private String producto = "";
+    private String condicion = "";
+    private String observaciones = "";
 
     private Transporte transporte = null;
 
@@ -52,124 +50,116 @@ public class Entradas
         this.id = id;
     }
 
-    public Fecha getFechaEntrada() {
-        return FechaEntrada;
-    }
-
-    public void setFechaEntrada(Fecha fechaEntrada) {
-        FechaEntrada = fechaEntrada;
-    }
-
-    public Hora getHoraEntrada() {
-        return HoraEntrada;
-    }
-
-    public void setHoraEntrada(Hora horaEntrada) {
-        HoraEntrada = horaEntrada;
-    }
-
-    public String getDiseno() {
-        return Diseno;
-    }
-
-    public void setDiseno(String diseno) {
-        Diseno = diseno;
-    }
-
-    public String getCodigoBarras() {
-        return CodigoBarras;
-    }
-
-    public void setCodigoBarras(String codigoBarras) {
-        CodigoBarras = codigoBarras;
-    }
-
-    public String getCodigoInterno() {
-        return CodigoInterno;
-    }
-
-    public void setCodigoInterno(String codigoInterno) {
-        CodigoInterno = codigoInterno;
-    }
-
-    public String getCliente() {
-        return Cliente;
-    }
-
-    public void setCliente(String cliente) {
-        Cliente = cliente;
-    }
-
-    public String getProducto() {
-        return Producto;
-    }
-
-    public void setProducto(String producto) {
-        Producto = producto;
-    }
-
     public int getCantidadPallet() {
-        return CantidadPallet;
+        return cantidadPallet;
     }
 
     public void setCantidadPallet(int cantidadPallet) {
-        CantidadPallet = cantidadPallet;
+        this.cantidadPallet = cantidadPallet;
     }
 
     public int getCantidadPorPallet() {
-        return CantidadPorPallet;
+        return cantidadPorPallet;
     }
 
     public void setCantidadPorPallet(int cantidadPorPallet) {
-        CantidadPorPallet = cantidadPorPallet;
+        this.cantidadPorPallet = cantidadPorPallet;
     }
 
     public int getTotalUnidades() {
-        return TotalUnidades;
+        return totalUnidades;
     }
 
     public void setTotalUnidades(int totalUnidades) {
-        TotalUnidades = totalUnidades;
+        this.totalUnidades = totalUnidades;
     }
 
     public int getNumOrden() {
-        return NumOrden;
+        return numOrden;
     }
 
     public void setNumOrden(int numOrden) {
-        NumOrden = numOrden;
+        this.numOrden = numOrden;
     }
 
     public int getNumPedido() {
-        return NumPedido;
+        return numPedido;
     }
 
     public void setNumPedido(int numPedido) {
-        NumPedido = numPedido;
+        this.numPedido = numPedido;
     }
 
-    public int getFolio() {
-        return Folio;
+    public Fecha getFechaEntrada() {
+        return fechaEntrada;
     }
 
-    public void setFolio(int folio) {
-        Folio = folio;
+    public void setFechaEntrada(Fecha fechaEntrada) {
+        this.fechaEntrada = fechaEntrada;
+    }
+
+    public Hora getHoraEntrada() {
+        return horaEntrada;
+    }
+
+    public void setHoraEntrada(Hora horaEntrada) {
+        this.horaEntrada = horaEntrada;
+    }
+
+    public String getDiseno() {
+        return diseno;
+    }
+
+    public void setDiseno(String diseno) {
+        this.diseno = diseno;
+    }
+
+    public String getCodigoBarras() {
+        return codigoBarras;
+    }
+
+    public void setCodigoBarras(String codigoBarras) {
+        this.codigoBarras = codigoBarras;
+    }
+
+    public String getCodigoInterno() {
+        return codigoInterno;
+    }
+
+    public void setCodigoInterno(String codigoInterno) {
+        this.codigoInterno = codigoInterno;
+    }
+
+    public String getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(String cliente) {
+        this.cliente = cliente;
+    }
+
+    public String getProducto() {
+        return producto;
+    }
+
+    public void setProducto(String producto) {
+        this.producto = producto;
     }
 
     public String getCondicion() {
-        return Condicion;
+        return condicion;
     }
 
     public void setCondicion(String condicion) {
-        Condicion = condicion;
+        this.condicion = condicion;
     }
 
     public String getObservaciones() {
-        return Observaciones;
+        return observaciones;
     }
 
     public void setObservaciones(String observaciones) {
-        Observaciones = observaciones;
+        this.observaciones = observaciones;
     }
 
     public Transporte getTransporte() {
