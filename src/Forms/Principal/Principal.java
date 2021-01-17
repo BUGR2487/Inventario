@@ -154,6 +154,7 @@ public class Principal extends JFrame {
                     case 1:
                     {
                         inventario.vaciarTextos();
+                        inventario.loadTableInventory();
                     }
                     break;
                     case 2:

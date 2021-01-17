@@ -3,6 +3,7 @@ package Tools.DataBase;
 import Tools.Config;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Inventario
 {
@@ -86,7 +87,7 @@ public class Inventario
     }
 
     public void setCodigoBarras(String codigoBarras) {
-        codigoBarras = codigoBarras;
+        this.codigoBarras = codigoBarras;
     }
 
     public String getDiseno() {
@@ -131,6 +132,15 @@ public class Inventario
         }
     }
 
+    public static ArrayList<Inventario> loadTable(){
+        try{
+            Conexion conn = Conexion.getInstance();
+            return conn.loadTableInventario();
+        } catch (SQLException |Config.ReadException|Config.EmptyProperty throwables) {
+            return null;
+        }
+    }
+
     public static Inventario getInventario(String codigoDeBarras)
     {
         try {
@@ -138,6 +148,16 @@ public class Inventario
             return conn.getInventario(codigoDeBarras);
         } catch (SQLException |Config.ReadException|Config.EmptyProperty throwables) {
             return null;
+        }
+    }
+
+    public static String getTotalStock()
+    {
+        try {
+            Conexion conn = Conexion.getInstance();
+            return conn.getTotalStock();
+        } catch (SQLException |Config.ReadException|Config.EmptyProperty throwables) {
+            return "Total de Stock no disponible...";
         }
     }
 

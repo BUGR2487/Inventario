@@ -3,10 +3,7 @@ package Forms.Components;
 import Forms.Layouts;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
+import javax.swing.table.*;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -23,6 +20,7 @@ public class Table extends JTable {
     private WordWrapCellRenderer tableCellRenderer;
     private DefaultTableModel defaultTableModel;
     private DefaultTableCellRenderer defaultTableCellRenderer;
+    private TableRowSorter filtro;
     
     private boolean useScroll = true; 
 
@@ -50,6 +48,9 @@ public class Table extends JTable {
         this.defaultTableCellRenderer = new DefaultTableCellRenderer();
         this.defaultTableCellRenderer.setHorizontalAlignment( JLabel.CENTER );
         this.defaultTableCellRenderer.setVerticalAlignment( JLabel.CENTER );
+        this.filtro = new TableRowSorter( this.defaultTableModel );
+
+        this.setRowSorter(this.filtro);
 
         this.columnModel = this.getColumnModel();
 
@@ -243,6 +244,13 @@ public class Table extends JTable {
     {
         this.defaultTableModel.addRow(row);
     }
+
+    public void filtrarPor( int col, String dato )
+    {
+        this.filtro.setRowFilter( RowFilter.regexFilter(dato, col) );
+    }
+
+
 
     // -- GET'S Y SET'S:
 

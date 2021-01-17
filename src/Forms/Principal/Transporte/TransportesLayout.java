@@ -16,7 +16,7 @@ public class TransportesLayout extends GroupLayout implements Layouts {
         this.Vertical   = this.createSequentialGroup();
 
         this.Horizontal.addGroup(this.createSequentialGroup()
-                    .addGap(pading_x2)
+                    .addGap(padding_x2)
                     .addGroup(this.createParallelGroup()
                                 .addGap(120)
                                 .addComponent(host.getCHOFER_LB())
@@ -39,7 +39,7 @@ public class TransportesLayout extends GroupLayout implements Layouts {
                                 .addGap(50)
                                 .addComponent(host.getREGISTRAR_TRANSPORTE())
                     )
-                .addGap(pading_x2)
+                .addGap(padding_x2)
         );
 
         this.Vertical.addGroup(this.createParallelGroup()

@@ -15,6 +15,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -25,6 +26,7 @@ public class DatePicker extends JPanel implements JDatePicker, FocusListener {
 
 
     private static final long serialVersionUID = 2814777654384974503L;
+    private static DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
     private Popup popup;
     private JFormattedTextField formattedTextField;
     private JButton button;
@@ -46,6 +48,9 @@ public class DatePicker extends JPanel implements JDatePicker, FocusListener {
         return new java.sql.Date(((java.util.Date)this.getModel().getValue()).getTime());
     }
 
+    public String getAsString(){
+        return format.format( this.getDateAsDate() );
+    }
 
     public static DatePicker buildDatePicker (boolean isTo) {
         UtilDateModel model = new UtilDateModel();

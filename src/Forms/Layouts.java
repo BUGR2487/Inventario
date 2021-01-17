@@ -27,10 +27,10 @@ public interface Layouts {
 
     public static final int padding_x_doble = padding_x * 2;
 
-    public static final int pading_x1 = padding_x / 10;
-    public static final int pading_x2 = padding_x / 20;
-    public static final int pading_x3 = padding_x / 30;
-    public static final int pading_x4 = padding_x / 40;
+    public static final int padding_x1 = padding_x / 10;
+    public static final int padding_x2 = padding_x / 20;
+    public static final int padding_x3 = padding_x / 30;
+    public static final int padding_x4 = padding_x / 40;
 
             ;
     public static final int padding_y_mid = padding_y / 2;

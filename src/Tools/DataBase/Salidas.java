@@ -13,92 +13,30 @@ import java.util.ArrayList;
 public class Salidas
 {
     private int id = 0;
+    private int numPedido = 0;
+
+    private String codigoBarras = "";
+
     private int sellos = 0;
     private int cantidadPallet = 0;
     private int cantidadPorPallet = 0;
     private int totalUnidades = 0;
-    private int diseno = 0;
-    private int codigoInterno = 0;
 
-    private String numPedido = "";
-    private String codigoBarras = "";
+    private Fecha fechaSalida = null;
+    private Hora  horaSalida = null;
+    private Date fechaEntrega = null;
+
+    private String diseno = "";
+    private String codigoInterno = "";
+
     private String producto = "";
     private String condicion = "";
     private String observaciones = "";
     private String cliente = "";
 
-    private Fecha fechaSalida = null;
-    private Hora  horaSalida = null;
-
-    private Date fechaEntrega = null;
-
     private Transporte transporte = null;
 
     public Salidas(){
-    }
-
-    public int getDiseno() {
-        return diseno;
-    }
-
-    public void setDiseno(int diseno) {
-        this.diseno = diseno;
-    }
-
-    public int getCodigoInterno() {
-        return codigoInterno;
-    }
-
-    public void setCodigoInterno(int codigoInterno) {
-        this.codigoInterno = codigoInterno;
-    }
-
-    public String getCodigoBarras() {
-        return codigoBarras;
-    }
-
-    public void setCodigoBarras(String codigoBarras) {
-        this.codigoBarras = codigoBarras;
-    }
-
-    public String getProducto() {
-        return producto;
-    }
-
-    public void setProducto(String producto) {
-        this.producto = producto;
-    }
-
-    public String getCondicion() {
-        return condicion;
-    }
-
-    public void setCondicion(String condicion) {
-        this.condicion = condicion;
-    }
-
-    public String getObservaciones() {
-        return observaciones;
-    }
-
-    public void setObservaciones(String observaciones) {
-        this.observaciones = observaciones;
-    }
-
-    public String getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(String cliente) {
-        this.cliente = cliente;
-    }
-
-    public Date getFechaEntrega() {
-        return fechaEntrega;
-    }
-
-    public void setFechaEntrega(Date fechaEntrega) {
-        this.fechaEntrega = fechaEntrega;
     }
 
     public int getId() {
@@ -109,12 +47,20 @@ public class Salidas
         this.id = id;
     }
 
-    public String getNumPedido() {
+    public int getNumPedido() {
         return numPedido;
     }
 
-    public void setNumPedido(String numPedido) {
+    public void setNumPedido(int numPedido) {
         this.numPedido = numPedido;
+    }
+
+    public String getCodigoBarras() {
+        return codigoBarras;
+    }
+
+    public void setCodigoBarras(String codigoBarras) {
+        this.codigoBarras = codigoBarras;
     }
 
     public int getSellos() {
@@ -165,6 +111,62 @@ public class Salidas
         this.horaSalida = horaSalida;
     }
 
+    public Date getFechaEntrega() {
+        return fechaEntrega;
+    }
+
+    public void setFechaEntrega(Date fechaEntrega) {
+        this.fechaEntrega = fechaEntrega;
+    }
+
+    public String getDiseno() {
+        return diseno;
+    }
+
+    public void setDiseno(String diseno) {
+        this.diseno = diseno;
+    }
+
+    public String getCodigoInterno() {
+        return codigoInterno;
+    }
+
+    public void setCodigoInterno(String codigoInterno) {
+        this.codigoInterno = codigoInterno;
+    }
+
+    public String getProducto() {
+        return producto;
+    }
+
+    public void setProducto(String producto) {
+        this.producto = producto;
+    }
+
+    public String getCondicion() {
+        return condicion;
+    }
+
+    public void setCondicion(String condicion) {
+        this.condicion = condicion;
+    }
+
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
+
+    public String getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(String cliente) {
+        this.cliente = cliente;
+    }
+
     public Transporte getTransporte() {
         return transporte;
     }
@@ -177,8 +179,7 @@ public class Salidas
         this.transporte = Transporte.getTransporteByID( id );
     }
 
-    public int insertarSalidas()
-    {
+    public int insertarSalidas(){
         try {
             Conexion conn = Conexion.getInstance();
             return conn.insertarSalidas(this);
@@ -187,8 +188,7 @@ public class Salidas
         }
     }
 
-    public static ArrayList<Salidas> getRangoDeSalidasPorFecha(Date from, Date to)
-    {
+    public static ArrayList<Salidas> getRangoDeSalidasPorFecha(Date from, Date to){
         try {
             Conexion conn = Conexion.getInstance();
             Salidas[] result = conn.getSalidasByRange(from, to);
@@ -210,8 +210,7 @@ public class Salidas
         }
     }
 
-    public static DefaultComboBoxModel obtenerPedidos()
-    {
+    public static DefaultComboBoxModel obtenerPedidos(){
         try{
             Conexion conn = Conexion.getInstance();
             return conn.obtenerPedidos();

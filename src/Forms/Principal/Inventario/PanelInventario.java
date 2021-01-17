@@ -1,17 +1,16 @@
 package Forms.Principal.Inventario;
 
+import Forms.Components.Table;
 import Forms.Panel;
 import Tools.Config;
 import Tools.DataBase.Inventario;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.awt.geom.Point2D;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class PanelInventario extends JPanel implements ActionListener, KeyListener, Panel {
 
@@ -23,9 +22,9 @@ public class PanelInventario extends JPanel implements ActionListener, KeyListen
     private final JLabel CODIGO_INTERNO_LB     = new JLabel("C\u00f3digo interno");
 
     private final JLabel CLIENTE_LB            = new JLabel("Cliente");
-    private final JLabel CANTIDAD_PALLET_LB    = new JLabel("Cantidad de pallet");
-    private final JLabel CANTIDAD_POR_PALLET_LB    = new JLabel("Cantidad por pallet");
+    private final JLabel CB_BUSQUEDA_LB        = new JLabel("Ingrese el c\u00f3digo de barras...");
     private final JLabel PRODUCTO_LB           = new JLabel("Producto");
+    private final JLabel TOTAL_DE_STOCK_LB        = new JLabel("Producto");
 
     //campos de textos:
 
@@ -34,13 +33,31 @@ public class PanelInventario extends JPanel implements ActionListener, KeyListen
     private final JTextField CODIGO_INTERNO_TXT     = new JTextField();
 
     private final JTextField CLIENTE_TXT            = new JTextField();
-    private final JTextField CANTIDAD_PALLET_TXT    = new JTextField();
-    private final JTextField CANTIDAD_POR_PALLET_TXT    = new JTextField();
+    private final JTextField CB_BUSQUEDA_TXT        = new JTextField();
     private final JTextField PRODUCTO_TXT           = new JTextField();
 
     // botones:
 
     private final JButton REGISTRAR_ENTRADA = new JButton("Registrar en el inventario.");
+
+
+    //tablas:
+
+    private final Table TABLA_DE_INVENTARIO = new Table(true, new String[]{
+            "#",
+            "C\u00f3digo Barras",
+            "Diseno",
+            "C\u00f3digo Interno",
+            "Cliente",
+            "Entradas Pallets",
+            "Entrada Piezas",
+            "Salida Pallets",
+            "Salida Piezas",
+            "Stock Pallets",
+            "Stock Piezas",
+            "Producto",
+            "color"
+    }, false, 1);
 
     // -- scroll de la vista:
     private final JScrollPane PANE = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
@@ -72,46 +89,53 @@ public class PanelInventario extends JPanel implements ActionListener, KeyListen
         this.CODIGO_INTERNO_LB.setFont(this.FUENTE_GENERAL_LB);
 
         this.CLIENTE_LB.setFont(this.FUENTE_GENERAL_LB);
-        this.CANTIDAD_PALLET_LB.setFont(this.FUENTE_GENERAL_LB);
-        this.CANTIDAD_POR_PALLET_LB.setFont(this.FUENTE_GENERAL_LB);
+        this.CB_BUSQUEDA_LB.setFont(this.FUENTE_GENERAL_LB);
         this.PRODUCTO_LB.setFont(this.FUENTE_GENERAL_LB);
+        this.TOTAL_DE_STOCK_LB.setFont(this.FUENTE_GENERAL_LB);
 
 
         this.CODIGO_BARRAS_TXT.setFont(this.FUENTE_GENERAL_TXT);
         this.DISENO_TXT.setFont(this.FUENTE_GENERAL_TXT);
         this.CODIGO_INTERNO_TXT.setFont(this.FUENTE_GENERAL_TXT);
         this.CLIENTE_TXT.setFont(this.FUENTE_GENERAL_TXT);
-        this.CANTIDAD_PALLET_TXT.setFont(this.FUENTE_GENERAL_TXT);
-        this.CANTIDAD_POR_PALLET_TXT.setFont(this.FUENTE_GENERAL_TXT);
+        this.CB_BUSQUEDA_TXT.setFont(this.FUENTE_GENERAL_TXT);
         this.PRODUCTO_TXT.setFont(this.FUENTE_GENERAL_TXT);
 
         this.CODIGO_BARRAS_TXT.setHorizontalAlignment(JTextField.CENTER);
         this.DISENO_TXT.setHorizontalAlignment(JTextField.CENTER);
         this.CODIGO_INTERNO_TXT.setHorizontalAlignment(JTextField.CENTER);
         this.CLIENTE_TXT.setHorizontalAlignment(JTextField.CENTER);
-        this.CANTIDAD_PALLET_TXT.setHorizontalAlignment(JTextField.CENTER);
-        this.CANTIDAD_POR_PALLET_TXT.setHorizontalAlignment(JTextField.CENTER);
+        this.CB_BUSQUEDA_TXT.setHorizontalAlignment(JTextField.CENTER);
         this.PRODUCTO_TXT.setHorizontalAlignment(JTextField.CENTER);
 
         this.REGISTRAR_ENTRADA.setFont(this.FUENTE_GENERAL_TXT);
+
 
         this.CODIGO_BARRAS_TXT.addKeyListener(this);
         this.DISENO_TXT.addKeyListener(this);
         this.CODIGO_INTERNO_TXT.addKeyListener(this);
         this.CLIENTE_TXT.addKeyListener(this);
-        this.CANTIDAD_PALLET_TXT.addKeyListener(this);
         this.PRODUCTO_TXT.addKeyListener(this);
 
+        this.CB_BUSQUEDA_TXT.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                String dato = CB_BUSQUEDA_TXT.getText();
+                CB_BUSQUEDA_TXT.setText(dato);
+                repaint();
+                getTABLA_DE_INVENTARIO().filtrarPor(1, dato);
+            }
+        });
+
         this.REGISTRAR_ENTRADA.addActionListener(this);
+
     }
 
     public boolean camposVacios(){
         return  this.CODIGO_BARRAS_TXT   .getText().isEmpty() ||
                 this.DISENO_TXT          .getText().isEmpty() ||
                 this.CODIGO_INTERNO_TXT  .getText().isEmpty() ||
-
                 this.CLIENTE_TXT         .getText().isEmpty() ||
-                this.CANTIDAD_PALLET_TXT .getText().isEmpty() ||
                 this.PRODUCTO_TXT        .getText().isEmpty();
     }
 
@@ -122,19 +146,104 @@ public class PanelInventario extends JPanel implements ActionListener, KeyListen
             this.CODIGO_INTERNO_TXT  .setText( "" );
 
             this.CLIENTE_TXT         .setText( "" );
-            this.CANTIDAD_PALLET_TXT .setText( "" );
             this.PRODUCTO_TXT        .setText( "" );
+    }
+
+    public void loadTableInventory()
+    {
+        this.getTABLA_DE_INVENTARIO().vaciarTabla();
+
+        ArrayList<Inventario> productos = Inventario.loadTable();
+
+        if(productos != null)
+        {
+            /*
+
+
+          1   IdInventarioPrimary	        int(11)
+	      2	  codigoBarrasIndex	            varchar(45)
+	      3	  diseno	                    varchar(45)
+	      4	  codigoInterno	                varchar(45)
+	      5	  cliente	                    varchar(45)
+	      6	  entradasPallets	            int(45)
+	      7	  entradaPiezas	                int(45)
+	      8	  salidaPallets	                int(45)
+	      9	  salidaPiezas	                int(45)
+	      10  stockPallets	                int(45)
+	      11  stockPiezas	                int(45)
+	      12  producto	                    varchar(45)
+
+
+               [ 0 ]    ( int )    #",
+               [ 1 ]    ( string )    C\u00f3digo Barras",
+               [ 2 ]    ( string )    Diseno",
+               [ 3 ]    ( string )    C\u00f3digo Interno",
+               [ 4 ]    ( string )    Cliente",
+               [ 5 ]    ( int )    Entradas Pallets",
+               [ 6 ]    ( int )    Entrada Piezas",
+               [ 7 ]    ( int )    Salida Pallets",
+               [ 8 ]    ( int )    Salida Piezas",
+               [ 9 ]    ( int )    Stock Pallets",
+               [ 10 ]   ( int )    Stock Piezas",
+               [ 11 ]   ( string )    Producto",
+               [ 12 ]   ( int )    color"
+            */
+
+            int i = 1;
+            int colorIndex = 0;
+            for( Inventario producto : productos)
+            {
+                String[] row = new String[13];
+
+                row[ 0 ] = String.valueOf( i );
+                row[ 1 ] = producto.getCodigoBarras();
+                row[ 2 ] = producto.getDiseno();
+                row[ 3 ] = producto.getCodigoInterno();
+                row[ 4 ] = producto.getCliente();
+
+                row[ 5 ] = String.valueOf( producto.getEntradasPallets() );
+                row[ 6 ] = String.valueOf( producto.getEntradaPiezas() );
+                row[ 7 ] = String.valueOf( producto.getSalidaPallets() );
+                row[ 8 ] = String.valueOf( producto.getSalidaPiezas() );
+                row[ 9 ] = String.valueOf( producto.getStockPallets() );
+                row[ 10 ] = String.valueOf( producto.getStockPiezas() );
+
+                row[ 11 ] = producto.getProducto();
+                row[ 12 ] = String.valueOf( colorIndex );
+
+                this.getTABLA_DE_INVENTARIO().addRow( row );
+
+                colorIndex = (colorIndex == 1)? 0: (colorIndex + 1);
+                i++;
+            }
+
+        }
+
+        this.getTOTAL_DE_STOCK_LB().setText( Inventario.getTotalStock() );
+
     }
 
     // -- GET'S Y SET'S
 
 
-    public JTextField getCANTIDAD_POR_PALLET_TXT() {
-        return CANTIDAD_POR_PALLET_TXT;
+    public Table getTABLA_DE_INVENTARIO() {
+        return TABLA_DE_INVENTARIO;
     }
 
-    public JLabel getCANTIDAD_POR_PALLET_LB() {
-        return CANTIDAD_POR_PALLET_LB;
+    public JLabel getCB_BUSQUEDA_LB() {
+        return CB_BUSQUEDA_LB;
+    }
+
+    public JTextField getCB_BUSQUEDA_TXT() {
+        return CB_BUSQUEDA_TXT;
+    }
+
+    public JLabel getTOTAL_DE_STOCK_LB() {
+        return TOTAL_DE_STOCK_LB;
+    }
+
+    public JScrollPane getPANE() {
+        return PANE;
     }
 
     public JLabel getCODIGO_BARRAS_LB() {
@@ -151,10 +260,6 @@ public class PanelInventario extends JPanel implements ActionListener, KeyListen
 
     public JLabel getCLIENTE_LB() {
         return CLIENTE_LB;
-    }
-
-    public JLabel getCANTIDAD_PALLET_LB() {
-        return CANTIDAD_PALLET_LB;
     }
 
     public JLabel getPRODUCTO_LB() {
@@ -175,10 +280,6 @@ public class PanelInventario extends JPanel implements ActionListener, KeyListen
 
     public JTextField getCLIENTE_TXT() {
         return CLIENTE_TXT;
-    }
-
-    public JTextField getCANTIDAD_PALLET_TXT() {
-        return CANTIDAD_PALLET_TXT;
     }
 
     public JTextField getPRODUCTO_TXT() {
@@ -223,8 +324,6 @@ public class PanelInventario extends JPanel implements ActionListener, KeyListen
                 inventario.setCodigoInterno(this.getCODIGO_INTERNO_TXT().getText());
                 inventario.setCliente(this.getCLIENTE_TXT().getText());
                 inventario.setProducto(this.getPRODUCTO_TXT().getText());
-                inventario.setStockPallets(Integer.parseInt(this.getCANTIDAD_PALLET_TXT().getText()));
-                inventario.setStockPiezas(Integer.parseInt(this.getCANTIDAD_POR_PALLET_TXT().getText()));
 
                 inventario.insertarInventario();
 
@@ -235,6 +334,7 @@ public class PanelInventario extends JPanel implements ActionListener, KeyListen
                         "Registro de Productos",
                         JOptionPane.INFORMATION_MESSAGE);
 
+                loadTableInventory();
             }
             else
             {
@@ -262,7 +362,7 @@ public class PanelInventario extends JPanel implements ActionListener, KeyListen
 
         if(this.getDISENO_TXT().isFocusOwner() ||
                 this.getCODIGO_BARRAS_TXT().isFocusOwner() ||
-                this.getCANTIDAD_PALLET_TXT().isFocusOwner())
+                this.getCODIGO_BARRAS_TXT().isFocusOwner())
         {
             if (Character.isLetter(e.getKeyChar()) &&
                     !(e.getKeyChar() == KeyEvent.VK_SPACE) &&

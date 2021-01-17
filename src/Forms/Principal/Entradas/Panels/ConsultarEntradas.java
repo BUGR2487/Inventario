@@ -26,19 +26,19 @@ public class ConsultarEntradas extends JPanel implements Panel, ActionListener {
     private final Table TABLA_BUSQUEDA_ENTRADAS = new Table(true,
                                                             new String[]{
                                                                     "#",
-                                                                    "No. Orden",
-                                                                    "No. Pedido",
-                                                                    "Fecha de entrega",
-                                                                    "Hora de entrada",
-                                                                    "C\u00f3digo de barras",
-                                                                    "Dise\u00f1o",
-                                                                    "C\u00f3digo interno",
+                                                                    "No.Orden",
+                                                                    "No.Pedido",
+                                                                    "Fecha Entrada",
+                                                                    "Hora Entrada",
+                                                                    "Codigo Barras",
+                                                                    "Diseno",
+                                                                    "Codigo Interno",
                                                                     "Cliente",
                                                                     "Producto",
-                                                                    "Cantidad de pallet's",
-                                                                    "Cantidad por pallet's",
-                                                                    "Total de unidades",
-                                                                    "Condici\u00f3n",
+                                                                    "Cantidad de Pallet's",
+                                                                    "Cantidad por Pallet",
+                                                                    "Total Unidades",
+                                                                    "Condicion",
                                                                     "Observaciones",
                                                                     "Nombre del chofer",
                                                                     "Empresa",
@@ -94,26 +94,32 @@ public class ConsultarEntradas extends JPanel implements Panel, ActionListener {
         {
             String[] row = new String[ 20 ];
 
-            /* "#" */row[ 0 ] = String.valueOf( num );
-            /* "No. Orden" */row[ 1 ] = String.valueOf( entrada.getNumOrden() );
-            /* "No. Pedido" */row[ 2 ] = String.valueOf( entrada.getNumPedido() );
-            /* "Fecha de entrega" */row[ 3 ] = entrada.getFechaEntrada().toString();
-            /* "Hora de entrada" */row[ 4 ] = entrada.getHoraEntrada().toString();
-            /* "C\u00f3digo de barras" */row[ 5 ] = String.valueOf( entrada.getCodigoBarras() );
-            /* "Dise\u00f1o" */row[ 6 ] = String.valueOf( entrada.getDiseno() );
-            /* "C\u00f3digo interno" */row[ 7 ] = String.valueOf( entrada.getCodigoInterno() );
-            /* "Cliente" */row[ 8 ] = String.valueOf( entrada.getCliente() );
-            /* "Producto" */row[ 9 ] = String.valueOf( entrada.getCantidadPallet() );
-            /* "Cantidad de pallet's" */row[ 10 ] = String.valueOf( entrada.getCantidadPallet() );
-            /* "Cantidad por pallet's" */row[ 11 ] = String.valueOf( entrada.getCantidadPorPallet() );
-            /* "Total de unidades" */row[ 12 ] = String.valueOf( entrada.getTotalUnidades() );
-            /* "Condici\u00f3n" */row[ 13 ] = String.valueOf( entrada.getCondicion() );
-            /* "Observaciones" */row[ 14 ] = String.valueOf( entrada.getObservaciones() );
-            /* "Nombre del chofer" */row[ 15 ] = String.valueOf( entrada.getTransporte().getChofer() );
-            /* "Empresa" */row[ 16 ] = String.valueOf( entrada.getTransporte().getEmpresa() );
-            /* "Placas" */row[ 17 ] = String.valueOf( entrada.getTransporte().getPlacas() );
-            /* "Tractocami\u00f3n" */row[ 18 ] = String.valueOf( entrada.getTransporte().getTractoCamion() );
-            /* color */row[ 19 ] = String.valueOf( valor );
+            /* "#", */row[ 0 ] = String.valueOf( num );
+            /* "No.Orden", */row[ 1 ] = String.valueOf( entrada.getNumOrden() );
+            /* "No.Pedido", */row[ 2 ] = String.valueOf( entrada.getNumPedido() );
+
+            /* "Fecha Entrada", */row[ 3 ] = entrada.getFechaEntrada().toString();
+            /* "Hora Entrada", */row[ 4 ] = entrada.getHoraEntrada().toString();
+            /* "Codigo Barras", */row[ 5 ] = String.valueOf( entrada.getCodigoBarras() );
+
+            /* "Diseno", */row[ 6 ] = String.valueOf( entrada.getDiseno() );
+            /* "Codigo Interno", */row[ 7 ] = String.valueOf( entrada.getCodigoInterno() );
+            /* "Cliente", */row[ 8 ] = String.valueOf( entrada.getCliente() );
+
+            /* "Producto", */row[ 9 ] = String.valueOf( entrada.getProducto() );
+            /* "Cantidad de Pallet's", */row[ 10 ] = String.valueOf( entrada.getCantidadPallet() );
+            /* "Cantidad por Pallet", */row[ 11 ] = String.valueOf( entrada.getCantidadPorPallet() );
+
+            /* "Total Unidades", */row[ 12 ] = String.valueOf( entrada.getTotalUnidades() );
+            /* "Condicion", */row[ 13 ] = String.valueOf( entrada.getCondicion() );
+            /* "Observaciones", */row[ 14 ] = String.valueOf( entrada.getObservaciones() );
+
+            /* "Nombre del chofer", */row[ 15 ] = String.valueOf( entrada.getTransporte().getChofer() );
+            /* "Empresa", */row[ 16 ] = String.valueOf( entrada.getTransporte().getEmpresa() );
+            /* "Placas", */row[ 17 ] = String.valueOf( entrada.getTransporte().getPlacas() );
+
+            /* "Tractocami\u00f3n", */row[ 18 ] = String.valueOf( entrada.getTransporte().getTractoCamion() );
+            /* "Color" */row[ 19 ] = String.valueOf( valor );
 
             this.TABLA_BUSQUEDA_ENTRADAS.addRow( row );
 
