@@ -1,5 +1,9 @@
 package Forms;
 
+/**
+ * Interfaz que contiene constantes de paddings en X y Y, tamaños en X y Y
+ * de cada componente usado en todas las interfaces
+ */
 public interface Layouts {
 
     public static final int size_x_min = 123;
@@ -32,6 +36,5 @@ public interface Layouts {
     public static final int padding_x3 = padding_x / 30;
     public static final int padding_x4 = padding_x / 40;
 
-            ;
     public static final int padding_y_mid = padding_y / 2;
 }

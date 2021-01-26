@@ -11,8 +11,27 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Point2D;
 
+//PARA IR RAPIDO DE SECCION A SECCION USA CTRL + F O CMD + F(EN MAC) Y BUSCA LAS SIGUIENTES PALABRAS:
+// -- VARIABLES Y CONSTANTES
+// -- CONSTRUCTOR:
+// -- METODOS DE LA CLASE:
+// -- GET'S Y SET'S
+// -- METODOS OVERRIDE:
+
+/**
+ * Panel InsertarEntradas, donde el usuario podrá registrar las entradas al almacen.
+ *<br>
+ *<br>
+ * Esta clase hereda de {@link JPanel} e implementa de las clases:
+ * - {@link ActionListener} <br>
+ * - {@link KeyListener} <br>
+ * - {@link FocusListener} <br>
+ * - {@link Panel}: src/Forms/Panel.java
+ */
 public class InsertarEntradas extends JPanel
         implements ActionListener, KeyListener, FocusListener, Panel {
+
+    // -- VARIABLES Y CONSTANTES
 
     // -- Etiquetas:
 
@@ -99,9 +118,18 @@ public class InsertarEntradas extends JPanel
 
     // -- Variables de la sesion:
     private String user;
-    
+
+
     // -- CONSTRUCTOR:
 
+    /**
+     *
+     * Contructor que recibe e implementa la etiqueta donde se muestra la hora y fecha actual,
+     * misma que se registra en la base de datos.
+     *
+     * @param dateTime {@link JLabel}
+     * @param dateController {@link Fecha_y_hora}
+     */
     public InsertarEntradas(JLabel dateTime, Fecha_y_hora dateController ){
 
         this.setFECHA_ENTRADA_LB( dateTime );
@@ -114,11 +142,23 @@ public class InsertarEntradas extends JPanel
 
     // -- METODOS DE LA CLASE:
 
+    /**
+     *
+     * Retorna el JPanel en algunos paneles esta funcion puede devolver el
+     * JPanel con el Scroll implementado de ser requerido, en este caso no hubo necesidad de ello.
+     *
+     * @return {@link Component}
+     */
     public Component getview()
     {
         return this.PANE;
     }
 
+    /**
+     *
+     * Función que prepara toda la interfaz acomodando formatos y fuentes en los respectivos componentes
+     *
+     */
     private void prepareAll(){
 
         this.cargaComboBoxs();
@@ -250,15 +290,36 @@ public class InsertarEntradas extends JPanel
 
     }
 
+    /**
+     *
+     * Función que es llamada dentro del <b><i>prepareAll</i></b> en el
+     * ItemListener del combobox del codigo de barras.
+     *
+     * @param id {@link String}
+     *
+     */
     protected void completarInfoCB(String id) {
 
         Entradas.busquedaCodigoBarras(this, id);
     }
 
+    /**
+     *
+     * Función que es llamada dentro del <b><i>prepareAll</i></b> en el
+     * ItemListener del combobox de chofer.
+     *
+     * @param id {@link String}
+     *
+     */
     protected void completarInfoChofer(String id){
         Entradas.busquedaChofer(this, id);
     }
 
+    /**
+     *
+     * Función que carga el combobox de la interfaz con los valores correspondientes.
+     *
+     */
     public void cargaComboBoxs() {
 
         this.CONDICION_CMB.removeAllItems();
@@ -280,6 +341,12 @@ public class InsertarEntradas extends JPanel
 
     }
 
+    /**
+     *
+     * Función que retorna un true si los campos de la interfaz no han sido llenados.
+     *
+     * @return boolean
+     */
     public boolean camposVacios(){
         return  this.N_ORDEN_TXT.getText().isEmpty() ||
                 this.N_PEDIDO_TXT.getText().isEmpty() ||
@@ -299,6 +366,12 @@ public class InsertarEntradas extends JPanel
                 this.CANTIDAD_FOLIOS_TXT.getText().isEmpty();
     }
 
+    /**
+     *
+     * Función que recolecta la informacion de la interfaz y genera una intancia {@link Entradas}
+     * que ayuda a insertar los valores capturados en la base de datos.
+     *
+     */
     private void guardarEntrada(){
 
         Entradas nuevaEntrada = new Entradas();
@@ -334,6 +407,13 @@ public class InsertarEntradas extends JPanel
 
     }
 
+    /**
+     * Función que desglosa el registro de entrada general en varios folios para su impresión en PDF
+     *
+     * @param generalData {@link Entradas}
+     *
+     * @return
+     */
     private Entradas[] getEntradas(Entradas generalData){
 
         int nEntradas = this.TABLA_DE_ENTRADAS.getRowCount();
@@ -374,6 +454,11 @@ public class InsertarEntradas extends JPanel
 
     }
 
+    /**
+     *
+     * Función que se encarga de limpiar los campos de la interfaz gráfica.
+     *
+     */
     public void vaciarTextos() {
         this.N_ORDEN_TXT.setText("");
         this.N_PEDIDO_TXT.setText("");
@@ -403,8 +488,8 @@ public class InsertarEntradas extends JPanel
 
     }
 
-    // -- GET'S Y SET'S
 
+    // -- GET'S Y SET'S
 
     public Fecha_y_hora getDATE_CONTROLLER() {
         return DATE_CONTROLLER;
@@ -581,6 +666,7 @@ public class InsertarEntradas extends JPanel
     public void setUser(String user) {
         this.user = user;
     }
+
 
     // -- METODOS OVERRIDE:
 

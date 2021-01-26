@@ -13,9 +13,28 @@ import java.awt.event.KeyListener;
 import java.awt.geom.Point2D;
 import java.sql.SQLException;
 
+//PARA IR RAPIDO DE SECCION A SECCION USA CTRL + F O CMD + F(EN MAC) Y BUSCA LAS SIGUIENTES PALABRAS:
+// -- VARIABLES Y CONSTANTES
+// -- CONSTRUCTOR:
+// -- METODOS DE LA CLASE:
+// -- GET'S Y SET'S
+// -- METODOS OVERRIDE:
+
+// Nota: guarda en el actionListener
+
+/**
+ * Panel PanelTransportes, donde el usuario podrá registrar a los transportes que
+ * manipularán la carga de entrada o salida.
+ *<br>
+ *<br>
+ * Esta clase hereda de {@link JPanel} e implementa de las clases:
+ * - {@link ActionListener} <br>
+ * - {@link KeyListener} <br>
+ * - {@link Panel}: src/Forms/Panel.java
+ */
 public class PanelTransportes extends JPanel implements ActionListener, KeyListener, Panel {
 
-    // -- VARIABLES:
+    // -- VARIABLES Y CONSTANTES
     // -- etiquetas
     private final JLabel CHOFER_LB              = new JLabel("Chofer");
     private final JLabel EMPRESA_LB             = new JLabel("Empresa");
@@ -37,13 +56,22 @@ public class PanelTransportes extends JPanel implements ActionListener, KeyListe
 
     // -- CONSTRUCTOR:
 
+    /**
+     *
+     * Contructor que crea la interfaz del panel de transporte.
+     *
+     */
     public PanelTransportes() throws Config.EmptyProperty, SQLException, Config.ReadException {
         this.prepareAll();
         this.setLayout(new TransportesLayout(this));
     }
 
     // -- METODOS DE LA CLASE:
-
+    /**
+     *
+     * Función que prepara toda la interfaz acomodando formatos y fuentes en los respectivos componentes
+     *
+     */
     private void prepareAll() {
         this.CHOFER_LB              .setFont(this.FUENTE_GENERAL_LB);
         this.EMPRESA_LB             .setFont(this.FUENTE_GENERAL_LB);
@@ -73,6 +101,11 @@ public class PanelTransportes extends JPanel implements ActionListener, KeyListe
 
     }
 
+    /**
+     *
+     * Función que ejecuta el guardado de los datos del transporte.
+     *
+     */
     private void guardarTransporte() {
         if(camposVacios())
         {

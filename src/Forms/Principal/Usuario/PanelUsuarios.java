@@ -14,9 +14,27 @@ import java.awt.geom.Point2D;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 
+//PARA IR RAPIDO DE SECCION A SECCION USA CTRL + F O CMD + F(EN MAC) Y BUSCA LAS SIGUIENTES PALABRAS:
+// -- VARIABLES Y CONSTANTES
+// -- CONSTRUCTOR:
+// -- METODOS DE LA CLASE:
+// -- GET'S Y SET'S
+// -- METODOS OVERRIDE:
+
+// Nota: guarda en el actionListener
+
+/**
+ * Panel PanelUsuarios, donde un usuario con cuenta podrá registrar a un nuevo usuario.
+ *<br>
+ *<br>
+ * Esta clase hereda de {@link JPanel} e implementa de las clases:
+ * - {@link ActionListener} <br>
+ * - {@link KeyListener} <br>
+ * - {@link Panel}: src/Forms/Panel.java
+ */
 public class PanelUsuarios extends JPanel implements ActionListener, KeyListener, Panel {
 
-    // -- VARIABLES:
+    /// -- VARIABLES Y CONSTANTES
 
     // -- etiquetas:
     private final JLabel NOMBRES_LB              = new JLabel("Nombre(s)");
@@ -50,7 +68,11 @@ public class PanelUsuarios extends JPanel implements ActionListener, KeyListener
     private final Usuario USARIO = new Usuario();
 
     // -- CONSTRUCTOR:
-
+    /**
+     *
+     * Contructor que crea la interfaz del panel de Usuarios.
+     *
+     */
     public PanelUsuarios() throws Config.EmptyProperty, SQLException, Config.ReadException {
         this.prepareAll();
         this.setLayout(new UsuariosLayout(this));
@@ -58,7 +80,11 @@ public class PanelUsuarios extends JPanel implements ActionListener, KeyListener
     }
 
     // -- METODOS DE LA CLASE:
-
+    /**
+     *
+     * Función que prepara toda la interfaz acomodando formatos y fuentes en los respectivos componentes
+     *
+     */
     public void prepareAll()
     {
         this.NOMBRES_LB        .setFont(this.FUENTE_GENERAL_LB);

@@ -1,15 +1,31 @@
 package Forms.Principal.Entradas.Layouts;
 
 import Forms.Layouts;
+import Forms.Principal.Entradas.PanelEntradas;
 import Forms.Principal.Entradas.Panels.ConsultarEntradas;
+import Forms.Principal.Entradas.Panels.InsertarEntradas;
 
 import javax.swing.*;
 
+
+/**
+ * Clase que hereda de la clase {@link GroupLayout} e implementa la interface {@link Layouts}
+ * para el acomodo de componentes y sus dimensiones de su respectivo panel.
+ */
 public class ConsultarEntradasLayout extends GroupLayout implements Layouts {
 
+    //Variable que se encarga de acomodar y dimencionar los componentes en el eje X
     private SequentialGroup Horizontal;
+    //Variable que se encarga de acomodar y dimencionar los componentes en el eje Y
     private SequentialGroup Vertical;
 
+    /**
+     *
+     * Contructor que recibe como parametro una instancia de la clase {@link ConsultarEntradas}
+     * para ordenar sus componentes con respecto al eje X y Y.
+     *
+     * @param host {@link PanelEntradas}
+     */
     public ConsultarEntradasLayout(ConsultarEntradas host) {
         super(host);
 

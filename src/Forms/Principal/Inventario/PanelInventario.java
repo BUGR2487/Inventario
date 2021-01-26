@@ -1,5 +1,6 @@
 package Forms.Principal.Inventario;
 
+import Forms.Components.Fecha_y_hora;
 import Forms.Components.Table;
 import Forms.Panel;
 import Tools.Config;
@@ -12,8 +13,25 @@ import java.awt.geom.Point2D;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+//PARA IR RAPIDO DE SECCION A SECCION USA CTRL + F O CMD + F(EN MAC) Y BUSCA LAS SIGUIENTES PALABRAS:
+// -- VARIABLES Y CONSTANTES
+// -- CONSTRUCTOR:
+// -- METODOS DE LA CLASE:
+// -- GET'S Y SET'S
+// -- METODOS OVERRIDE:
+
+/**
+ * Panel PanelInventario, donde el usuario podrá registrar las productos o cargas en el inventario del almacen.
+ *<br>
+ *<br>
+ * Esta clase hereda de {@link JPanel} e implementa de las clases:
+ * - {@link ActionListener} <br>
+ * - {@link KeyListener} <br>
+ * - {@link Panel}: src/Forms/Panel.java
+ */
 public class PanelInventario extends JPanel implements ActionListener, KeyListener, Panel {
 
+    // -- VARIABLES Y CONSTANTES:
 
     //etiquetas:
 
@@ -67,7 +85,11 @@ public class PanelInventario extends JPanel implements ActionListener, KeyListen
 
 
     // -- CONTRUCTOR:
-
+    /**
+     *
+     * Contructor que crea la interfaz del panel de inventario.
+     *
+     */
     public PanelInventario() throws Config.EmptyProperty, SQLException, Config.ReadException {
 
         this.prepareAll();
@@ -78,11 +100,22 @@ public class PanelInventario extends JPanel implements ActionListener, KeyListen
 
 
     // -- METODOS DE LA CLASE:
+    /**
+     *
+     * Retorna el JPanel en algunos paneles esta funcion puede devolver el
+     * JPanel con el Scroll implementado de ser requerido, en este caso no hubo necesidad de ello.
+     *
+     * @return {@link Component}
+     */
     public Component getview()
     {
         return this.PANE;
     }
-
+    /**
+     *
+     * Función que prepara toda la interfaz acomodando formatos y fuentes en los respectivos componentes
+     *
+     */
     public void prepareAll(){
         this.CODIGO_BARRAS_LB.setFont(this.FUENTE_GENERAL_LB);
         this.DISENO_LB.setFont(this.FUENTE_GENERAL_LB);
@@ -130,7 +163,12 @@ public class PanelInventario extends JPanel implements ActionListener, KeyListen
         this.REGISTRAR_ENTRADA.addActionListener(this);
 
     }
-
+    /**
+     *
+     * Función que retorna un true si los campos de la interfaz no han sido llenados.
+     *
+     * @return boolean
+     */
     public boolean camposVacios(){
         return  this.CODIGO_BARRAS_TXT   .getText().isEmpty() ||
                 this.DISENO_TXT          .getText().isEmpty() ||
@@ -138,7 +176,11 @@ public class PanelInventario extends JPanel implements ActionListener, KeyListen
                 this.CLIENTE_TXT         .getText().isEmpty() ||
                 this.PRODUCTO_TXT        .getText().isEmpty();
     }
-
+    /**
+     *
+     * Función que se encarga de limpiar los campos de la interfaz gráfica.
+     *
+     */
     public void vaciarTextos()
     {
             this.CODIGO_BARRAS_TXT   .setText( "" );
@@ -149,6 +191,9 @@ public class PanelInventario extends JPanel implements ActionListener, KeyListen
             this.PRODUCTO_TXT        .setText( "" );
     }
 
+    /**
+     * Carga la tabla automaticamente con todos los registros hechos en inventario.
+     */
     public void loadTableInventory()
     {
         this.getTABLA_DE_INVENTARIO().vaciarTabla();
@@ -225,7 +270,6 @@ public class PanelInventario extends JPanel implements ActionListener, KeyListen
 
     // -- GET'S Y SET'S
 
-
     public Table getTABLA_DE_INVENTARIO() {
         return TABLA_DE_INVENTARIO;
     }
@@ -291,6 +335,7 @@ public class PanelInventario extends JPanel implements ActionListener, KeyListen
     }
 
     // -- METODOS OVERRIDE:
+
     @Override
     protected void paintComponent(Graphics g){
         //obtengo rl graphics 2D del panel o lienzo como lo quieras ver:

@@ -30,6 +30,13 @@ import java.io.FileOutputStream;
 import java.sql.Date;
 import java.util.ArrayList;
 
+//PARA IR RAPIDO DE SECCION A SECCION USA CTRL + F O CMD + F(EN MAC) Y BUSCA LAS SIGUIENTES PALABRAS:
+// -- VARIABLES Y CONSTANTES
+// -- CONSTRUCTOR:
+// -- METODOS DE LA CLASE:
+// -- GET'S Y SET'S
+// -- METODOS OVERRIDE:
+
 /**
  InsertarSalidasPanel:
 
@@ -105,7 +112,8 @@ import java.util.ArrayList;
  */
 public class InsertarSalidasPanel extends JPanel implements ActionListener, KeyListener, Panel {
 
-    // -- VARIABLES:
+    // -- VARIABLES Y CONSTANTES
+
     // -- etiquetas:
 
     private final JLabel N_PEDIDO_LB            = new JLabel("No. Pedido");
@@ -198,7 +206,7 @@ public class InsertarSalidasPanel extends JPanel implements ActionListener, KeyL
 
     private Fecha_y_hora DATE_CONTROLLER = null;
 
-
+    // -- CONSTRUCTOR:
     /**
      * Constructor de la interfaz de Insertar Salidas, recibe en su entrada una etiqueta y una
      * instancia de la clase Fecha_y_hora para iniciar un label en la interfaz que siempre este

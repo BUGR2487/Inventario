@@ -15,8 +15,64 @@ import java.sql.SQLException;
 import static com.itextpdf.text.Element.*;
 import static com.itextpdf.text.PageSize.A4;
 
+/**
+ * PROGRAMA DE INVENTARIO, CREADO POR IMSOFT.
+ *
+ * En esta clase es donde inicia todo el programa de inventario.
+ *
+ * Tiene como funciones:
+ *
+ * main: funcion de arranque del programa.
+ *
+ * El proyecto se divide en la siguiente estructura:
+ *
+ * |Forms: Paquete que contiene un serie se sub paquetes que conforman la interfaz grafica.
+ *     |Components: Sub paquete que contiene clases que actuan de componentes en la intrefaz del usuario.
+ *     |Login: Sub paquete que contiene las clases que componen la interfaz del login.
+ *     |Principal: Sub paquete que contiene una serie de sub paquetes que conforman
+ *                  las diferentes vistas de la interfaz pricipal del usuario.
+ *
+ *         |Entradas: Sub paquete que contiene una serie de sub paquetes que conforman
+ *                      la vista de Entradas, entre ellas esta la vista para insertar o buscar entradas.
+ *                      Nota: el producto que se recibe en su entrada debe ser registrado primero
+ *                      para mayor información consulte la clase Inverntario.
+ *
+ *              |Layouts: Paquete que contiene los layouts que ordenan la interfaz grafica el el panel
+ *                        que recibe en su respectivo constructor ya sea para insertar o buscar una entrada,
+ *                        estas clases implementan de la interface Layouts ubicado en
+ *                        src/Forms/Layouts.java.
+ *
+ *              |Panels: Paquete que contiene clases que heredan de la clase JPanel e implementan
+ *                       la interface Panel ubicada en src/Forms/Panel.java.
+ *         |Inventario: Paquete que contiene tanto el layout como el panel Inventario de la interfaz de usuario.
+ *         |Salidas
+ *              |Layouts: Paquete que contiene los layouts que ordenan la interfaz grafica el el panel
+ *                        que recibe en su respectivo constructor ya sea para insertar o buscar una salida,
+ *                        estas clases implementan de la interface Layouts ubicado en
+ *                        src/Forms/Layouts.java.
+ *
+ *              |Panels: Paquete que contiene clases que heredan de la clase JPanel e implementan
+ *                       la interface Panel ubicada en src/Forms/Panel.java.
+ *         |Transporte: Paquete que contiene tanto el layout como el panel Transporte de la interfaz de usuario.
+ *         |Usuario: Paquete que contiene tanto el layout como el panel Usuario de la interfaz de usuario.
+ * |start: Paquete que contiene la clase Main.
+ * |Tools: Paquetes que contiene una serie de clases que funcionan como herramientas a lo largo del programa,
+ *         tambien contien un paquete que contiene clases que hacen interaccion con la base de datos.
+ *      |DataBase: Paquete que contiene las clases que interactuan con las diferentes tablas que hay en la base de datos
+ *                 y los modelos donde se vuelcan los datos traidos.
+ *
+ *
+ * @author  Imsoft
+ */
 public class Main
 {
+
+    /**
+     * Funcion de arranque del programa que inicia toda la interfaz de usuario y la conexion a la bd
+     * recibe un argumento pero no es necesario mandar algo.
+     *
+     * @param args {@link String[]}
+     */
     public static void main(String[] args)
     {
         try {

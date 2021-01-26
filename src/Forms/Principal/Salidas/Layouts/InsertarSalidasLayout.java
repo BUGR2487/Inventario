@@ -1,15 +1,30 @@
 package Forms.Principal.Salidas.Layouts;
 
 import Forms.Layouts;
+import Forms.Principal.Entradas.PanelEntradas;
+import Forms.Principal.Entradas.Panels.ConsultarEntradas;
 import Forms.Principal.Salidas.Panels.InsertarSalidasPanel;
 
 import javax.swing.*;
 
+/**
+ * Clase que hereda de la clase {@link GroupLayout} e implementa la interface {@link Layouts}
+ * para el acomodo de componentes y sus dimensiones de su respectivo panel.
+ */
 public class InsertarSalidasLayout extends GroupLayout implements Layouts {
 
-    private SequentialGroup Horizontal;
-    private SequentialGroup Vertical;
+    //Variable que se encarga de acomodar y dimencionar los componentes en el eje X
+        private SequentialGroup Horizontal;
+    //Variable que se encarga de acomodar y dimencionar los componentes en el eje Y
+        private SequentialGroup Vertical;
 
+        /**
+         *
+         * Contructor que recibe como parametro una instancia de la clase {@link InsertarSalidasPanel}
+         * para ordenar sus componentes con respecto al eje X y Y.
+         *
+         * @param host {@link InsertarSalidasPanel}
+         */
     public InsertarSalidasLayout(InsertarSalidasPanel host) {
         super(host);
         this.Horizontal = this.createSequentialGroup();

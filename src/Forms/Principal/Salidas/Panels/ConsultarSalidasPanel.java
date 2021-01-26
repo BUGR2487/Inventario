@@ -8,22 +8,40 @@ import Tools.DataBase.Salidas;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 
+//PARA IR RAPIDO DE SECCION A SECCION USA CTRL + F O CMD + F(EN MAC) Y BUSCA LAS SIGUIENTES PALABRAS:
+// -- VARIABLES Y CONSTANTES
+// -- CONSTRUCTOR:
+// -- METODOS DE LA CLASE:
+// -- GET'S Y SET'S
+// -- METODOS OVERRIDE:
+
+/**
+ * Panel ConsultarSalidasPanel, donde el usuario podrá consultar las salidas.
+ *<br>
+ *<br>
+ * Esta clase hereda de {@link JPanel} e implementa de las clases:
+ * - {@link ActionListener} <br>
+ * - {@link Panel}: src/Forms/Panel.java
+ */
 public class ConsultarSalidasPanel extends JPanel implements Panel, ActionListener{
 
+    // -- VARIABLES Y CONSTANTES
+
+    //Calendarios
     private final DatePicker DATEPICKER_TO      = DatePicker.buildDatePicker( true );
     private final DatePicker DATEPICKER_FROM    = DatePicker.buildDatePicker( false );
 
+    //etiquetas
     private final JLabel DATEPICKER_TO_LB       = new JLabel( "Desde: " );
     private final JLabel DATEPICKER_FROM_LB     = new JLabel( "Hasta: " );
 
+    //botones
     private final JButton BUSCAR_BTN            = new JButton( "Buscar salidas." );
 
+    //tabla
     private final Table TABLA_BUSQUEDA_SALIDAS = new Table(true,
             new String[]{
                     "#",
@@ -46,11 +64,15 @@ public class ConsultarSalidasPanel extends JPanel implements Panel, ActionListen
             }, true, 2);
 
 
+    // -- CONSTRUCTOR:
+
     public ConsultarSalidasPanel() {
         this.setLayout( new ConsultarSalidasLayout( this ));
         this.getBUSCAR_BTN().addActionListener( this );
 
     }
+
+    // -- GET'S Y SET'S
 
     public DatePicker getDATEPICKER_TO() {
         return DATEPICKER_TO;
@@ -76,16 +98,24 @@ public class ConsultarSalidasPanel extends JPanel implements Panel, ActionListen
         return TABLA_BUSQUEDA_SALIDAS;
     }
 
+    public Component getview(){
+        return this;
+    }
+
+    // -- METODOS DE LA CLASE:
+    /**
+     * Función que oculta los calendarios
+     */
     public void hideDatePickers(){
         this.DATEPICKER_FROM.hidePopup();
         this.DATEPICKER_TO.hidePopup();
     }
 
-    public Component getview()
-    {
-        return this;
-    }
-
+    /**
+     * Funcion que vuelca la informacion de las salidas
+     * buscadas en la tabla de la interfaz para su visualización
+     * @param data - {@link ArrayList<Salidas>}
+     */
     public void dropInTable(ArrayList<Salidas> data){
 
         this.TABLA_BUSQUEDA_SALIDAS.vaciarTabla();
@@ -128,7 +158,7 @@ public class ConsultarSalidasPanel extends JPanel implements Panel, ActionListen
     }
 
 
-
+    // -- METODOS OVERRIDE:
     @Override
     public boolean camposVacios() {
         return false;

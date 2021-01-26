@@ -1,14 +1,28 @@
 package Forms.Principal.Transporte;
 
 import Forms.Layouts;
+import Forms.Principal.Entradas.PanelEntradas;
+import Forms.Principal.Inventario.PanelInventario;
 
 import javax.swing.*;
-
+/**
+ * Clase que hereda de la clase {@link GroupLayout} e implementa la interface {@link Layouts}
+ * para el acomodo de componentes y sus dimensiones de su respectivo panel.
+ */
 public class TransportesLayout extends GroupLayout implements Layouts {
 
+    //Variable que se encarga de acomodar y dimencionar los componentes en el eje X
     private GroupLayout.SequentialGroup Horizontal;
+    //Variable que se encarga de acomodar y dimencionar los componentes en el eje Y
     private GroupLayout.SequentialGroup Vertical;
 
+    /**
+     *
+     * Contructor que recibe como parametro una instancia de la clase {@link PanelTransportes}
+     * para ordenar sus componentes con respecto al eje X y Y.
+     *
+     * @param host {@link PanelTransportes}
+     */
     public TransportesLayout(PanelTransportes host) {
         super(host);
 

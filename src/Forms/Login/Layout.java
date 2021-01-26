@@ -1,13 +1,29 @@
 package Forms.Login;
 
+import Forms.Layouts;
+import Forms.Principal.Transporte.PanelTransportes;
+
 import javax.swing.*;
 
+/**
+ * Clase que hereda de la clase {@link GroupLayout} e implementa la interface {@link Layouts}
+ * para el acomodo de componentes y sus dimensiones de su respectivo panel.
+ */
 public class Layout extends GroupLayout {
 
-    //variables para hacer el acomodo de los componentes:
+
+    //Variable que se encarga de acomodar y dimencionar los componentes en el eje X
     private SequentialGroup horizontal;
+    //Variable que se encarga de acomodar y dimencionar los componentes en el eje Y
     private SequentialGroup vertical;
 
+    /**
+     *
+     * Contructor que recibe como parametro una instancia de la clase {@link PanelLogin}
+     * para ordenar sus componentes con respecto al eje X y Y.
+     *
+     * @param host {@link PanelLogin}
+     */
     public Layout(PanelLogin host) {
         super(host);
 
